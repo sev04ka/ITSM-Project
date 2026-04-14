@@ -1,0 +1,14 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+}
+
+.org-label h2 {
+    margin: 0;
+}
+
+.user {
+    display: flex;
+    gap: 1rem;
+}

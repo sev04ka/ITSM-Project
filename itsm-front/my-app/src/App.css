@@ -1,0 +1,37 @@
+* {
+  font-size: 20px;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+
+
+
+.dashboard-content {
+  width: 100%;
+  padding: 3rem 2.5rem;
+}
+
+.dashboard-content table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.6rem;
+}
