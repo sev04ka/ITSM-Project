@@ -17,7 +17,7 @@ const TicketCreateSchema = z.object({
     title: z.string().min(1, "Название обязательно"),
     description: z.string().min(1, "Описание обязательно"),
     ticket_type: z.enum(["incident", "service_request", "problem"]),
-    status: z.enum(["new", "in_progress", "waiting", "resolved", "closed", "cancelled"]),
+    // status: z.enum(["new", "in_progress", "waiting", "resolved", "closed", "cancelled"]),
     priority: z.enum(["low", "medium", "high", "critical"]),
 })
 
@@ -34,14 +34,14 @@ const TICKET_PRIORITIES = [
     { value: "critical", label: "Критический" },
 ] as const
 
-const TICKET_STATUSES = [
-    { value: "new", label: "Новый" },
-    { value: "in_progress", label: "В работе" },
-    { value: "waiting", label: "Ожидание" },
-    { value: "resolved", label: "Решено" },
-    { value: "closed", label: "Закрыто" },
-    { value: "cancelled", label: "Отменено" },
-] as const
+// const TICKET_STATUSES = [
+//     { value: "new", label: "Новый" },
+//     { value: "in_progress", label: "В работе" },
+//     { value: "waiting", label: "Ожидание" },
+//     { value: "resolved", label: "Решено" },
+//     { value: "closed", label: "Закрыто" },
+//     { value: "cancelled", label: "Отменено" },
+// ] as const
 
 
 export const TicketCreateForm = () => {
@@ -52,7 +52,7 @@ export const TicketCreateForm = () => {
             description: '',
             ticket_type: 'service_request',
             priority: 'low',
-            status: 'new'
+            // status: 'new'
         },
         mode: 'onBlur'
     })
@@ -141,7 +141,7 @@ export const TicketCreateForm = () => {
                     )}
                 />
 
-                <Controller
+                {/* <Controller
                     name="status"
                     control={form.control}
                     render={({ field, fieldState }) => (
@@ -159,7 +159,7 @@ export const TicketCreateForm = () => {
                             )}
                         </Field>
                     )}
-                />
+                /> */}
 
                 <button type="submit">Submit</button>
             </FieldGroup>

@@ -10,7 +10,7 @@ interface PaginationProps {
 
 export const Pagination: FC<PaginationProps> = ({
     itemCount,
-    pageSize = 2,
+    pageSize = 5,
 }) => {
     const { searchParams, setParams } = useQueryParams()
 

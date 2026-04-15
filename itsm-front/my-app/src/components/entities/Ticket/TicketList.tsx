@@ -4,6 +4,7 @@ import { type ITicket } from '../../../interfaces/entities/Ticket';
 import { DataManagementPanel } from '../../ui/DataManagementPanel/DataManagementPanel';
 import { Modal } from '../../ui/Modal/Modal';
 import { formatDateTime } from '../../../utils/dateFormatter';
+import { Link } from 'react-router-dom';
 
 export const TicketList: FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +13,8 @@ export const TicketList: FC = () => {
     const columns: Column<ITicket>[] = [
         {
             key: 'ticket_number',
-            title: 'номер'
+            title: 'номер',
+            template: (item: ITicket) => <Link to={`/tickets/${item.id}`}>{item.ticket_number}</Link>
         },
         {
             key: 'title',

@@ -36,7 +36,7 @@ class Ticket(TenantModel):
     status = models.CharField(max_length=15, choices=TicketStatus.choices, default=TicketStatus.NEW)
 
     requester = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='requested_tickets')
-    assignee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_tickets')
+    assignee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='ticket_assignee')
     
     configuration_item = models.ForeignKey('cmdb.ConfigurationItem', on_delete=models.SET_NULL, null=True, blank=True, related_name='tickets')
     parent_problem = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'ticket_type': 'problem'}, related_name='related_incidents')

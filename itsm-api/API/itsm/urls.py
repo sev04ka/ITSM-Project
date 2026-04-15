@@ -5,13 +5,15 @@ from django.contrib import admin
 
 from .apps.cmdb.views import ConfigurationItemViewSet
 from .apps.cmdb.views import CITypeViewSet
-from .apps.tickets.views import TicketViewSet
+from .apps.tickets.views import TicketViewSet, CommentViewSet
 from .apps.users.views.user import UserViewSet
+
 
 router = routers.DefaultRouter()
 router.register(r"conf-items", ConfigurationItemViewSet)
 router.register(r"ci-type", CITypeViewSet)
 router.register(r"tickets", TicketViewSet)
+router.register(r"comments", CommentViewSet)
 router.register(r"users", UserViewSet)
 
 # Wire up our API using automatic URL routing.

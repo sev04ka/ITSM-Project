@@ -13,15 +13,20 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
     roles,
 }) => {
 
-    const { currentUser, isInitialized } = useUserAuthStore();
+    const { currentUser, isInitialized, loading } = useUserAuthStore();
+
+    if (loading) {
+        return <div>Загрузка...</div>;
+    }
 
     if (!isInitialized) {
-        return <div>Загрузка...</div>;
+        return <div>Ошибка инициализации</div>
     }
 
     if (!currentUser) {
         return <Navigate to="/login" replace />;
     }
+
     if (!roles) {
         return children;
     }
