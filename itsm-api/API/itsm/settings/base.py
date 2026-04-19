@@ -14,11 +14,14 @@ from pathlib import Path
 from datetime import timedelta
 import environ
 
-env = environ.Env()
+env = environ.Env(
+    DEBUG=(bool, False),
+    SECRET_KEY=(str, 'django-insecure-change-in-production'),
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-environ.Env.read_env(BASE_DIR / '../.env.local')
+environ.Env.read_env(BASE_DIR / '../.env')
 
 DEBUG = env.bool("DEBUG", default=False)
 SECRET_KEY = env('SECRET_KEY')

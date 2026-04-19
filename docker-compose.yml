@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # BACKEND (Django)
+  # ============================================
+  backend:
+    build:
+      context: ./itsm-api/API
+      dockerfile: Dockerfile
+    container_name: itsm-backend
+    env_file:
+      - ./itsm-api/API/.env
+    environment:
+      - DJANGO_SETTINGS_MODULE=itsm.settings.dev
+    restart: unless-stopped
+    command: >
+      sh -c "python manage.py migrate && python manage.py create_roles && python manage.py create_admin_org && python manage.py create_admin &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - itsm-network
+
+  # ============================================
+  # FRONTEND (React + Vite)
+  # ============================================
+  frontend:
+    build:
+      context: ./itsm-front/my-app
+      dockerfile: Dockerfile
+      target: dev
+    container_name: itsm-frontend
+    restart: unless-stopped
+    command: npm run dev -- --host 0.0.0.0
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./itsm-front/my-app/.env
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    volumes:
+      - ./itsm-front/my-app:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - itsm-network
+
+  # ============================================
+  # DATABASE (MySQL 8)
+  # ============================================
+  db:
+    image: mysql:8.0
+    container_name: itsm-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: itsmdb
+      MYSQL_USER: itsmdbdev
+      MYSQL_PASSWORD: devpass
+      MYSQL_ROOT_PASSWORD: devpass
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER:-itsm}", "-p${MYSQL_PASSWORD:-itsm_password}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    command: >
+      mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    networks:
+      - itsm-network
+
+volumes:
+  mysql_data:
+    driver: local
+  backend_static:
+    driver: local
+  backend_media:
+    driver: local
+
+networks:
+  itsm-network:
+    driver: bridge

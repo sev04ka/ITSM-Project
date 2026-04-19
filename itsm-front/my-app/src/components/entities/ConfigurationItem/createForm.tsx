@@ -24,7 +24,7 @@ export const CICreateForm = () => {
 
     useEffect(() => {
         const fetchCITypes = async () => {
-            const response = await api.get<ICIType>("/ci-type")
+            const response = await api.getList<ICIType>("/ci-type")
             if (response.success) {
 
                 const items = Array.isArray(response.data.results) ? response.data.results : []

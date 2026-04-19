@@ -1,0 +1,109 @@
+# docker-compose.prod.yml
+
+version: '3.8'
+
+services:
+  # ============================================
+  # BACKEND (Gunicorn)
+  # ============================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: itsm-backend-prod
+    restart: always
+    # ✅ Production команда (Gunicorn + миграции + static)
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py collectstatic --noinput &&
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4 --threads 2"
+    env_file:
+      - ./backend/.env.prod
+    environment:
+      - DEBUG=False
+      - DJANGO_SETTINGS_MODULE=config.settings.prod
+    volumes:
+      - backend_static:/app/staticfiles
+      - backend_media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - itsm-network
+    # ✅ Ограничение ресурсов
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G
+
+  # ============================================
+  # FRONTEND (Nginx)
+  # ============================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: production
+      args:
+        - VITE_API_URL=/api
+    container_name: itsm-frontend-prod
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443" # ✅ HTTPS (нужен SSL сертификат)
+    volumes:
+      - ./ssl:/etc/nginx/ssl # ✅ SSL сертификаты
+    depends_on:
+      - backend
+    networks:
+      - itsm-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  # ============================================
+  # DATABASE (MySQL)
+  # ============================================
+  db:
+    image: mysql:8.0
+    container_name: itsm-db-prod
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql_/var/lib/mysql
+      - ./backups:/backups # ✅ Директория для бэкапов
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    command: >
+      mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    networks:
+      - itsm-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+
+volumes:
+  mysql_data:
+  backend_static:
+  backend_media:
+
+
+networks:
+  itsm-network:
+    driver: bridge
