@@ -5,6 +5,7 @@ import { api } from "../api";
 import { TicketCard } from "../components/tickets/ticketCard/ticketCard";
 import { TicketComments } from "./TicketComments";
 import { TicketCommentList } from "../components/tickets/TicketCommentList/TicketCommentList";
+import { CreateComment } from "../components/tickets/CreateComment/CreateComment";
 
 
 export const TicketDetails: FC = () => {
@@ -12,6 +13,8 @@ export const TicketDetails: FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { id } = useParams();
+
+    if (!id) return <div>error</div>
 
     useEffect(() => {
         const fetchTicket = async () => {
@@ -35,7 +38,6 @@ export const TicketDetails: FC = () => {
 
     if (loading) return (<div>loading....</div>)
 
-
     if (ticket) return (
         <>
             <div>
@@ -45,6 +47,7 @@ export const TicketDetails: FC = () => {
                 <p>{ticket.description}</p>
             </div>
             <TicketCommentList ticketId={id} />
+            <CreateComment ticketId={id} />
         </>
     )
 

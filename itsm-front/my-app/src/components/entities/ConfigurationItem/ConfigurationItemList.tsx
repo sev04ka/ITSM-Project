@@ -35,12 +35,12 @@ export const ConfigurationItemList: FC = () => {
 
     return (
         <>
-            <div className="list-header">
+            {/* <div className="list-header">
                 <h1>Конфигурационные единицы</h1>
                 <button className="btn-primary" onClick={() => setIsModalOpen(true)}>
                     Создать
                 </button>
-            </div>
+            </div> */}
 
             <DataManagementPanel<IConfigurationItem>
                 columns={columns}

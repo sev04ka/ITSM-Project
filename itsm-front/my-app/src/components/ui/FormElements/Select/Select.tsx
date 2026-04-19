@@ -1,35 +1,51 @@
-import type { FC, SelectHTMLAttributes } from 'react';
-import './select.css'
+import type { SelectHTMLAttributes } from 'react';
+import { useController, type Control, type FieldValues, type FieldPath } from 'react-hook-form';
 
-interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange' | 'onBlur' | 'value'> {
-    field: {
-        value: string | number | undefined;
-        onChange: (...args: unknown[]) => void;
-        onBlur: () => void;
-        name: string;
-        ref: (el: HTMLSelectElement | null) => void;
-    };
-    id?: string;
+import './select.css'
+import { FieldLabel } from '../FieldLabel/FieldLabel';
+import { FieldError } from '../FieldError/FieldError';
+
+
+interface SelectProps<T extends FieldValues = FieldValues>
+    extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'type' | 'value' | 'name'> {
+    name: FieldPath<T>;
+    control: Control<T>;
+    rules?: any;
+    label?: string;
     options: readonly {
         value: string;
         label: string;
     }[];
 }
 
-export const Select: FC<SelectProps> = ({
-    field,
-    id,
-    options
-}) => {
+export const Select = <T extends FieldValues>({
+    name,
+    control,
+    rules,
+    label,
+    options,
+}: SelectProps<T>) => {
+    const { field, fieldState } = useController({
+        name,
+        control,
+        rules
+    });
+
     return (
-        <select className='select'
-            {...field}
-            id={id}
-        >
-            {options.map((option) => (
-                <option key={option.value} value={option.value}>
-                    {option.label}
-                </option>))}
-        </select>
+        <div>
+            <select className='select'
+                {...field}
+                id={name}
+            >
+                {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>))}
+            </select>
+            <FieldLabel htmlFor={name}>{label}</FieldLabel>
+            {fieldState.invalid && (
+                <FieldError>{[fieldState.error?.message]}</FieldError>
+            )}
+        </div>
     )
 }                       

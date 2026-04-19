@@ -1,4 +1,6 @@
 .filterbar {
     display: flex;
     justify-content: space-between;
+    padding: 0.6rem;
+    background-color: var(--default-bg);
 }

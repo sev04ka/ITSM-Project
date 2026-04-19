@@ -1,4 +1,5 @@
 import type { Column } from './types';
+import styles from './datatable.module.css'
 
 interface DataTableBodyProps<T> {
     columns: Column<T>[];

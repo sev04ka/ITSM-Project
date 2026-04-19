@@ -1,5 +1,16 @@
+:root {
+  --default-bg: #ffffff;
+  --border-color: #e5e5e5;
+  --sidebar-text: #333333;
+  --sidebar-hover: #f9f9f9;
+  --sidebar-active: #0066cc;
+  --dark-bg: #f6f6f6;
+  --accent: #0066cc;
+  --text-color: #000;
+}
+
 * {
-  font-size: 20px;
+  font-size: 16px;
   box-sizing: border-box;
 }
 
@@ -15,23 +26,4 @@ body {
 
 a {
   text-decoration: none;
-}
-
-
-
-
-
-.dashboard-content {
-  width: 100%;
-  padding: 3rem 2.5rem;
-}
-
-.dashboard-content table {
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 0.6rem;
 }

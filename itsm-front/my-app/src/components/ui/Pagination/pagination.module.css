@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem
+}
+
+.pagecounter {
+    font-size: 1.4rem;
+    padding: 0.6rem;
+}

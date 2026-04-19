@@ -1,6 +1,6 @@
 import { type FC } from "react";
 import { useQueryParams } from "../../../hooks/useQueryParams";
-import './filterBar.css'
+import styles from './filterbar.module.css'
 
 
 export const FilterBar: FC = () => {
@@ -8,8 +8,8 @@ export const FilterBar: FC = () => {
 
 
     return (
-        <div className="filterbar">
-            <div className="filter-group">
+        <div className={styles.filterbar}>
+            <div className={styles.search}>
                 <input
                     type="text"
                     placeholder={'search'}

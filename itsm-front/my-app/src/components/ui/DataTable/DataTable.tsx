@@ -1,6 +1,7 @@
 import { DataTableBody } from './DataTableBody';
 import { DataTableHead } from './DataTableHead';
 import type { DataTableProps } from './types';
+import styles from './datatable.module.css'
 
 
 
