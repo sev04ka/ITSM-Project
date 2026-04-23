@@ -12,4 +12,5 @@ export interface DataTableProps<T> {
     loading?: boolean;
     error?: string | null;
     emptyMessage?: string;
+    deleteHandler: (id: number) => void
 }

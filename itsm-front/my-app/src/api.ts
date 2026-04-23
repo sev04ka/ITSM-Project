@@ -20,6 +20,8 @@ export type ApiResponse<T> =
     | { success: false; error: ApiError };
 
 
+
+
 const apiRequest = async <T>(
     endpoint: string,
     options: {
@@ -88,7 +90,12 @@ const apiRequest = async <T>(
             };
         }
 
-
+        if (response.status === 204 || response.headers.get('content-length') === '0') {
+            return {
+                success: true,
+                data: undefined as unknown as T,
+            };
+        }
 
         const data = await response.json();
         return { success: true, data: data };
@@ -167,12 +174,10 @@ export const api = {
 
     delete: async <T>(
         url: string,
-        body: Record<string, unknown>,
         config?: { headers?: HeadersInit }
     ): Promise<ApiResponse<T>> => {
         return await apiRequest<T>(url, {
             method: 'DELETE',
-            body,
             ...config
         })
     }

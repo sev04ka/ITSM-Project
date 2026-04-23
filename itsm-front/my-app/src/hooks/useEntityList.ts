@@ -7,10 +7,10 @@ interface UseEntityListResult<T> {
     itemCount: number;
     loading: boolean;
     error: string | null;
-    fetch: () => void;
+    refetch: () => void;
 }
 
-export const useEntityList = <T>(endpoint: string): UseEntityListResult<T> => {
+export const useEntityList = <T>(endpoint: string, usingParams: boolean = true): UseEntityListResult<T> => {
     const [data, setData] = useState<T[]>([]);
     const [itemCount, setItemCount] = useState(1)
     const [loading, setLoading] = useState(true);
@@ -21,16 +21,11 @@ export const useEntityList = <T>(endpoint: string): UseEntityListResult<T> => {
         try {
             setLoading(true);
 
-            const queryParams = new URLSearchParams();
-
-            if (searchParams.get('page')) queryParams.set('page', String(searchParams.get('page')));
-            if (searchParams.get('search')) queryParams.set('search', String(searchParams.get('search')));
-            if (searchParams.get('ordering')) queryParams.set('ordering', String(searchParams.get('ordering')));
-
+            const queryParams = new URLSearchParams(searchParams.toString());
             const queryString = queryParams.toString();
             const url = queryString ? `${endpoint}?${queryString}` : endpoint
 
-            const response = await api.getList<T>(url);
+            const response = await api.getList<T>(usingParams ? url : endpoint);
 
             if (response.success) {
                 const items = Array.isArray(response.data.results) ? response.data.results : []
@@ -38,6 +33,8 @@ export const useEntityList = <T>(endpoint: string): UseEntityListResult<T> => {
                 setItemCount(response.data.count)
                 setData(items);
                 setError(null);
+            } else {
+                throw new Error(response.error.message);
             }
 
         } catch (err) {
@@ -52,5 +49,5 @@ export const useEntityList = <T>(endpoint: string): UseEntityListResult<T> => {
         fetchData();
     }, [searchParams]);
 
-    return { data, itemCount, loading, error, fetch: fetchData };
+    return { data, itemCount, loading, error, refetch: fetchData };
 };

@@ -1,6 +1,7 @@
-import { useQueryParams } from '../../../hooks/useQueryParams';
+import { useQueryParams } from '../../../../hooks/useQueryParams';
 import type { Column } from './types';
 import styles from './datatable.module.css'
+
 
 interface DataTableHeadProps<T> {
     columns: Column<T>[];
@@ -52,6 +53,7 @@ export const DataTableHead = <T,>({
                         </span>
                     </th>
                 ))}
+                <th key={"edit-delete-th"}></th>
             </tr>
         </thead>
     );

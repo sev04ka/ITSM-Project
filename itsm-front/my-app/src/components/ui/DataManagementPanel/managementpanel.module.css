@@ -5,11 +5,22 @@
 
 }
 
-.data-and-filters {
+.data-panel-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem;
+    padding-bottom: 0;
+}
+
+.data-panel {
     display: flex;
     flex-direction: column;
     background-color: var(--default-bg);
     border: 2px solid var(--border-color);
     border-radius: 1rem;
-    overflow: hidden;
+}
+
+.no-data {
+    border-radius: inherit;
+    padding: 0.6rem;
 }

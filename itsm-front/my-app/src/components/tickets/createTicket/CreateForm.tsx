@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { api } from "../../../api"
 import './createform.css'
-import { Input } from "../../ui/FormElements/Input/Input"
-import { Select } from "../../ui/FormElements/Select/Select"
+import { InputField } from "../../ui/FormElements/InputField/InputField"
+import { SelectField } from "../../ui/FormElements/SelectField/SelectField"
 import { FieldGroup } from "../../ui/FormElements/FieldGroup/FieldGroup"
 import { TextArea } from "../../ui/FormElements/TextArea/TextArea"
 
@@ -53,7 +53,7 @@ export const TicketCreateForm = () => {
     return (
         <form id="ticket-form" onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
-                <Input
+                <InputField
                     name="title"
                     control={form.control}
                     type="text"
@@ -66,14 +66,14 @@ export const TicketCreateForm = () => {
                     label="description"
                 />
 
-                <Select
+                <SelectField
                     name="ticket_type"
                     control={form.control}
                     label="ticket_type"
                     options={TICKET_TYPES}
                 />
 
-                <Select
+                <SelectField
                     name="priority"
                     control={form.control}
                     label="priority"

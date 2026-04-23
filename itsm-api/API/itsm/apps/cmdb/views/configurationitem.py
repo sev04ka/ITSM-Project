@@ -11,6 +11,15 @@ class ConfigurationItemViewSet(viewsets.ModelViewSet):
 
     search_fields = ['name', 'serial_number']
 
+    filterset_fields = {
+        'status': ['exact'],
+    }
+
+    def perform_create(self, serializer):
+        serializer.save(
+            organization = self.request.user.organization
+        )
+
     @action(methods=['get'], detail=False, url_path='my', url_name='users_ci')
     def get_current_user(self, request):
         queryset = ConfigurationItem.objects.filter(owner = request.user).select_related('ci_type')

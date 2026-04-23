@@ -15,12 +15,14 @@ td {
 }
 
 tr {
-    /* background-color: var(--default-bg); */
-    /* border: 2px solid var(--border-color); */
     border-bottom: 2px solid var(--border-color);
     border-top: 2px solid var(--border-color);
 }
 
 tbody tr:nth-last-child(1) {
     border-bottom: none;
+}
+
+.table-row-controls button {
+    margin-left: .5rem;
 }

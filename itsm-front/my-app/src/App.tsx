@@ -5,12 +5,15 @@ import DashBoard from './pages/DashBoard.tsx'
 import Login from './pages/Login.tsx'
 import NotFound from './pages/NotFound.tsx'
 import ProtectedRoute from './components/security/ProtectedRoute.tsx';
-import { ConfigurationItemList } from './components/entities/ConfigurationItem/ConfigurationItemList.tsx';
-import { TicketList } from './components/entities/Ticket/TicketList.tsx';
 import { useUserAuthStore } from './store/useUserAuthStore.ts';
 import { MyTickets } from './components/tickets/myTickets/MyTickets.tsx';
 import { CreateTicket } from './components/tickets/createTicket/CreateTicket.tsx';
 import { TicketDetails } from './pages/TicketDetails.tsx';
+import { EditCI } from './pages/CMDB/AddEditCI/EditCI.tsx';
+import { AddCI } from './pages/CMDB/AddEditCI/AddCI.tsx';
+import { CIList } from './pages/CMDB/CIList/CIList.tsx';
+import { TicketList } from './pages/Tickets/TicketList/TicketList.tsx';
+
 
 const App: FC = () => {
 	const { initializeAuth, isInitialized } = useUserAuthStore();
@@ -34,14 +37,24 @@ const App: FC = () => {
 				}>
 					<Route path='conf-items-management' element={
 						<ProtectedRoute roles={['admin']}>
-							<ConfigurationItemList />
+							<CIList />
 						</ProtectedRoute>
 					} />
-					<Route path='my-conf-items' element={
+					<Route path='conf-items-management/add' element={
+						<ProtectedRoute roles={['admin']}>
+							<AddCI />
+						</ProtectedRoute>
+					} />
+					<Route path='conf-items-management/edit/:id' element={
+						<ProtectedRoute roles={['admin']}>
+							<EditCI />
+						</ProtectedRoute>
+					} />
+					{/* <Route path='my-conf-items' element={
 						<ProtectedRoute>
 							<ConfigurationItemList />
 						</ProtectedRoute>
-					} />
+					} /> */}
 					<Route path='tickets' element={
 						<ProtectedRoute>
 							<TicketList />

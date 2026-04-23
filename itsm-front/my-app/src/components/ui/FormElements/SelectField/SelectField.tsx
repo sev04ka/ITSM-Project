@@ -1,12 +1,13 @@
 import type { SelectHTMLAttributes } from 'react';
 import { useController, type Control, type FieldValues, type FieldPath } from 'react-hook-form';
 
-import './select.css'
+// import styles from './selectfield.module.css'
 import { FieldLabel } from '../FieldLabel/FieldLabel';
 import { FieldError } from '../FieldError/FieldError';
+import { Select } from '../../Select/Select';
 
 
-interface SelectProps<T extends FieldValues = FieldValues>
+interface SelectFieldProps<T extends FieldValues = FieldValues>
     extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'type' | 'value' | 'name'> {
     name: FieldPath<T>;
     control: Control<T>;
@@ -16,15 +17,17 @@ interface SelectProps<T extends FieldValues = FieldValues>
         value: string;
         label: string;
     }[];
+    placeholder?: string
 }
 
-export const Select = <T extends FieldValues>({
+export const SelectField = <T extends FieldValues>({
     name,
     control,
     rules,
     label,
     options,
-}: SelectProps<T>) => {
+    placeholder,
+}: SelectFieldProps<T>) => {
     const { field, fieldState } = useController({
         name,
         control,
@@ -33,15 +36,15 @@ export const Select = <T extends FieldValues>({
 
     return (
         <div>
-            <select className='select'
-                {...field}
+            <Select
+                initialValue={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                options={options}
                 id={name}
-            >
-                {options.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>))}
-            </select>
+                name={field.name}
+                placeHolder={placeholder}
+            />
             <FieldLabel htmlFor={name}>{label}</FieldLabel>
             {fieldState.invalid && (
                 <FieldError>{[fieldState.error?.message]}</FieldError>

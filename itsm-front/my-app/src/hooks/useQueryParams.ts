@@ -9,7 +9,7 @@ interface QueryParams {
 export const useQueryParams = <T extends QueryParams>() => {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const setParams = (newParams: Partial<T>) => {
+    const setParams = (newParams: Partial<T>, filter: boolean = false) => {
         const newSearchParams = new URLSearchParams(searchParams);
 
         Object.entries(newParams).forEach(([key, value]) => {
@@ -20,7 +20,7 @@ export const useQueryParams = <T extends QueryParams>() => {
             }
         });
 
-        if (newParams.search || newParams.ordering) {
+        if (newParams.search || newParams.ordering || filter) {
             newSearchParams.set('page', '1');
         }
 

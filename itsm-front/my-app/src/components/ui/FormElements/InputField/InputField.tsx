@@ -1,12 +1,12 @@
 import type { InputHTMLAttributes } from 'react';
 import { useController, type Control, type FieldValues, type FieldPath } from 'react-hook-form';
 
-import './input.css'
+import styles from './input.module.css'
 import { FieldLabel } from '../FieldLabel/FieldLabel';
 import { FieldError } from '../FieldError/FieldError';
+import { Input } from '../../Input/Input';
 
-
-interface InputProps<T extends FieldValues = FieldValues>
+interface InputFieldProps<T extends FieldValues = FieldValues>
     extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'name'> {
     name: FieldPath<T>;
     control: Control<T>;
@@ -17,7 +17,8 @@ interface InputProps<T extends FieldValues = FieldValues>
     label?: string;
 }
 
-export const Input = <T extends FieldValues>({
+
+export const InputField = <T extends FieldValues>({
     name,
     control,
     rules,
@@ -25,24 +26,27 @@ export const Input = <T extends FieldValues>({
     placeholder,
     autoComplete,
     label,
-}: InputProps<T>) => {
+    ...props
+}: InputFieldProps<T>) => {
     const { field, fieldState } = useController({
         name,
         control,
-        rules
+        rules,
     });
 
     return (
         <div>
-            <input className='input'
-                {...field}
-                id={name}
-                type={type}
+            <FieldLabel htmlFor={name}>{label}</FieldLabel>
+            <Input
+                name={field.name}
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
                 placeholder={placeholder}
                 autoComplete={autoComplete}
-                onChange={(e) => field.onChange(e.target.value)}
+                type={type}
+                {...props}
             />
-            <FieldLabel htmlFor={name}>{label}</FieldLabel>
             {fieldState.invalid && (
                 <FieldError>{[fieldState.error?.message]}</FieldError>
             )}

@@ -17,7 +17,7 @@ export const Pagination: FC<PaginationProps> = ({
     const currentPage: number = searchParams.get('page') ? Number(searchParams.get('page')) : 1
     const totalPages = Math.ceil(itemCount / pageSize);
 
-    return (
+    if (totalPages > 1) return (
         <div className={styles.container}>
             <div>
                 <Button disabled={currentPage === 1} onClick={() => setParams({ page: currentPage - 1 })}> предыдущая </Button>

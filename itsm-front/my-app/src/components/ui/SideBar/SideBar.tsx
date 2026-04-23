@@ -19,6 +19,11 @@ const SideBar: FC = () => {
             roles: ['admin']
         },
         {
+            path: '/conf-items-management/add',
+            title: 'Add configuration item',
+            roles: ['admin']
+        },
+        {
             path: '/my-conf-items',
             title: 'My configuration items',
         },

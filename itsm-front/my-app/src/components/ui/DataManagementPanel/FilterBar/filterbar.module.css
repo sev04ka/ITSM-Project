@@ -1,0 +1,16 @@
+.filterbar {
+
+    padding: 0.6rem;
+    background-color: var(--default-bg);
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+}
+
+.search-and-reset {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filters {
+    margin-top: .5rem;
+}
