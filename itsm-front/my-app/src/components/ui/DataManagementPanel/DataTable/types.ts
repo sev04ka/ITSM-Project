@@ -3,7 +3,8 @@ import type React from "react";
 export interface Column<T> {
     key: keyof T | string;
     title: string;
-    template?: (item: T) => React.ReactNode
+    sortable?: boolean;
+    template?: (item: T) => React.ReactNode;
 }
 
 export interface DataTableProps<T> {
@@ -12,5 +13,5 @@ export interface DataTableProps<T> {
     loading?: boolean;
     error?: string | null;
     emptyMessage?: string;
-    deleteHandler: (id: number) => void
+    deleteHandler: (id: number) => void;
 }

@@ -6,11 +6,11 @@ import { api } from "../../../api"
 import { type ICIType } from "../../../interfaces/entities/CIType"
 import { SelectField } from "../../../components/ui/FormElements/SelectField/SelectField"
 import { FieldGroup } from "../../../components/ui/FormElements/FieldGroup/FieldGroup"
-import { TextArea } from "../../../components/ui/FormElements/TextArea/TextArea"
 import { InputField } from "../../../components/ui/FormElements/InputField/InputField"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import type { IConfigurationItem } from "../../../interfaces/entities/ConfigurationItem"
 import { Button } from "../../../components/ui/Button/Button"
+import { useToast } from "../../../context/ToastContext"
 
 
 const CISchema = z.object({
@@ -38,7 +38,8 @@ export const AddEditForm: FC<AddEditFormProps> = ({
     entity,
 }) => {
     const [ciTypes, setCITypes] = useState<ICIType[]>([]);
-
+    const navigate = useNavigate();
+    const toast = useToast()
 
     useEffect(() => {
         const fetchCITypes = async () => {
@@ -50,6 +51,8 @@ export const AddEditForm: FC<AddEditFormProps> = ({
         }
         fetchCITypes();
     }, [])
+
+
 
     const form = useForm<z.infer<typeof CISchema>>({
         resolver: zodResolver(CISchema),
@@ -73,6 +76,8 @@ export const AddEditForm: FC<AddEditFormProps> = ({
                     'Content-Type': 'application/json'
                 },
             })
+
+        if (response.success) form.reset()
     }
 
     const onSubmitEdit = async (data: z.infer<typeof CISchema>) => {
@@ -84,6 +89,14 @@ export const AddEditForm: FC<AddEditFormProps> = ({
                     'Content-Type': 'application/json'
                 },
             })
+
+        if (response.success) {
+            if (window.history.state && window.history.state.idx > 0) {
+                navigate(-1);
+            } else {
+                navigate('/conf-items', { replace: true });
+            }
+        }
     }
 
     const ciTypeOptions = [
@@ -92,7 +105,6 @@ export const AddEditForm: FC<AddEditFormProps> = ({
             label: type.name
         }))
     ];
-
 
     return (
         <form onSubmit={form.handleSubmit(entity ? onSubmitEdit : onSubmitAdd)}>
@@ -124,7 +136,22 @@ export const AddEditForm: FC<AddEditFormProps> = ({
                     placeholder="Выберите статус"
                 />
             </FieldGroup>
-            <Button type="submit">Submit</Button>
+            <FieldGroup className="button">
+                <Button
+                    type="submit"
+                    disabled={!form.formState.isValid}
+                >
+                    Submit
+                </Button>
+                <Button
+                    type="button"
+                    onClick={() => {
+                        toast.error("Toast test Toast test Toast test Toast test Toast test")
+                    }}
+                >
+                    reset
+                </Button>
+            </FieldGroup>
 
         </form>
     )

@@ -1,5 +1,6 @@
 import type { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import styles from './sidebar.module.css'
 
 interface IMenuItem {
     title: string,
@@ -14,9 +15,14 @@ const SideBarNavItem: FC<IProps> = ({ title, path }) => {
 
 
     return (
-        <Link to={path}>
+        <NavLink
+            to={path}
+            className={({ isActive }) =>
+                isActive ? styles.active : ''
+            }
+        >
             {title}
-        </Link>
+        </NavLink>
     )
 }
 

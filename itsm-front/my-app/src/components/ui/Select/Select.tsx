@@ -1,8 +1,11 @@
 import { useEffect, useState, useRef, type FC } from 'react'
 import styles from './select.module.css'
 
+
+
+
 interface SelectProps {
-    initialValue?: string;
+    value: string;
     onChange: (value: string) => void;
     onBlur?: () => void;
     options: readonly {
@@ -14,21 +17,28 @@ interface SelectProps {
     placeHolder?: string;
 }
 
+/** 
+ * Значение должно передаваться из состояния родительского компонента или от состояния формы
+ * 
+ * @remarks
+ * Используется в формах (с react-hook-form) и самостоятельно (фильтры).
+*/
 export const Select: FC<SelectProps> = ({
-    initialValue,
+    value,
     onChange,
     onBlur,
     options,
     placeHolder = '- - - - - -',
     name
 }) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [value, setValue] = useState(initialValue)
+    const [isOpen, setIsOpen] = useState(false);
+    // const [value, setValue] = useState(initialValue);
 
     const containerRef = useRef<HTMLDivElement>(null);
 
     const selectedOption = options.find(option => option.value === value);
     const displayedValue = selectedOption?.label || ''
+
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -49,7 +59,7 @@ export const Select: FC<SelectProps> = ({
 
     const handleSelect = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>, optionValue: string) => {
         e.stopPropagation();
-        setValue(optionValue);
+        // setValue(optionValue);
         onChange(optionValue);
         setIsOpen(false);
         onBlur?.();
@@ -57,7 +67,7 @@ export const Select: FC<SelectProps> = ({
 
     const handleClear = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
         e.stopPropagation();
-        setValue('');
+        // setValue('');
         onChange('');
         onBlur?.();
     }
@@ -83,11 +93,9 @@ export const Select: FC<SelectProps> = ({
                         X
                     </span>
                 )}
-
-                {/* <span className={styles['select-arrow']}>
-                    {isOpen ? '▲' : '▼'}
-                </span> */}
             </button>
+
+
 
             {isOpen && (
                 <div className={styles['options-container']}>

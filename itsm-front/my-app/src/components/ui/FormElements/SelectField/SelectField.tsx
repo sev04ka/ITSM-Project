@@ -36,16 +36,17 @@ export const SelectField = <T extends FieldValues>({
 
     return (
         <div>
+            <FieldLabel htmlFor={name}>{label}</FieldLabel>
             <Select
-                initialValue={field.value}
+                value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 options={options}
                 id={name}
                 name={field.name}
                 placeHolder={placeholder}
+
             />
-            <FieldLabel htmlFor={name}>{label}</FieldLabel>
             {fieldState.invalid && (
                 <FieldError>{[fieldState.error?.message]}</FieldError>
             )}

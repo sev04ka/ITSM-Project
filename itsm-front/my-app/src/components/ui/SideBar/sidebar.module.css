@@ -2,17 +2,49 @@
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    padding: 1rem 1.5rem;
+    border: 2px solid var(--border-color);
     background-color: var(--default-bg);
     border-right: 2px solid var(--border-color);
 }
 
-.org-label h2 {
+.org-label-container {
+    padding: 1rem 1.5rem;
+}
+
+.org-label {
     margin: 0;
+    background-color: var(--dark-bg);
+    border-radius: .5rem;
+    padding: .5rem;
 }
 
 .sidebar nav {
     display: flex;
     flex-direction: column;
+    padding: 1rem 1.5rem;
     gap: 1rem;
+}
+
+.sidebar a {
+    padding: .625rem 1rem;
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: .5rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar a:hover {
+    background: var(--hover-color);
+    color: #333;
+}
+
+.sidebar a.active {
+    cursor: default;
+    background: var(--accent);
+    color: white;
+    font-weight: 500;
+}
+
+.sidebar a.active:hover {
+    background: var(--accent);
 }

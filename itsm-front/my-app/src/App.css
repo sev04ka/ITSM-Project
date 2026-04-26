@@ -1,13 +1,21 @@
 :root {
   --default-bg: #ffffff;
-  --border-color: #e5e5e5;
-  --sidebar-text: #333333;
-  --sidebar-hover: #f9f9f9;
-  --sidebar-active: #0066cc;
   --dark-bg: #f6f6f6;
-  --accent: #0066cc;
+
+  --border-color: #e5e5e5;
+
   --text-color: #000;
+
+  --accent: #0066cc;
+
+  --detail-grey: #bbbbbb;
+
+  --hover-color: #e0e0e0;
+
+  --container-box-shadow: 3px 3px 6px 2px rgba(34, 60, 80, 0.1);
+  --accent-box-shadow: 0px 0px 12px #34495e;
 }
+
 
 * {
   font-size: 16px;

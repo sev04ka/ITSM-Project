@@ -9,12 +9,22 @@ class ConfigurationItemViewSet(viewsets.ModelViewSet):
     serializer_class = ConfigurationItemSerializer
     #permission_classes = [permissions.IsAuthenticated]
 
-    search_fields = ['name', 'serial_number']
+    search_fields = [
+        'name', 
+        'serial_number',
+        'status',
+        'ci_type__name'
+    ]
 
     filterset_fields = {
         'status': ['exact'],
     }
 
+    ordering_fields = [
+        'name', 
+        'serial_number',
+    ]
+    
     def perform_create(self, serializer):
         serializer.save(
             organization = self.request.user.organization

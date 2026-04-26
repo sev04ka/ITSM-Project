@@ -29,9 +29,9 @@ export const useEntityList = <T>(endpoint: string, usingParams: boolean = true):
 
             if (response.success) {
                 const items = Array.isArray(response.data.results) ? response.data.results : []
-
                 setItemCount(response.data.count)
                 setData(items);
+
                 setError(null);
             } else {
                 throw new Error(response.error.message);

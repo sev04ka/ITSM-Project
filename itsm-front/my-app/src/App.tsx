@@ -1,8 +1,7 @@
 import './App.css'
 import { useEffect, type FC } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import DashBoard from './pages/DashBoard.tsx'
-import Login from './pages/Login.tsx'
+import { Login } from './pages/Login/Login.tsx'
 import NotFound from './pages/NotFound.tsx'
 import ProtectedRoute from './components/security/ProtectedRoute.tsx';
 import { useUserAuthStore } from './store/useUserAuthStore.ts';
@@ -13,6 +12,9 @@ import { EditCI } from './pages/CMDB/AddEditCI/EditCI.tsx';
 import { AddCI } from './pages/CMDB/AddEditCI/AddCI.tsx';
 import { CIList } from './pages/CMDB/CIList/CIList.tsx';
 import { TicketList } from './pages/Tickets/TicketList/TicketList.tsx';
+import { MainLayout } from './layouts/MainLayout/MainLayout.tsx';
+import { FullPageLayout } from './layouts/FullPageLayout/FullPageLayout.tsx';
+
 
 
 const App: FC = () => {
@@ -28,11 +30,15 @@ const App: FC = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path="/login" element={<Login />} />
+				<Route path="/login" element={
+					<FullPageLayout>
+						<Login />
+					</FullPageLayout>
+				} />
 				<Route path="*" element={<NotFound />} />
 				<Route path="/" element={
 					<ProtectedRoute>
-						<DashBoard />
+						<MainLayout />
 					</ProtectedRoute>
 				}>
 					<Route path='conf-items-management' element={
@@ -55,7 +61,7 @@ const App: FC = () => {
 							<ConfigurationItemList />
 						</ProtectedRoute>
 					} /> */}
-					<Route path='tickets' element={
+					{/* <Route path='tickets' element={
 						<ProtectedRoute>
 							<TicketList />
 						</ProtectedRoute>
@@ -74,7 +80,7 @@ const App: FC = () => {
 						<ProtectedRoute>
 							<MyTickets />
 						</ProtectedRoute>
-					} />
+					} /> */}
 				</Route>
 			</Routes>
 		</BrowserRouter>

@@ -30,7 +30,7 @@ export const Filter: FC<FilterProps> = ({
     return (
         <div>
             <Select
-                initialValue={currentFilterParamValue}
+                value={currentFilterParamValue}
                 onChange={handleChange}
                 options={options}
                 placeHolder={placeHolder}

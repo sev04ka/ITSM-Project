@@ -19,11 +19,6 @@ const SideBar: FC = () => {
             roles: ['admin']
         },
         {
-            path: '/conf-items-management/add',
-            title: 'Add configuration item',
-            roles: ['admin']
-        },
-        {
             path: '/my-conf-items',
             title: 'My configuration items',
         },
@@ -31,20 +26,20 @@ const SideBar: FC = () => {
             path: '/requests',
             title: 'my tickets',
         },
-        {
-            path: '/tickets/create',
-            title: 'create ticket',
-        }
+        // {
+        //     path: '/tickets/create',
+        //     title: 'create ticket',
+        // }
     ]
 
     const visibleMenuItems = navMenuItems.filter((item) => hasAccess(item.roles))
 
     return (
         <div className={styles.sidebar}>
-            <div className={styles["org-label"]}>
-                <h2>
+            <div className={styles["org-label-container"]}>
+                <div className={styles["org-label"]}>
                     {currentUser?.organization.name}
-                </h2>
+                </div>
             </div>
             <nav>
                 {visibleMenuItems.map(item => <SideBarNavItem key={crypto.randomUUID()} {...item} />)}

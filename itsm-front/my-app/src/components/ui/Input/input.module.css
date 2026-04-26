@@ -5,4 +5,10 @@
     border: 2px solid var(--border-color);
     padding: 0.5rem 0.3rem;
     border-radius: 0.5rem;
+    transition: transform .25s;
+}
+
+.input:hover,
+input:focus {
+    transform: scale(1.01);
 }

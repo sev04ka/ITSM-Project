@@ -1,12 +1,30 @@
 .button {
     cursor: pointer;
-    background-color: var(--default-bg);
-    border: 2px solid var(--border-color);
+    background-color: var(--accent);
+    color: #fff;
+    border: 2px solid var(--accent);
     padding: 0.5rem 0.3rem;
     border-radius: 0.5rem;
+    transition: background-color .55s,
+        color .55s,
+        box-shadow .55s;
+}
+
+.button:not([disabled]):hover {
+    background-color: var(--accent);
+    background-color: var(--default-bg);
+    color: var(--text-color);
+    box-shadow: var(--accent-box-shadow);
+}
+
+.button:not([disabled]):active {
+    transform: scale(1.035);
 }
 
 .button:disabled {
+    border: 2px solid var(--border-color);
+    background-color: var(--default-bg);
+    color: rgba(16, 16, 16, 0.3);
     cursor: default;
 }
 
@@ -20,7 +38,14 @@
     background-size: 1.5rem 1.5rem;
 }
 
+.logout {
+    background-image: url('../../../assets/svg/logout.svg');
+    background-size: 1.5rem 1.5rem;
+}
+
 .svg-button {
+    border: 2px solid var(--border-color);
+    background-color: var(--default-bg);
     width: 2rem;
     height: 2rem;
     padding: 0;

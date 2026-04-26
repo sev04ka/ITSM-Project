@@ -6,7 +6,7 @@ import { useEntityList } from '../../../hooks/useEntityList';
 import styles from './managementpanel.module.css'
 import type { FilterParams } from "./Filter/Filter";
 import { Button } from "../Button/Button";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../api";
 import { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
@@ -63,30 +63,23 @@ export const DataManagementPanel = <T extends { id: number }>({
     return (
         <>
             <div className={styles.container}>
-
                 <div className={styles["data-panel"]}>
                     <div className={styles["data-panel-header"]}>
                         <div>
                             <h2>{header}</h2>
-
                         </div>
                         <Button onClick={() => navigate("add")}>add</Button>
                     </div>
                     <FilterBar filters={filters} />
 
-                    {data.length > 0 && (
-                        <DataTable
-                            data={data}
-                            columns={columns}
-                            loading={loading}
-                            error={error}
-                            deleteHandler={handleDeleteClick}
-                        />
-                    )}
+                    <DataTable
+                        data={data}
+                        columns={columns}
+                        loading={loading}
+                        error={error}
+                        deleteHandler={handleDeleteClick}
+                    />
 
-                    {data.length == 0 && (
-                        <div className={styles["no-data"]}>Ничего не найдено</div>
-                    )}
                 </div>
                 <Pagination itemCount={itemCount} />
             </div>

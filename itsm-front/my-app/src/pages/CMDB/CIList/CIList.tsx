@@ -14,11 +14,13 @@ const STATUS_OPTIONS = [
 const columns: Column<IConfigurationItem>[] = [
     {
         key: 'name',
-        title: 'Название'
+        title: 'Название',
+        sortable: true,
     },
     {
         key: 'serial_number',
         title: 'серийный номер',
+        sortable: true,
     },
     {
         key: 'ci_type',

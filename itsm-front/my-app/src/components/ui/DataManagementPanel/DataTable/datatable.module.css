@@ -1,7 +1,6 @@
 table {
     table-layout: fixed;
     border-collapse: collapse;
-    /* border: 2px solid var(--border-color); */
 }
 
 thead {
@@ -25,4 +24,42 @@ tbody tr:nth-last-child(1) {
 
 .table-row-controls button {
     margin-left: .5rem;
+}
+
+.sortable-col-cell {
+    cursor: pointer;
+}
+
+.col-title.sortable {
+    position: relative;
+}
+
+.col-title.sortable::before,
+.col-title.sortable::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-right: .4rem solid transparent;
+    border-left: .4rem solid transparent;
+}
+
+.col-title.sortable::before {
+    border-bottom: .5rem solid var(--detail-grey);
+    right: -1rem;
+    top: -5%;
+}
+
+.col-title.sortable::after {
+    border-top: .5rem solid var(--detail-grey);
+    right: -1rem;
+    top: 60%;
+}
+
+.col-title.sortable.asc::after {
+    border-top: .5rem solid var(--text-color);
+}
+
+.col-title.sortable.desc::before {
+    border-bottom: .5rem solid var(--text-color);
 }

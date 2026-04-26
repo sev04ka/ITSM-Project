@@ -1,10 +1,12 @@
-import { DataTableBody } from './DataTableBody';
-import { DataTableHead } from './DataTableHead';
 import type { DataTableProps } from './types';
 import styles from './datatable.module.css'
 import { useQueryParams } from '../../../../hooks/useQueryParams';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../Button/Button';
+import { ErrorState } from '../../ErrorState/ErrorState';
+import { LoadingState } from '../../LoadingState/LoadingState';
+import { EmptyState } from '../../EmptyState/EmptyState';
+
 
 
 
@@ -12,10 +14,9 @@ import { Button } from '../../Button/Button';
 export const DataTable = <T extends { id: number }>({
     data,
     columns,
-    loading = false,
-    error = null,
-    emptyMessage = 'Нет данных',
-    deleteHandler
+    deleteHandler,
+    loading,
+    error
 }: DataTableProps<T>) => {
     const { searchParams, setParams } = useQueryParams()
     const navigate = useNavigate();
@@ -48,29 +49,28 @@ export const DataTable = <T extends { id: number }>({
         return ''
     }
 
-    if (loading) {
-        return <div>Загрузка...</div>;
-    }
+    if (error) return <ErrorState message={error} />
 
-    if (error) {
-        return <div>Ошибка: {error}</div>;
-    }
+    if (loading && !data) return <LoadingState />
 
-    if (!data || data.length === 0) {
-        return <div>{emptyMessage}</div>;
-    }
+    if (data.length == 0) return <EmptyState />
 
     return (
         <table>
             <thead>
                 <tr>
                     {columns.map((col) => (
-                        <th key={String(col.key)} onClick={() => setOrdering(String(col.key))}>
-                            <span>
+                        <th
+                            key={String(col.key)}
+                            onClick={col.sortable ? () => setOrdering(String(col.key)) : () => null}
+                            className={col.sortable ? styles["sortable-col-cell"] : ""}
+                        >
+                            <span className={`
+                                ${styles["col-title"]} 
+                                ${col.sortable && styles['sortable']} 
+                                ${col.sortable ? styles[setOrderingIndication(String(col.key))] : ""}
+                                `}>
                                 {col.title}
-                            </span>
-                            <span>
-                                {setOrderingIndication(String(col.key))}
                             </span>
                         </th>
                     ))}
@@ -83,7 +83,9 @@ export const DataTable = <T extends { id: number }>({
                         {columns.map((col) => (
                             <td key={String(col.key)}>
                                 {item[col.key as keyof T] ?
-                                    col.template ? col.template(item) : String(item[col.key as keyof T]) :
+                                    col.template ?
+                                        col.template(item) :
+                                        String(item[col.key as keyof T]) :
                                     '-'
                                 }
                             </td>
