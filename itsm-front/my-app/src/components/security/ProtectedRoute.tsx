@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useUserAuthStore } from '../../store/useUserAuthStore';
 import RoleGuard from './RoleGuard';
 
@@ -12,19 +12,17 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
     children,
     roles,
 }) => {
+    const [searchParams] = useSearchParams()
+    const { currentUser, isInitialized, loading, error } = useUserAuthStore();
+    const location = useLocation();
 
-    const { currentUser, isInitialized, loading } = useUserAuthStore();
-
-    if (loading) {
+    if (!isInitialized || loading) {
         return <div>Загрузка...</div>;
     }
 
-    if (!isInitialized) {
-        return <div>Ошибка инициализации</div>
-    }
 
     if (!currentUser) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/login" replace state={{ from: location.pathname }} />;
     }
 
     if (!roles) {

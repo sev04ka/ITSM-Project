@@ -97,7 +97,6 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False  
 CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=['http://localhost:5173'])
 
-# ✅ Для продакшена добавьте свой домен
 # CORS_ALLOWED_ORIGINS = [
 #     "https://app.itsm.com",
 # ]
@@ -161,9 +160,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': env.db('MYSQL_URL')
-# }
 
 
 # Password validation

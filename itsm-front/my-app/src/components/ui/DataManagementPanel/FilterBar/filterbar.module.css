@@ -12,5 +12,7 @@
 }
 
 .filters {
+    display: flex;
+    gap: .5rem;
     margin-top: .5rem;
 }

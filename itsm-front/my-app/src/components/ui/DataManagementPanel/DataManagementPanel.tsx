@@ -11,6 +11,8 @@ import { api } from "../../../api";
 import { useState } from "react";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { useQueryParams } from "../../../hooks/useQueryParams";
+import { useToast } from "../../../context/ToastContext";
+
 
 interface DataManagementPanelProps<T> {
     header: string;
@@ -34,11 +36,11 @@ export const DataManagementPanel = <T extends { id: number }>({
         isOpen: boolean;
         id: number | null;
     }>({ isOpen: false, id: null });
+    const toast = useToast();
 
     const handleDeleteClick = async (id: number) => {
         setDeleteConfirm({ isOpen: true, id });
     };
-
     const handleConfirmDelete = async () => {
         if (deleteConfirm.id) {
             const response = await api.delete(`${endpoint}/${deleteConfirm.id}/`);
@@ -48,6 +50,9 @@ export const DataManagementPanel = <T extends { id: number }>({
                 }
                 setDeleteConfirm({ isOpen: false, id: null });
                 refetch();
+                toast.success("Запись успешно удалена");
+            } else {
+                toast.error(response.error.message);
             }
         }
     };

@@ -14,10 +14,10 @@ export const useEntityDetails = <T>(endpoint: string, id: string): UseEntityDeta
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null)
 
-    const fetchEntity = async () => {
+    const fetchEntity = async (signal?: AbortSignal) => {
         try {
             setIsLoading(true);
-            const response = await api.getDetail<T>(`${endpoint}/${id}`);
+            const response = await api.getDetail<T>(`${endpoint}/${id}`, signal);
 
             if (response.success) {
                 setEntity(response.data);
@@ -34,7 +34,9 @@ export const useEntityDetails = <T>(endpoint: string, id: string): UseEntityDeta
     }
 
     useEffect(() => {
-        fetchEntity();
+        const abortController = new AbortController()
+        fetchEntity(abortController.signal);
+        return () => abortController.abort();
     }, [])
 
     return { entity, isLoading, error, fetch: fetchEntity }

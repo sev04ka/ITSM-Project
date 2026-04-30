@@ -18,12 +18,15 @@ class ConfigurationItemViewSet(viewsets.ModelViewSet):
 
     filterset_fields = {
         'status': ['exact'],
+        'ci_type': ['exact']
     }
 
     ordering_fields = [
         'name', 
         'serial_number',
     ]
+
+    ordering = ['-name']  
     
     def perform_create(self, serializer):
         serializer.save(

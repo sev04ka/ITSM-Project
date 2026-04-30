@@ -5,12 +5,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children?: ReactNode;
     className?: string;
     svgButton?: boolean;
+    size?: "sm" | "m" | "lg" | "xl"
 }
 
 export const Button: FC<ButtonProps> = ({
     children,
     className,
     svgButton = false,
+    size,
     ...props
 }) => {
 
@@ -21,6 +23,7 @@ export const Button: FC<ButtonProps> = ({
                 ${styles.button} 
                 ${className && styles[className]}
                 ${svgButton && styles["svg-button"]}
+                ${size && styles[size]}
                 `}
             {...props}
         >

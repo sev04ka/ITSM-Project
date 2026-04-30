@@ -10,6 +10,24 @@
         box-shadow .55s;
 }
 
+.sm {
+    max-width: 50%;
+    width: 5rem;
+}
+
+.m {
+    max-width: 75%;
+    width: 10rem;
+}
+
+.lg {
+    width: 50%;
+}
+
+.xl {
+    width: 100%;
+}
+
 .button:not([disabled]):hover {
     background-color: var(--accent);
     background-color: var(--default-bg);

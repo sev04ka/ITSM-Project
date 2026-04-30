@@ -71,19 +71,7 @@ export const AddEditForm: FC<AddEditFormProps> = ({
         const response = await api.post(
             '/conf-items/',
             data,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-
-        if (response.success) form.reset()
-    }
-
-    const onSubmitEdit = async (data: z.infer<typeof CISchema>) => {
-        const response = await api.put(
-            `/conf-items/${entity?.id}/`,
-            data,
+            undefined,
             {
                 headers: {
                     'Content-Type': 'application/json'
@@ -91,11 +79,33 @@ export const AddEditForm: FC<AddEditFormProps> = ({
             })
 
         if (response.success) {
+            form.reset();
+            toast.success("Объект успешно создан");
+        } else {
+            toast.error(response.error.message);
+        }
+    }
+
+    const onSubmitEdit = async (data: z.infer<typeof CISchema>) => {
+        const response = await api.put(
+            `/conf-items/${entity?.id}/`,
+            data,
+            undefined,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+
+        if (response.success) {
+            toast.success("Объект успешно изменён");
             if (window.history.state && window.history.state.idx > 0) {
                 navigate(-1);
             } else {
                 navigate('/conf-items', { replace: true });
             }
+        } else {
+            toast.error(response.error.message);
         }
     }
 
@@ -108,7 +118,7 @@ export const AddEditForm: FC<AddEditFormProps> = ({
 
     return (
         <form onSubmit={form.handleSubmit(entity ? onSubmitEdit : onSubmitAdd)}>
-            <FieldGroup>
+            <FieldGroup orientation="horizontal">
                 <InputField
                     name="name"
                     control={form.control}
@@ -121,6 +131,8 @@ export const AddEditForm: FC<AddEditFormProps> = ({
                     type="text"
                     label="serial number"
                 />
+            </FieldGroup>
+            <FieldGroup orientation="horizontal">
                 <SelectField
                     name="ci_type_id"
                     control={form.control}
@@ -136,20 +148,13 @@ export const AddEditForm: FC<AddEditFormProps> = ({
                     placeholder="Выберите статус"
                 />
             </FieldGroup>
-            <FieldGroup className="button">
+            <FieldGroup button="button-right">
                 <Button
                     type="submit"
+                    size="m"
                     disabled={!form.formState.isValid}
                 >
                     Submit
-                </Button>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        toast.error("Toast test Toast test Toast test Toast test Toast test")
-                    }}
-                >
-                    reset
                 </Button>
             </FieldGroup>
 

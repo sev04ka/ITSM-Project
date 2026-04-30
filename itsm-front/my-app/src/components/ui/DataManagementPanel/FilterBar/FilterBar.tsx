@@ -1,4 +1,4 @@
-import { type FC, type ReactNode } from "react";
+import { useEffect, useState, type FC, type ReactNode } from "react";
 import { useQueryParams } from "../../../../hooks/useQueryParams";
 import styles from './filterbar.module.css'
 import { Input } from "../../Input/Input";
@@ -12,7 +12,13 @@ interface FilterBarProps {
 export const FilterBar: FC<FilterBarProps> = ({
     filters,
 }) => {
-    const { searchParams, setParams, resetParams } = useQueryParams()
+    const { searchParams, setParams, resetParams } = useQueryParams();
+    const [search, setSearch] = useState(searchParams.get('search') || '');
+
+    const handleSearchChange = (value: string) => {
+        setSearch(value);
+        setParams({ search: value }, false, 300);
+    };
 
     return (
         <div className={styles.filterbar}>
@@ -21,8 +27,8 @@ export const FilterBar: FC<FilterBarProps> = ({
                     name="search"
                     type="text"
                     placeholder={'search'}
-                    value={searchParams.get('search') || ''}
-                    onChange={(e) => setParams({ 'search': e.target.value })}
+                    value={search}
+                    onChange={(e) => handleSearchChange(e.target.value)}
                     className="filter-input"
                 />
                 <Button onClick={() => resetParams()}>

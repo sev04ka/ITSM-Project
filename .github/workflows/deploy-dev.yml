@@ -1,53 +1,53 @@
-name: Deploy Dev
+# name: Deploy Dev
 
-on:
-  push:
-    branches: [main]      
+# on:
+#   push:
+#     branches: [main]      
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest 
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest 
     
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
 
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Login to GHCR
+#         uses: docker/login-action@v3
+#         with:
+#           registry: ghcr.io
+#           username: ${{ github.actor }}
+#           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build & push backend
-        uses: docker/build-push-action@v5
-        with:
-          context: ./itsm-api
-          file: ./itsm-api/Dockerfile
-          push: true
-          tags: ghcr.io/${{ github.repository }}-itsm-api:dev
+#       - name: Build & push backend
+#         uses: docker/build-push-action@v5
+#         with:
+#           context: ./itsm-api
+#           file: ./itsm-api/Dockerfile
+#           push: true
+#           tags: ghcr.io/${{ github.repository }}-itsm-api:dev
 
-      - name: Build & push frontend
-        uses: docker/build-push-action@v5
-        with:
-          context: ./itsm-front/my-app
-          file: ./itsm-front/my-app/Dockerfile
-          push: true
-          tags: ghcr.io/${{ github.repository }}-itsm-front:dev
+#       - name: Build & push frontend
+#         uses: docker/build-push-action@v5
+#         with:
+#           context: ./itsm-front/my-app
+#           file: ./itsm-front/my-app/Dockerfile
+#           push: true
+#           tags: ghcr.io/${{ github.repository }}-itsm-front:dev
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.DEV_HOST }}
-          username: ${{ secrets.DEV_USER }}
-          key: ${{ secrets.DEV_SSH_KEY }}
-          script: |
-            cd /opt/itsm-dev
+#       - name: Deploy via SSH
+#         uses: appleboy/ssh-action@v1.0.0
+#         with:
+#           host: ${{ secrets.DEV_HOST }}
+#           username: ${{ secrets.DEV_USER }}
+#           key: ${{ secrets.DEV_SSH_KEY }}
+#           script: |
+#             cd /opt/itsm-dev
             
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+#             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
-            docker-compose pull
+#             docker-compose pull
             
-            docker-compose up -d
+#             docker-compose up -d
             
-            docker image prune -f
+#             docker image prune -f

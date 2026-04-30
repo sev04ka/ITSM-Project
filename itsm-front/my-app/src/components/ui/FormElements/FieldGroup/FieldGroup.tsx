@@ -3,17 +3,20 @@ import styles from './fieldgroup.module.css'
 
 interface FieldGroupProps {
     children: ReactNode;
-    className?: "button" | "";
+    button?: "button-center" | "button-right";
+    orientation?: "horizontal" | "vertical"
 }
 
 export const FieldGroup: FC<FieldGroupProps> = ({
     children,
-    className
+    button,
+    orientation = "vertical"
 }) => {
     return (
         <div className={
             `${styles["field-group"]} 
-            ${className ? styles[className] : ""}`
+            ${styles[orientation]} 
+            ${button ? styles[button] : ""}`
         }>
             {children}
         </div>

@@ -29,11 +29,12 @@ const apiRequest = async <T>(
         body?: Record<string, unknown>;
         headers?: HeadersInit;
         retry?: boolean;
-    }
+        signal?: AbortSignal
+    },
 ): Promise<ApiResponse<T>> => {
     const { logout, refreshAccess } = useUserAuthStore.getState();
 
-    const { method, body, headers = {}, retry = false } = options;
+    const { method, signal, body, headers = {}, retry = false } = options;
 
     const url = `${API_URL}${endpoint}`;
 
@@ -44,6 +45,7 @@ const apiRequest = async <T>(
 
     try {
         const response = await fetch(url, {
+            signal: signal,
             method: method,
             credentials: 'include',
             headers: requestHeaders,
@@ -118,20 +120,24 @@ const apiRequest = async <T>(
 export const api = {
     getList: async <T>(
         url: string,
+        signal?: AbortSignal,
         config?: { headers?: HeadersInit }
     ): Promise<ApiResponse<PaginatedResponse<T>>> => {
         return await apiRequest<PaginatedResponse<T>>(url, {
             method: 'GET',
+            signal: signal,
             ...config,
         });
     },
 
     getDetail: async <T>(
         url: string,
+        signal?: AbortSignal,
         config?: { headers?: HeadersInit }
     ): Promise<ApiResponse<T>> => {
         return await apiRequest<T>(url, {
             method: 'GET',
+            signal: signal,
             ...config,
         });
     },
@@ -139,11 +145,13 @@ export const api = {
     post: async <T>(
         url: string,
         body: Record<string, unknown>,
+        signal?: AbortSignal,
         config?: { headers?: HeadersInit }
     ): Promise<ApiResponse<T>> => {
         return await apiRequest<T>(url, {
             method: 'POST',
             body,
+            signal: signal,
             ...config,
         });
     },
@@ -151,11 +159,13 @@ export const api = {
     put: async <T>(
         url: string,
         body: Record<string, unknown>,
+        signal?: AbortSignal,
         config?: { headers?: HeadersInit }
     ): Promise<ApiResponse<T>> => {
         return await apiRequest<T>(url, {
             method: 'PUT',
             body,
+            signal: signal,
             ...config,
         });
     },
@@ -163,21 +173,25 @@ export const api = {
     patch: async <T>(
         url: string,
         body: Record<string, unknown>,
+        signal?: AbortSignal,
         config?: { headers?: HeadersInit }
     ): Promise<ApiResponse<T>> => {
         return await apiRequest<T>(url, {
             method: 'PATCH',
             body,
+            signal: signal,
             ...config
         });
     },
 
     delete: async <T>(
         url: string,
-        config?: { headers?: HeadersInit }
+        config?: { headers?: HeadersInit },
+        signal?: AbortSignal,
     ): Promise<ApiResponse<T>> => {
         return await apiRequest<T>(url, {
             method: 'DELETE',
+            signal: signal,
             ...config
         })
     }

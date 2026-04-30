@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '../api';
 import { useQueryParams } from './useQueryParams';
 
@@ -15,17 +15,27 @@ export const useEntityList = <T>(endpoint: string, usingParams: boolean = true):
     const [itemCount, setItemCount] = useState(1)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const { searchParams } = useQueryParams()
+    const { searchParams } = useQueryParams();
+
+    const abortControllerRef = useRef<AbortController | null>(null);
+
+
 
     const fetchData = async () => {
         try {
             setLoading(true);
 
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+
+            abortControllerRef.current = new AbortController();
+
             const queryParams = new URLSearchParams(searchParams.toString());
             const queryString = queryParams.toString();
             const url = queryString ? `${endpoint}?${queryString}` : endpoint
 
-            const response = await api.getList<T>(usingParams ? url : endpoint);
+            const response = await api.getList<T>(usingParams ? url : endpoint, abortControllerRef.current.signal);
 
             if (response.success) {
                 const items = Array.isArray(response.data.results) ? response.data.results : []
@@ -45,9 +55,18 @@ export const useEntityList = <T>(endpoint: string, usingParams: boolean = true):
         }
     };
 
+    const dependncies = usingParams ? [searchParams] : []
+
     useEffect(() => {
+        if (endpoint == '') return
+
         fetchData();
-    }, [searchParams]);
+
+        return () => {
+            if (abortControllerRef.current)
+                abortControllerRef.current.abort();
+        }
+    }, dependncies);
 
     return { data, itemCount, loading, error, refetch: fetchData };
 };

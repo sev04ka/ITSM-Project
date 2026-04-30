@@ -5,6 +5,7 @@ import { useController, type Control, type FieldValues, type FieldPath } from 'r
 import { FieldLabel } from '../FieldLabel/FieldLabel';
 import { FieldError } from '../FieldError/FieldError';
 import { Select } from '../../Select/Select';
+import { Field } from '../Field/Field';
 
 
 interface SelectFieldProps<T extends FieldValues = FieldValues>
@@ -34,8 +35,10 @@ export const SelectField = <T extends FieldValues>({
         rules
     });
 
+
+
     return (
-        <div>
+        <Field>
             <FieldLabel htmlFor={name}>{label}</FieldLabel>
             <Select
                 value={field.value}
@@ -50,6 +53,6 @@ export const SelectField = <T extends FieldValues>({
             {fieldState.invalid && (
                 <FieldError>{[fieldState.error?.message]}</FieldError>
             )}
-        </div>
+        </Field>
     )
 }                       

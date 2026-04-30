@@ -5,6 +5,7 @@ import styles from './input.module.css'
 import { FieldLabel } from '../FieldLabel/FieldLabel';
 import { FieldError } from '../FieldError/FieldError';
 import { Input } from '../../Input/Input';
+import { Field } from '../Field/Field';
 
 interface InputFieldProps<T extends FieldValues = FieldValues>
     extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'name'> {
@@ -34,8 +35,10 @@ export const InputField = <T extends FieldValues>({
         rules,
     });
 
+
+
     return (
-        <div>
+        <Field>
             <FieldLabel htmlFor={name}>{label}</FieldLabel>
             <Input
                 name={field.name}
@@ -50,6 +53,6 @@ export const InputField = <T extends FieldValues>({
             {fieldState.invalid && (
                 <FieldError>{[fieldState.error?.message]}</FieldError>
             )}
-        </div>
+        </Field>
     )
 }

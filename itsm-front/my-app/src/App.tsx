@@ -20,6 +20,8 @@ import { FullPageLayout } from './layouts/FullPageLayout/FullPageLayout.tsx';
 const App: FC = () => {
 	const { initializeAuth, isInitialized } = useUserAuthStore();
 
+
+
 	useEffect(() => {
 		initializeAuth();
 	}, []);

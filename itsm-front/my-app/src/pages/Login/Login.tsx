@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useUserAuthStore } from '../../store/useUserAuthStore';
 import styles from './login.module.css'
 import z from 'zod';
@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FieldGroup } from '../../components/ui/FormElements/FieldGroup/FieldGroup';
 import { InputField } from '../../components/ui/FormElements/InputField/InputField';
 import { Button } from '../../components/ui/Button/Button';
+import { useToast } from '../../context/ToastContext';
 
 const LoginSchema = z.object({
 	email: z.email(),
@@ -19,6 +20,8 @@ export const Login: FC = ({
 
 }) => {
 	const { currentUser, loading, error, login } = useUserAuthStore();
+	const toast = useToast();
+	const location = useLocation();
 
 	const form = useForm<z.infer<typeof LoginSchema>>({
 		resolver: zodResolver(LoginSchema),
@@ -31,12 +34,19 @@ export const Login: FC = ({
 	});
 
 	const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
-		await login(data.email, data.password);
+		const response = await login(data.email, data.password);
+
+		if (!response.success && response.error) {
+			toast.error(response.error);
+		}
 	}
 
 
+
+
 	if (currentUser) {
-		return <Navigate to="/" replace />;
+		const from = location.state?.from || '/';
+		return <Navigate to={from} replace />;
 	}
 
 	return (
@@ -58,7 +68,7 @@ export const Login: FC = ({
 						label="password"
 					/>
 				</FieldGroup>
-				<FieldGroup className="button">
+				<FieldGroup button="button-center">
 					<Button
 						type="submit"
 						disabled={!form.formState.isValid}

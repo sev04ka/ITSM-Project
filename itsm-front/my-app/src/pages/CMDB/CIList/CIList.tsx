@@ -3,6 +3,8 @@ import { DataManagementPanel } from "../../../components/ui/DataManagementPanel/
 import type { IConfigurationItem } from '../../../interfaces/entities/ConfigurationItem';
 import type { Column } from '../../../components/ui/DataManagementPanel/DataTable/types';
 import { type FilterParams, Filter } from '../../../components/ui/DataManagementPanel/Filter/Filter';
+import { useEntityList } from '../../../hooks/useEntityList';
+import type { ICIType } from '../../../interfaces/entities/CIType';
 
 const STATUS_OPTIONS = [
     { value: "active", label: "Активен" },
@@ -38,11 +40,19 @@ const filters: FilterParams[] = [
         fieldName: 'status',
         options: STATUS_OPTIONS,
         placeHolder: 'статус'
+    },
+    {
+        fieldName: 'ci_type',
+        placeHolder: 'тип',
+        endpoint: '/ci-type',
+        optionLabelName: 'name'
     }
 ]
 
 export const CIList: FC = () => {
-    // const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+
 
     return (
         <>
