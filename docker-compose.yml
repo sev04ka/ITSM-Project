@@ -11,8 +11,8 @@ services:
       dockerfile: Dockerfile
       target: dev
     container_name: itsm-backend
-    env_file:
-      - ./itsm-api/API/.env
+    # env_file:
+    #   - ./itsm-api/API/.env
     environment:
       - DJANGO_SETTINGS_MODULE=itsm.settings.dev
     restart: unless-stopped
