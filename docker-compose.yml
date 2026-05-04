@@ -41,8 +41,8 @@ services:
       - "5173:5173"
     # env_file:
     #   - ./itsm-front/my-app/.env
-    # environment:
-    #   - VITE_API_URL=http://176.109.108.10:8000/api
+    environment:
+      - VITE_API_URL=http://176.109.108.10:8000/api
     depends_on:
       - backend
     networks:
