@@ -22,7 +22,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./itsm-api/API
-          file: Dockerfile
+          file: ./itsm-api/API/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/itsm-api:dev
 
@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./itsm-front/my-app
-          file: Dockerfile
+          file: ./itsm-front/my-app/Dockerfile
           target: dev
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/itsm-front:dev
