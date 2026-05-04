@@ -72,21 +72,34 @@ export const useUserAuthStore = create<IAuthState>((set, get) => ({
     },
 
     logout: async () => {
-        set({
-            loading: true
-        })
-
-        const response = await api.post(
-            '/auth/logout/',
-            {},
-        )
-
-        if (!response.success) {
-            set({
-                error: response.error.message,
-                loading: false
-            })
+        try {
+            set({ loading: true })
+            await fetch(`${API_URL}/auth/logout/`, {
+                method: 'POST',
+                credentials: 'include',
+            });
+            set({ currentUser: null })
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Logout error';
+            set({ error: message });
+        } finally {
+            set({ loading: false })
         }
+        // set({
+        //     loading: true
+        // })
+
+        // const response = await api.post(
+        //     '/auth/logout/',
+        //     {},
+        // )
+
+        // if (!response.success) {
+        //     set({
+        //         error: response.error.message,
+        //         loading: false
+        //     })
+        // }
     },
 
     refreshAccess: async (signal?: AbortSignal) => {
