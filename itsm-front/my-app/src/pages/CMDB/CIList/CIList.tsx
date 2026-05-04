@@ -57,7 +57,7 @@ export const CIList: FC = () => {
     return (
         <>
             <DataManagementPanel<IConfigurationItem>
-                header='Конфигурационные единицы'
+                header='Конфигурационные единицы 123'
                 columns={columns}
                 endpoint='/conf-items'
                 filters={filters}
