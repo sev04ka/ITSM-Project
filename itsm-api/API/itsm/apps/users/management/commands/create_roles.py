@@ -5,7 +5,7 @@ class Command(BaseCommand):
     help = 'Create initial roles'
 
     def handle(self, *args, **options):
-        if Role.objects.count() == 0:
+        if Role.objects.count() != 0:
             self.stdout.write(self.style.WARNING('Roles already exists'))
             return
         
