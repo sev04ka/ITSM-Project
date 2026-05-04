@@ -6,7 +6,9 @@ class Command(BaseCommand):
     help = 'Create initial admin org'
 
     def handle(self, *args, **options):
-        
+        if Organization.objects.filter(iname= 'admin-org').exists():
+            self.stdout.write(self.style.WARNING('Admin org already exists'))
+            return
         
         Organization.objects.create(
             name= 'admin-org'
