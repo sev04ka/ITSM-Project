@@ -5,7 +5,7 @@ services:
   # BACKEND (Django)
   # ============================================
   backend:
-    image: ${{ secrets.DOCKERHUB_USERNAME }}/itsm-api:dev
+    image: ${DOCKERHUB_USERNAME}/itsm-api:dev
     build:
       context: ./itsm-api/API
       dockerfile: Dockerfile
@@ -31,7 +31,7 @@ services:
   # FRONTEND (React + Vite)
   # ============================================
   frontend:
-    image: ${{ secrets.DOCKERHUB_USERNAME }}/itsm-front:dev
+    image: ${DOCKERHUB_USERNAME}/itsm-front:dev
     build:
       context: ./itsm-front/my-app
       dockerfile: Dockerfile
