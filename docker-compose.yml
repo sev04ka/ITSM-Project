@@ -8,6 +8,7 @@ services:
     build:
       context: ./itsm-api/API
       dockerfile: Dockerfile
+      target: dev
     container_name: itsm-backend
     env_file:
       - ./itsm-api/API/.env

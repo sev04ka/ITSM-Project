@@ -21,16 +21,17 @@ jobs:
       - name: Build & push backend
         uses: docker/build-push-action@v6
         with:
-          context: ./itsm-api/API/
-          file: ./itsm-api/API/Dockerfile
+          context: ./itsm-api/API
+          file: Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/itsm-api:dev
 
       - name: Build & push frontend
         uses: docker/build-push-action@v6
         with:
-          context: ./itsm-front/my-app/
-          file: ./itsm-front/my-app/Dockerfile
+          context: ./itsm-front/my-app
+          file: Dockerfile
+          target: dev
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/itsm-front:dev
 
