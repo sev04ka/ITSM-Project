@@ -1,15 +1,13 @@
-version: '3.8'
-
 services:
   # ============================================
   # BACKEND (Django)
   # ============================================
   backend:
     image: ${DOCKERHUB_USERNAME}/itsm-api:dev
-    build:
-      context: ./itsm-api/API
-      dockerfile: Dockerfile
-      target: dev
+    # build:
+    #   context: ./itsm-api/API
+    #   dockerfile: Dockerfile
+    #   target: dev
     container_name: itsm-backend
     # env_file:
     #   - ./itsm-api/API/.env
@@ -32,10 +30,10 @@ services:
   # ============================================
   frontend:
     image: ${DOCKERHUB_USERNAME}/itsm-front:dev
-    build:
-      context: ./itsm-front/my-app
-      dockerfile: Dockerfile
-      target: dev
+    # build:
+    #   context: ./itsm-front/my-app
+    #   dockerfile: Dockerfile
+    #   target: dev
     container_name: itsm-frontend
     restart: unless-stopped
     command: npm run dev -- --host 0.0.0.0
@@ -44,8 +42,7 @@ services:
     # env_file:
     #   - ./itsm-front/my-app/.env
     environment:
-      - VITE_API_URL=http://localhost:8000/api
-    volumes: # - /app/node_modules
+      - VITE_API_URL=http://backend:8000/api
     depends_on:
       - backend
     networks:
@@ -66,7 +63,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER:-itsm}", "-p${MYSQL_PASSWORD:-itsm_password}" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "itsmdbdev", "-pdevpass" ]
       interval: 10s
       timeout: 5s
       retries: 10
