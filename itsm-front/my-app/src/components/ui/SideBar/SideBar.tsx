@@ -42,7 +42,7 @@ const SideBar: FC = () => {
                 </div>
             </div>
             <nav>
-                {visibleMenuItems.map(item => <SideBarNavItem key={crypto.randomUUID()} {...item} />)}
+                {visibleMenuItems.map(item => <SideBarNavItem key={item.path} {...item} />)}
             </nav>
         </div>
     )
