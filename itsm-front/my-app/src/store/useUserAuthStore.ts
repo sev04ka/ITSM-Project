@@ -89,20 +89,42 @@ export const useUserAuthStore = create<IAuthState>((set, get) => ({
     },
 
     refreshAccess: async (signal?: AbortSignal) => {
-        set({ loading: true });
+        try {
+            set({ loading: true })
+            const response = await fetch(`${API_URL}/auth/token/refresh/`, {
+                method: 'POST',
+                signal: signal,
+                credentials: 'include',
+            });
 
-        const response = await api.post(
-            '/auth/token/refresh/',
-            {},
-            signal
-        )
+            if (response.status === 401) {
+                set({ currentUser: null });
+                const message = 'refresh token expired';
+                set({ error: message });;
+            }
 
-        if (!response.success) {
-            set({
-                error: response.error.message,
-                loading: false
-            })
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Refresh access error';
+            set({ error: message });
+        } finally {
+            set({ loading: false })
         }
+
+        // set({ loading: true });
+
+        // const response = await api.post(
+        //     '/auth/token/refresh/',
+        //     {},
+        //     signal,
+
+        // )
+
+        // if (!response.success) {
+        //     set({
+        //         error: response.error.message,
+        //         loading: false
+        //     })
+        // }
     },
 
     initializeAuth: async () => {
