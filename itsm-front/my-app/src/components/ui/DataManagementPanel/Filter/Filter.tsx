@@ -40,7 +40,7 @@ export const Filter: FC<FilterProps> = ({
     }
 
     const handleChange = (value: string) => {
-        setParams({ [fieldName]: value });
+        setParams({ [fieldName]: value }, true);
     };
 
     if (!options && endpoint == '') {
