@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import styles from './ConfirmModal.module.css';
+import styles from './confirmmodal.module.css';
 import { Button } from '../Button/Button';
 
 
