@@ -3,6 +3,9 @@ import type { IUser } from '../interfaces/entities/User';
 import { success } from 'zod';
 import { api } from '../api';
 
+const ENV_API_URL = import.meta.env.VITE_API_URL;
+
+const API_URL = ENV_API_URL ? ENV_API_URL : 'http://localhost:8000/api';
 
 interface IAuthState {
     currentUser: IUser | null;
@@ -17,8 +20,6 @@ interface IAuthState {
     refreshAccess: (signal?: AbortSignal) => Promise<void>;
     initializeAuth: (signal?: AbortSignal) => Promise<void>;
 }
-
-const API_URL = 'http://localhost:8000/api';
 
 export const useUserAuthStore = create<IAuthState>((set, get) => ({
     currentUser: null,
