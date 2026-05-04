@@ -45,8 +45,7 @@ services:
     #   - ./itsm-front/my-app/.env
     environment:
       - VITE_API_URL=http://localhost:8000/api
-    volumes:
-      - /app/node_modules
+    volumes: # - /app/node_modules
     depends_on:
       - backend
     networks:
