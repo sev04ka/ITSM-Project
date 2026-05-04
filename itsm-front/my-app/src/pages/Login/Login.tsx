@@ -45,8 +45,10 @@ export const Login: FC = ({
 
 
 	if (currentUser) {
+		console.log(currentUser)
 		const from = location.state?.from || '/';
 		return <Navigate to={from} replace />;
+
 	}
 
 	return (

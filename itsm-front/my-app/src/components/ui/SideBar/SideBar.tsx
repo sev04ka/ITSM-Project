@@ -10,22 +10,22 @@ const SideBar: FC = () => {
 
     const navMenuItems: IMenuItem[] = [
         {
-            path: '/tickets',
-            title: 'Tickets',
-        },
-        {
             path: '/conf-items-management',
             title: 'Configuration items management',
             roles: ['admin']
         },
-        {
-            path: '/my-conf-items',
-            title: 'My configuration items',
-        },
-        {
-            path: '/requests',
-            title: 'my tickets',
-        },
+        // {
+        //     path: '/tickets',
+        //     title: 'Tickets',
+        // },
+        // {
+        //     path: '/my-conf-items',
+        //     title: 'My configuration items',
+        // },
+        // {
+        //     path: '/requests',
+        //     title: 'my tickets',
+        // },
         // {
         //     path: '/tickets/create',
         //     title: 'create ticket',

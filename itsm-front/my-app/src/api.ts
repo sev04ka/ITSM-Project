@@ -66,8 +66,6 @@ const apiRequest = async <T>(
             } catch (error) {
                 await logout();
 
-                window.location.href = '/login';
-
                 return {
                     success: false,
                     error: { status: 0, message: 'Token expired' },

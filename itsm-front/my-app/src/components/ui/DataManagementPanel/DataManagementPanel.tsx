@@ -73,7 +73,7 @@ export const DataManagementPanel = <T extends { id: number }>({
                         <div>
                             <h2>{header}</h2>
                         </div>
-                        <Button onClick={() => navigate("add")}>add</Button>
+                        <Button onClick={() => navigate("add")}>Создать</Button>
                     </div>
                     <FilterBar filters={filters} />
 
