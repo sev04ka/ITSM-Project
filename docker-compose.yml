@@ -41,8 +41,8 @@ services:
     command: npm run dev -- --host 0.0.0.0
     ports:
       - "5173:5173"
-    env_file:
-      - ./itsm-front/my-app/.env
+    # env_file:
+    #   - ./itsm-front/my-app/.env
     environment:
       - VITE_API_URL=http://localhost:8000/api
     volumes:
