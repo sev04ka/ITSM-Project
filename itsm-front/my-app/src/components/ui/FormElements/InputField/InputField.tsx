@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes } from 'react';
 import { useController, type Control, type FieldValues, type FieldPath } from 'react-hook-form';
 
-import styles from './input.module.css'
+import styles from './inputfield.module.css'
 import { FieldLabel } from '../FieldLabel/FieldLabel';
 import { FieldError } from '../FieldError/FieldError';
 import { Input } from '../../Input/Input';

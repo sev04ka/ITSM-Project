@@ -8,7 +8,14 @@ class ConfigurationItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ConfigurationItem
-        fields = ["id", "name", "ci_type", "ci_type_id", "status",  "serial_number"]
+        fields = [
+            "id", 
+            "name", 
+            "ci_type", 
+            "ci_type_id", 
+            "status",  
+            "serial_number"
+        ]
 
         extra_kwargs = {
         'ci_type_id': {'source': 'ci_type', 'write_only': True},

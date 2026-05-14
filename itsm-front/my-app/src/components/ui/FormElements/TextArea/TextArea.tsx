@@ -1,9 +1,8 @@
 import type { TextareaHTMLAttributes } from 'react';
 import { useController, type Control, type FieldValues, type FieldPath } from 'react-hook-form';
-
 import { FieldLabel } from '../FieldLabel/FieldLabel';
 import { FieldError } from '../FieldError/FieldError';
-
+import styles from './textarea.module.css'
 
 interface TextAreaProps<T extends FieldValues = FieldValues>
     extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'type' | 'value' | 'name'> {
@@ -29,15 +28,15 @@ export const TextArea = <T extends FieldValues>({
         rules
     });
     return (
-        <div>
-            <textarea className='input'
+        <div className={styles["textarea-wrapper"]}>
+            <FieldLabel htmlFor={name}>{label}</FieldLabel>
+            <textarea className={styles.textarea}
                 {...field}
                 id={name}
                 placeholder={placeholder}
                 autoComplete={autoComplete}
                 onChange={(e) => field.onChange(e.target.value)}
             />
-            <FieldLabel htmlFor={name}>{label}</FieldLabel>
             {fieldState.invalid && (
                 <FieldError>{[fieldState.error?.message]}</FieldError>
             )}

@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import './fielderror.css'
+import styles from './fielderror.module.css'
 
 interface FieldErrorProps {
     children: ReactNode;
@@ -9,7 +9,7 @@ export const FieldError: FC<FieldErrorProps> = ({
     children,
 }) => {
     return (
-        <div className="field-error">
+        <div className={styles["field-error"]}>
             {children}
         </div>
     )

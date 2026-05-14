@@ -1,7 +1,7 @@
-import type { IUser } from './User'
+import type IUser from './User'
 
 
-export interface ITicket {
+export default interface ITicket {
     id: number,
     ticket_number: string,
     title: string,

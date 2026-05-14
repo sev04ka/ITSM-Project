@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useEntityList } from "../hooks/useEntityList";
-import type { IComment } from "../interfaces/entities/Comment";
+import type IComment from "../interfaces/entities/Comment";
 
 
 export const TicketComments: FC = () => {

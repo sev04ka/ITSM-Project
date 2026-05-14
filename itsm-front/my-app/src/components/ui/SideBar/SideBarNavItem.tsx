@@ -5,15 +5,18 @@ import styles from './sidebar.module.css'
 interface IMenuItem {
     title: string,
     path: string,
-    roles?: string[]
+    roles?: string[],
+    icon?: string
 }
 
 interface IProps extends IMenuItem { }
 
 
-const SideBarNavItem: FC<IProps> = ({ title, path }) => {
-
-
+const SideBarNavItem: FC<IProps> = ({
+    title,
+    path,
+    icon
+}) => {
     return (
         <NavLink
             to={path}
@@ -21,7 +24,8 @@ const SideBarNavItem: FC<IProps> = ({ title, path }) => {
                 isActive ? styles.active : ''
             }
         >
-            {title}
+            {icon && <span className={styles["nav-icon"]}>{icon}</span>}
+            <span>{title}</span>
         </NavLink>
     )
 }

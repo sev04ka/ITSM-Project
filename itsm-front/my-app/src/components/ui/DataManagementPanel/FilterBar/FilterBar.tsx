@@ -31,7 +31,10 @@ export const FilterBar: FC<FilterBarProps> = ({
                     onChange={(e) => handleSearchChange(e.target.value)}
                     className="filter-input"
                 />
-                <Button onClick={() => resetParams()}>
+                <Button onClick={() => {
+                    resetParams()
+                    setSearch('')
+                }}>
                     сброс
                 </Button>
             </div>

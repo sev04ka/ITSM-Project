@@ -2,13 +2,26 @@
     display: block;
     cursor: text;
     background-color: var(--default-bg);
-    border: 2px solid var(--border-color);
-    padding: 0.5rem 0.3rem;
-    border-radius: 0.5rem;
-    transition: transform .25s;
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-md);
+    transition: all var(--transition);
+    font-size: 0.875rem;
+    color: var(--text-color);
+    width: 100%;
+    outline: none;
 }
 
-.input:hover,
+.input:hover {
+    border-color: var(--detail-grey);
+}
+
+.input:focus,
 input:focus {
-    transform: scale(1.01);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.input::placeholder {
+    color: var(--detail-grey);
 }

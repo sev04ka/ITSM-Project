@@ -4,18 +4,31 @@
     min-width: 10rem;
 }
 
-
 .select-button {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     min-width: max-content;
     cursor: pointer;
     background-color: var(--default-bg);
-    border: 2px solid var(--border-color);
-    padding: 0.5rem 0.3rem;
-    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-md);
     text-align: left;
+    font-size: 0.875rem;
+    color: var(--text-color);
+    gap: 0.5rem;
+    transition: all var(--transition);
+}
+
+.select-button:hover {
+    border-color: var(--detail-grey);
+}
+
+.select-button[aria-expanded="true"] {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 .options-container {
@@ -24,42 +37,53 @@
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    margin-top: .5rem;
+    margin-top: 0.25rem;
     left: 0;
     right: 0;
     background-color: var(--default-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     max-height: 20rem;
     overflow-y: auto;
-
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.06);
 }
 
 .option {
     flex: 1;
     display: block;
     text-align: left;
-    padding: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color var(--transition);
 }
 
 .option:hover {
-    background-color: var(--dark-bg);
+    background-color: var(--accent-light);
 }
 
-.select-value {}
+.select-value {
+    flex: 1;
+}
 
 .clear-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     padding: 0;
-    background: #f0f0f0;
+    background: #f1f5f9;
     border: none;
     border-radius: 50%;
-    color: #666;
+    color: var(--text-muted);
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all var(--transition);
     flex-shrink: 0;
+    font-size: 0.75rem;
+}
+
+.clear-btn:hover {
+    background: var(--border-color);
+    color: var(--text-color);
 }

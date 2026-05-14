@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import './fieldlabel.css'
+import styles from './fieldlabel.module.css'
 
 interface FieldLabelProps {
     children: ReactNode;
@@ -11,7 +11,7 @@ export const FieldLabel: FC<FieldLabelProps> = ({
     htmlFor
 }) => {
     return (
-        <label htmlFor={htmlFor} className="field-label">
+        <label htmlFor={htmlFor} className={styles["field-label"]}>
             {children}
         </label>
     )

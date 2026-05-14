@@ -1,65 +1,86 @@
+.table-wrapper {
+    overflow-x: auto;
+}
+
 table {
     table-layout: fixed;
     border-collapse: collapse;
+    width: 100%;
 }
 
 thead {
-    background-color: var(--dark-bg);
+    background-color: #f8fafc;
+}
+
+thead th {
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
 }
 
 th,
 td {
     text-align: center;
-    padding: 0.6rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
 }
 
 tr {
-    border-bottom: 2px solid var(--border-color);
-    border-top: 2px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color var(--transition);
+}
+
+tbody tr:hover {
+    background-color: #f8fafc;
 }
 
 tbody tr:nth-last-child(1) {
     border-bottom: none;
 }
 
-.table-row-controls button {
-    margin-left: .5rem;
-}
-
-.sortable-col-cell {
-    cursor: pointer;
+.table-row-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .col-title.sortable {
     position: relative;
+    cursor: pointer;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
-.col-title.sortable::before,
 .col-title.sortable::after {
     content: "";
-    position: absolute;
+    display: inline-block;
     width: 0;
     height: 0;
-    border-right: .4rem solid transparent;
-    border-left: .4rem solid transparent;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid var(--detail-grey);
+    opacity: 0.4;
+    transition: opacity var(--transition);
 }
 
-.col-title.sortable::before {
-    border-bottom: .5rem solid var(--detail-grey);
-    right: -1rem;
-    top: -5%;
-}
-
-.col-title.sortable::after {
-    border-top: .5rem solid var(--detail-grey);
-    right: -1rem;
-    top: 60%;
+.col-title.sortable:hover::after {
+    opacity: 1;
 }
 
 .col-title.sortable.asc::after {
-    border-top: .5rem solid var(--text-color);
+    border-top: 5px solid var(--accent);
+    opacity: 1;
 }
 
-.col-title.sortable.desc::before {
-    border-bottom: .5rem solid var(--text-color);
+.col-title.sortable.desc::after {
+    border-bottom: 5px solid var(--accent);
+    border-top: none;
+    opacity: 1;
 }

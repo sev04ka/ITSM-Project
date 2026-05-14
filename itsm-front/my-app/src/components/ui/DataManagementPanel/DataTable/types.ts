@@ -14,4 +14,5 @@ export interface DataTableProps<T> {
     error?: string | null;
     emptyMessage?: string;
     deleteHandler: (id: number) => void;
+    allowControls?: boolean;
 }

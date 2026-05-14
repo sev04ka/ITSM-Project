@@ -5,8 +5,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
+    padding: 3rem 1rem;
 }
 
 .container h3 {
-    padding: 2.5rem 0;
+    color: var(--text-muted);
+    font-weight: 450;
+    font-size: 0.875rem;
 }

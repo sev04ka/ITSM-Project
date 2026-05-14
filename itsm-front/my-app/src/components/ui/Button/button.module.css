@@ -2,12 +2,18 @@
     cursor: pointer;
     background-color: var(--accent);
     color: #fff;
-    border: 2px solid var(--accent);
-    padding: 0.5rem 0.3rem;
-    border-radius: 0.5rem;
-    transition: background-color .55s,
-        color .55s,
-        box-shadow .55s;
+    border: 1px solid var(--accent);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    transition: all var(--transition);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
 }
 
 .sm {
@@ -29,44 +35,51 @@
 }
 
 .button:not([disabled]):hover {
-    background-color: var(--accent);
-    background-color: var(--default-bg);
-    color: var(--text-color);
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
     box-shadow: var(--accent-box-shadow);
 }
 
 .button:not([disabled]):active {
-    transform: scale(1.035);
+    transform: scale(0.98);
 }
 
 .button:disabled {
-    border: 2px solid var(--border-color);
-    background-color: var(--default-bg);
-    color: rgba(16, 16, 16, 0.3);
-    cursor: default;
+    border: 1px solid var(--border-color);
+    background-color: #f1f5f9;
+    color: var(--detail-grey);
+    cursor: not-allowed;
 }
 
 .edit {
     background-image: url('../../../assets/svg/edit.svg');
-    background-size: 1.4rem 1.4rem;
+    background-size: 1.2rem 1.2rem;
 }
 
 .delete {
     background-image: url('../../../assets/svg/delete.svg');
-    background-size: 1.5rem 1.5rem;
+    background-size: 1.2rem 1.2rem;
 }
 
 .logout {
     background-image: url('../../../assets/svg/logout.svg');
-    background-size: 1.5rem 1.5rem;
+    background-size: 1.2rem 1.2rem;
 }
 
 .svg-button {
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     background-color: var(--default-bg);
     width: 2rem;
     height: 2rem;
     padding: 0;
     background-repeat: no-repeat;
     background-position: center;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.svg-button:hover {
+    background-color: var(--hover-color);
+    border-color: var(--detail-grey);
 }

@@ -1,10 +1,8 @@
-import { type FC, useState } from 'react';
+import { type FC } from 'react';
 import { DataManagementPanel } from "../../../components/ui/DataManagementPanel/DataManagementPanel";
-import type { IConfigurationItem } from '../../../interfaces/entities/ConfigurationItem';
+import type IConfigurationItem from '../../../interfaces/entities/ConfigurationItem';
 import type { Column } from '../../../components/ui/DataManagementPanel/DataTable/types';
-import { type FilterParams, Filter } from '../../../components/ui/DataManagementPanel/Filter/Filter';
-import { useEntityList } from '../../../hooks/useEntityList';
-import type { ICIType } from '../../../interfaces/entities/CIType';
+import { type FilterParams } from '../../../components/ui/DataManagementPanel/Filter/Filter';
 
 const STATUS_OPTIONS = [
     { value: "active", label: "Активен" },
@@ -50,14 +48,10 @@ const filters: FilterParams[] = [
 ]
 
 export const CIList: FC = () => {
-
-
-
-
     return (
         <>
             <DataManagementPanel<IConfigurationItem>
-                header='Конфигурационные единицы 123'
+                header='Конфигурационные единицы'
                 columns={columns}
                 endpoint='/conf-items'
                 filters={filters}

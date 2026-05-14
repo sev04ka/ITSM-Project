@@ -5,15 +5,19 @@ import { Login } from './pages/Login/Login.tsx'
 import NotFound from './pages/NotFound.tsx'
 import ProtectedRoute from './components/security/ProtectedRoute.tsx';
 import { useUserAuthStore } from './store/useUserAuthStore.ts';
-import { MyTickets } from './components/tickets/myTickets/MyTickets.tsx';
-import { CreateTicket } from './components/tickets/createTicket/CreateTicket.tsx';
-import { TicketDetails } from './pages/TicketDetails.tsx';
 import { EditCI } from './pages/CMDB/AddEditCI/EditCI.tsx';
 import { AddCI } from './pages/CMDB/AddEditCI/AddCI.tsx';
 import { CIList } from './pages/CMDB/CIList/CIList.tsx';
-import { TicketList } from './pages/Tickets/TicketList/TicketList.tsx';
 import { MainLayout } from './layouts/MainLayout/MainLayout.tsx';
 import { FullPageLayout } from './layouts/FullPageLayout/FullPageLayout.tsx';
+import { UserList } from './pages/Users/UserList/UserList.tsx';
+import { AddUser } from './pages/Users/AddEditUser/AddUser.tsx';
+import { OrganizationList } from './pages/Organizations/OrganizationList/OrganizationList.tsx';
+import { AddOrganization } from './pages/Organizations/AddEditOrganization/AddOrganization.tsx';
+import { EditOrganization } from './pages/Organizations/AddEditOrganization/EditOrganization.tsx';
+import { EditUser } from './pages/Users/AddEditUser/EditUser.tsx';
+import { TicketList } from './pages/Tickets/TicketList/TicketList.tsx';
+import { TicketDetails } from './pages/Tickets/TicketDetails.tsx/TicketDetails.tsx';
 
 
 
@@ -58,31 +62,46 @@ const App: FC = () => {
 							<EditCI />
 						</ProtectedRoute>
 					} />
-					{/* <Route path='my-conf-items' element={
-						<ProtectedRoute>
-							<ConfigurationItemList />
+					<Route path='users' element={
+						<ProtectedRoute roles={['admin']}>
+							<UserList />
 						</ProtectedRoute>
-					} /> */}
-					{/* <Route path='tickets' element={
-						<ProtectedRoute>
+					} />
+					<Route path='users/add' element={
+						<ProtectedRoute roles={['admin']}>
+							<AddUser />
+						</ProtectedRoute>
+					} />
+					<Route path='users/edit/:id' element={
+						<ProtectedRoute roles={['admin']}>
+							<EditUser />
+						</ProtectedRoute>
+					} />
+					<Route path='organizations' element={
+						<ProtectedRoute roles={['admin']}>
+							<OrganizationList />
+						</ProtectedRoute>
+					} />
+					<Route path='organizations/add' element={
+						<ProtectedRoute roles={['admin']}>
+							<AddOrganization />
+						</ProtectedRoute>
+					} />
+					<Route path='organizations/edit/:id' element={
+						<ProtectedRoute roles={['admin']}>
+							<EditOrganization />
+						</ProtectedRoute>
+					} />
+					<Route path='tickets' element={
+						<ProtectedRoute roles={['admin']}>
 							<TicketList />
 						</ProtectedRoute>
 					} />
-					<Route path='tickets/create' element={
-						<ProtectedRoute>
-							<CreateTicket />
-						</ProtectedRoute>
-					} />
 					<Route path='tickets/:id' element={
-						<ProtectedRoute>
+						<ProtectedRoute roles={['admin']}>
 							<TicketDetails />
 						</ProtectedRoute>
 					} />
-					<Route path='requests' element={
-						<ProtectedRoute>
-							<MyTickets />
-						</ProtectedRoute>
-					} /> */}
 				</Route>
 			</Routes>
 		</BrowserRouter>

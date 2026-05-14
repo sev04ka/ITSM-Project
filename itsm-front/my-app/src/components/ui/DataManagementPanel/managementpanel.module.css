@@ -2,25 +2,25 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-
 }
 
 .data-panel-header {
     display: flex;
     justify-content: space-between;
-    padding: 0.6rem;
-    padding-bottom: 0;
+    align-items: center;
+    padding: 1rem;
 }
 
 .data-panel {
     display: flex;
     flex-direction: column;
     background-color: var(--default-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
 }
 
 .no-data {
-    border-radius: inherit;
-    padding: 0.6rem;
+    padding: 1rem;
 }

@@ -1,6 +1,6 @@
-import type { IUser } from "./User";
+import type IUser from "./User";
 
-export interface IComment {
+export default interface IComment {
     id: number,
     ticket: string,
     author: IUser,

@@ -1,7 +1,4 @@
 import type { FC } from "react";
-import { TicketComment } from "../TicketComment/TicketComment";
-import { useEntityList } from "../../../hooks/useEntityList";
-import type { IComment } from "../../../interfaces/entities/Comment";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +6,9 @@ import { api } from "../../../api";
 import { FieldGroup } from "../../ui/FormElements/FieldGroup/FieldGroup";
 import { TextArea } from "../../ui/FormElements/TextArea/TextArea";
 import { CheckBox } from "../../ui/FormElements/CheckBox/CheckBox";
-
+import styles from './createcomment.module.css'
+import { Button } from "../../ui/Button/Button";
+import { useToast } from "../../../context/ToastContext";
 
 const CommentCreateSchema = z.object({
     text: z.string().min(2, "Текст комментария не может быть пустым"),
@@ -23,6 +22,7 @@ interface CreateCommentProps {
 export const CreateComment: FC<CreateCommentProps> = ({
     ticketId,
 }) => {
+    const toast = useToast()
 
     const form = useForm<z.infer<typeof CommentCreateSchema>>({
         resolver: zodResolver(CommentCreateSchema),
@@ -37,29 +37,45 @@ export const CreateComment: FC<CreateCommentProps> = ({
         const response = await api.post(
             `/comments/?ticket=${ticketId}`,
             data,
+            undefined,
             {
                 headers: {
                     'Content-Type': 'application/json'
                 },
             })
+
+        if (response.success) {
+            form.reset();
+            toast.success("Комментарий отправлен");
+        } else {
+            toast.error(response.error.message);
+        }
     }
 
-    return (
-        <form id="comment-form" onSubmit={form.handleSubmit(onSubmit)}>
-            <FieldGroup>
-                <TextArea
-                    name="text"
-                    control={form.control}
-                    label="text"
-                />
 
-                <CheckBox
-                    name="is_internal"
-                    control={form.control}
-                    label="is_internal"
-                />
-            </FieldGroup>
-            <button type="submit">Submit</button>
-        </form>
+    return (
+        <div className={styles["create-comment-section"]}>
+            <h3>Написать комментарий</h3>
+            <form id="comment-form" onSubmit={form.handleSubmit(onSubmit)}>
+                <div className={styles["form-body"]}>
+
+                    <CheckBox
+                        name="is_internal"
+                        control={form.control}
+                        label="Только для персонала"
+                    />
+                    <TextArea
+                        name="text"
+                        control={form.control}
+                        placeholder="Введите текст комментария..."
+                    />
+                </div>
+                <div className={styles["form-footer"]}>
+                    <Button type="submit" disabled={!form.formState.isValid}>
+                        Отправить
+                    </Button>
+                </div>
+            </form>
+        </div>
     )
 }

@@ -19,6 +19,7 @@ interface DataManagementPanelProps<T> {
     columns: Column<T>[];
     endpoint: string;
     filters?: FilterParams[];
+    allowControls?: boolean;
 }
 
 
@@ -27,7 +28,8 @@ export const DataManagementPanel = <T extends { id: number }>({
     header,
     columns,
     endpoint,
-    filters
+    filters,
+    allowControls = true
 }: DataManagementPanelProps<T>) => {
     const { data, itemCount, loading, error, refetch } = useEntityList<T>(endpoint);
     const navigate = useNavigate();
@@ -83,6 +85,7 @@ export const DataManagementPanel = <T extends { id: number }>({
                         loading={loading}
                         error={error}
                         deleteHandler={handleDeleteClick}
+                        allowControls={allowControls}
                     />
 
                 </div>

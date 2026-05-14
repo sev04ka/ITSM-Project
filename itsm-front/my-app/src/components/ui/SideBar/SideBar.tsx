@@ -11,25 +11,28 @@ const SideBar: FC = () => {
     const navMenuItems: IMenuItem[] = [
         {
             path: '/conf-items-management',
-            title: 'Configuration items management',
-            roles: ['admin']
+            title: 'Конфигурации',
+            roles: ['admin'],
+            icon: '\u2699'
         },
-        // {
-        //     path: '/tickets',
-        //     title: 'Tickets',
-        // },
-        // {
-        //     path: '/my-conf-items',
-        //     title: 'My configuration items',
-        // },
-        // {
-        //     path: '/requests',
-        //     title: 'my tickets',
-        // },
-        // {
-        //     path: '/tickets/create',
-        //     title: 'create ticket',
-        // }
+        {
+            path: '/users',
+            title: 'Пользователи',
+            roles: ['admin'],
+            icon: '\u2731'
+        },
+        {
+            path: '/organizations',
+            title: 'Организации',
+            roles: ['admin'],
+            icon: '\u2302'
+        },
+        {
+            path: '/tickets',
+            title: 'Заявки',
+            roles: ['admin'],
+            icon: '\u2302'
+        }
     ]
 
     const visibleMenuItems = navMenuItems.filter((item) => hasAccess(item.roles))

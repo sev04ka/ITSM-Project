@@ -1,8 +1,7 @@
 import type { InputHTMLAttributes } from 'react';
 import { useController, type Control, type FieldValues, type FieldPath } from 'react-hook-form';
-
-import { FieldLabel } from '../FieldLabel/FieldLabel';
 import { FieldError } from '../FieldError/FieldError';
+import styles from './checkbox.module.css'
 
 interface CheckBoxProps<T extends FieldValues = FieldValues>
     extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'name'> {
@@ -26,14 +25,16 @@ export const CheckBox = <T extends FieldValues>({
 
     return (
         <div>
-            <input
-                {...field}
-                id={name}
-                type="checkbox"
-                checked={Boolean(field.value)}
-                onChange={(e) => field.onChange(e.target.checked)}
-            />
-            <FieldLabel htmlFor={name}>{label}</FieldLabel>
+            <label className={styles["checkbox-row"]} htmlFor={name}>
+                <input
+                    {...field}
+                    id={name}
+                    type="checkbox"
+                    checked={Boolean(field.value)}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                />
+                <span className="checkbox-label">{label}</span>
+            </label>
             {fieldState.invalid && (
                 <FieldError>{[fieldState.error?.message]}</FieldError>
             )}

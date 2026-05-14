@@ -1,0 +1,35 @@
+.textarea-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.textarea {
+    display: block;
+    width: 100%;
+    min-height: 100px;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    background-color: var(--default-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    resize: none;
+    outline: none;
+    transition: all var(--transition);
+    font-family: inherit;
+}
+
+.textarea:hover {
+    border-color: var(--detail-grey);
+}
+
+.textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.textarea::placeholder {
+    color: var(--detail-grey);
+}

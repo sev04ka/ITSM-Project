@@ -1,6 +1,6 @@
-import type { ICIType } from './CIType'
+import type ICIType from './CIType'
 
-export interface IConfigurationItem {
+export default interface IConfigurationItem {
     id: number,
     name: string,
     status: "active" | "inactive" | "maintenance" | "retired",

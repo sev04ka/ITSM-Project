@@ -1,0 +1,29 @@
+.create-comment-section {
+    background-color: var(--default-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    margin-top: 1.5rem;
+}
+
+.create-comment-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.form-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}

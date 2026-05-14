@@ -9,20 +9,24 @@ export const Header: FC = () => {
 
     return (
         <div className={styles.header}>
+            <div className={styles["header-title"]}>
+                ITSM System
+            </div>
             <div className={styles.user}>
-                <div>
-                    <span>
-                        {`${currentUser?.first_name} ${currentUser?.last_name}`}
+                <div className={styles["user-info"]}>
+                    <span className={styles["user-name"]}>
+                        {currentUser?.first_name} {currentUser?.last_name}
+                    </span>
+                    <span className={styles["user-role"]}>
+                        {currentUser?.role?.name}
                     </span>
                 </div>
-                <div className="">
-                    <Button
-                        onClick={logout}
-                        className="logout"
-                        svgButton={true}
-                    >
-                    </Button>
-                </div>
+                <Button
+                    onClick={logout}
+                    className="logout"
+                    svgButton={true}
+                >
+                </Button>
             </div>
         </div>
     )

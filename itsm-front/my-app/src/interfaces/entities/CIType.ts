@@ -1,4 +1,4 @@
-export interface ICIType {
+export default interface ICIType {
     id: number,
     name: string,
     description: string

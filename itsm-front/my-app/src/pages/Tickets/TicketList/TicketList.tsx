@@ -1,16 +1,16 @@
-import { type FC, useState } from 'react';
+import { type FC } from 'react';
 import { DataManagementPanel } from "../../../components/ui/DataManagementPanel/DataManagementPanel";
 import type { Column } from '../../../components/ui/DataManagementPanel/DataTable/types';
-import type { ITicket } from '../../../interfaces/entities/Ticket';
+import type ITicket from '../../../interfaces/entities/Ticket';
 import { formatDateTime } from '../../../utils/dateFormatter';
 import { Link } from 'react-router-dom';
 
-const STATUS_OPTIONS = [
-    { value: "active", label: "Активен" },
-    { value: "inactive", label: "Неактивен" },
-    { value: "maintenance", label: "Обслуживание" },
-    { value: "retired", label: "Выведен" },
-] as const
+// const STATUS_OPTIONS = [
+//     { value: "active", label: "Активен" },
+//     { value: "inactive", label: "Неактивен" },
+//     { value: "maintenance", label: "Обслуживание" },
+//     { value: "retired", label: "Выведен" },
+// ] as const
 
 const columns: Column<ITicket>[] = [
     {
@@ -41,20 +41,19 @@ const columns: Column<ITicket>[] = [
     },
     {
         key: 'created_at',
-        title: 'создан',
+        title: 'дата создания',
         template: (item: ITicket) => formatDateTime(item.created_at)
     },
 ];
 
 export const TicketList: FC = () => {
-    // const [isModalOpen, setIsModalOpen] = useState(false);
-
     return (
         <>
             <DataManagementPanel<ITicket>
                 header='Заявки'
                 columns={columns}
                 endpoint='/tickets'
+                allowControls={false}
             />
         </>
     );
