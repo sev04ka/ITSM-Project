@@ -32,7 +32,13 @@ const SideBar: FC = () => {
             title: 'Заявки',
             roles: ['admin'],
             icon: '\u2302'
-        }
+        },
+        {
+            path: '/my-tickets',
+            title: 'Мои заявки',
+            roles: ['admin'],
+            icon: '\u2302'
+        },
     ]
 
     const visibleMenuItems = navMenuItems.filter((item) => hasAccess(item.roles))

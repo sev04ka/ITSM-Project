@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { IUser } from '../interfaces/entities/User';
+import type IUser from '../interfaces/entities/User';
 import { success } from 'zod';
 import { api } from '../api';
 

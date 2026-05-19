@@ -1,12 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { api } from "../../../api"
+import { api } from "../../../../../api"
 import './createform.css'
-import { InputField } from "../../ui/FormElements/InputField/InputField"
-import { SelectField } from "../../ui/FormElements/SelectField/SelectField"
-import { FieldGroup } from "../../ui/FormElements/FieldGroup/FieldGroup"
-import { TextArea } from "../../ui/FormElements/TextArea/TextArea"
+import { InputField } from "../../../../../components/ui/FormElements/InputField/InputField"
+import { SelectField } from "../../../../../components/ui/FormElements/SelectField/SelectField"
+import { FieldGroup } from "../../../../../components/ui/FormElements/FieldGroup/FieldGroup"
+import { TextArea } from "../../../../../components/ui/FormElements/TextArea/TextArea"
 
 
 const TicketCreateSchema = z.object({

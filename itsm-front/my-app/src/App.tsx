@@ -18,6 +18,8 @@ import { EditOrganization } from './pages/Organizations/AddEditOrganization/Edit
 import { EditUser } from './pages/Users/AddEditUser/EditUser.tsx';
 import { TicketList } from './pages/Tickets/TicketList/TicketList.tsx';
 import { TicketDetails } from './pages/Tickets/TicketDetails.tsx/TicketDetails.tsx';
+import { UserTicketList } from './pages/Tickets/UserTicketList/UserTicketList.tsx';
+import { AddTicket } from './pages/Tickets/AddTicket/AddTicket.tsx';
 
 
 
@@ -100,6 +102,16 @@ const App: FC = () => {
 					<Route path='tickets/:id' element={
 						<ProtectedRoute roles={['admin']}>
 							<TicketDetails />
+						</ProtectedRoute>
+					} />
+					<Route path='my-tickets' element={
+						<ProtectedRoute roles={['admin']}>
+							<UserTicketList />
+						</ProtectedRoute>
+					} />
+					<Route path='my-tickets/add' element={
+						<ProtectedRoute roles={['admin']}>
+							<AddTicket />
 						</ProtectedRoute>
 					} />
 				</Route>

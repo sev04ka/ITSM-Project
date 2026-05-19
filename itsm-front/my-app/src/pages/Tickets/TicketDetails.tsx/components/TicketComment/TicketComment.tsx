@@ -1,7 +1,7 @@
 import type { FC } from "react";
-import type IComment from "../../../interfaces/entities/Comment";
+import type IComment from "../../../../../interfaces/entities/Comment";
 import styles from './ticketcomment.module.css'
-import { formatDateTime } from "../../../utils/dateFormatter";
+import { formatDateTime } from "../../../../../utils/dateFormatter";
 
 interface TicketCommentProps {
     comment: IComment

@@ -2,8 +2,8 @@ import { type FC, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import type ITicket from "../../../interfaces/entities/Ticket";
 import { api } from "../../../api";
-import { TicketCommentList } from "../../../components/tickets/TicketCommentList/TicketCommentList";
-import { CreateComment } from "../../../components/tickets/CreateComment/CreateComment";
+import { TicketCommentList } from "./components/TicketCommentList/TicketCommentList";
+import { CreateComment } from "./components/CreateComment/CreateComment";
 import styles from './ticketdetails.module.css'
 import { formatDateTime } from "../../../utils/dateFormatter";
 

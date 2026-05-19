@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { TicketComment } from "../TicketComment/TicketComment";
-import { useEntityList } from "../../../hooks/useEntityList";
-import type IComment from "../../../interfaces/entities/Comment";
+import { useEntityList } from "../../../../../hooks/useEntityList";
+import type IComment from "../../../../../interfaces/entities/Comment";
 import styles from './ticketcommentlist.module.css';
 
 interface TicketCommentLisProps {

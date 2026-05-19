@@ -4,6 +4,7 @@ import { useEntityDetails } from "../../../hooks/useEntityDetails";
 import NotFound from "../../NotFound";
 import { AddEditForm } from "./AddEditForm";
 import type IUser from "../../../interfaces/entities/User";
+import { FormCard } from "../../../components/ui/FormElements/FormCard/FormCard";
 
 interface EditUserProps {
 }
@@ -27,6 +28,10 @@ export const EditUser: FC<EditUserProps> = ({
     if (isLoading) return <div>Loading...</div>
 
     return (
-        <AddEditForm entity={entity} />
+        <FormCard
+            title="Изменение пользователя"
+        >
+            <AddEditForm entity={entity} />
+        </FormCard>
     )
 }

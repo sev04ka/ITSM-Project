@@ -4,6 +4,7 @@ import { useEntityDetails } from "../../../hooks/useEntityDetails";
 import NotFound from "../../NotFound";
 import { AddEditForm } from "./AddEditForm";
 import type IOrganization from "../../../interfaces/entities/Organizations";
+import { FormCard } from "../../../components/ui/FormElements/FormCard/FormCard";
 
 interface EditOrganizationProps {
 }
@@ -27,6 +28,10 @@ export const EditOrganization: FC<EditOrganizationProps> = ({
     if (isLoading) return <div>Loading...</div>
 
     return (
-        <AddEditForm entity={entity} />
+        <FormCard
+            title="Изменение организации"
+        >
+            <AddEditForm entity={entity} />
+        </FormCard>
     )
 }
