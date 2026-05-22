@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { type FC, useRef, useEffect } from "react";
 import { TicketComment } from "../TicketComment/TicketComment";
 import { useEntityList } from "../../../../../hooks/useEntityList";
 import type IComment from "../../../../../interfaces/entities/Comment";
@@ -12,6 +12,17 @@ export const TicketCommentList: FC<TicketCommentListProps> = ({
     ticketId,
 }) => {
     const { data, loading } = useEntityList<IComment>(`/comments/for/${ticketId}`);
+    const chatWindowRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!loading && data.length > 0 && chatWindowRef.current) {
+            requestAnimationFrame(() => {
+                if (chatWindowRef.current) {
+                    chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+                }
+            });
+        }
+    }, [loading, data]);
 
     if (loading) return <div className={styles.loading}>Загрузка комментариев...</div>
 
@@ -22,7 +33,7 @@ export const TicketCommentList: FC<TicketCommentListProps> = ({
             )}
 
             {!loading && data.length > 0 && (
-                <div className={styles["chat-window"]}>
+                <div className={styles["chat-window"]} ref={chatWindowRef}>
                     {data.map((comment) => (
                         <TicketComment comment={comment} key={comment.id} />
                     ))}

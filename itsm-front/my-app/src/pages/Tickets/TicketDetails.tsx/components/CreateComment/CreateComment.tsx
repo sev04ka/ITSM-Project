@@ -9,6 +9,7 @@ import { CheckBox } from "../../../../../components/ui/FormElements/CheckBox/Che
 import styles from './createcomment.module.css'
 import { Button } from "../../../../../components/ui/Button/Button";
 import { useToast } from "../../../../../context/ToastContext";
+import { useUserAuthStore } from "../../../../../store/useUserAuthStore";
 
 const CommentCreateSchema = z.object({
     text: z.string().min(2, "Текст комментария не может быть пустым"),
@@ -22,6 +23,7 @@ interface CreateCommentProps {
 export const CreateComment: FC<CreateCommentProps> = ({
     ticketId,
 }) => {
+    const { currentUser } = useUserAuthStore();
     const toast = useToast()
 
     const form = useForm<z.infer<typeof CommentCreateSchema>>({
@@ -64,12 +66,17 @@ export const CreateComment: FC<CreateCommentProps> = ({
                         placeholder="Введите текст комментария..."
                     />
                 </FieldGroup>
-                <FieldGroup orientation="horizontal">
-                    <CheckBox
-                        name="is_internal"
-                        control={form.control}
-                        label="Только для персонала"
-                    />
+                <FieldGroup
+                    orientation="horizontal"
+                    button={currentUser?.role.name != "user" ? undefined : "button-right"}
+                >
+                    {currentUser?.role.name != "user" &&
+                        <CheckBox
+                            name="is_internal"
+                            control={form.control}
+                            label="Только для персонала"
+                        />
+                    }
                     <Button type="submit" disabled={!form.formState.isValid}>
                         Отправить
                     </Button>

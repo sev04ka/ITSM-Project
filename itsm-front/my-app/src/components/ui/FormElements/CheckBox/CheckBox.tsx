@@ -24,7 +24,7 @@ export const CheckBox = <T extends FieldValues>({
     });
 
     return (
-        <div>
+        <div className={styles["checkbox-wrapper"]}>
             <label className={styles["checkbox-row"]} htmlFor={name}>
                 <input
                     {...field}

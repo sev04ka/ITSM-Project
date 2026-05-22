@@ -1,3 +1,9 @@
+.checkbox-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .checkbox-row {
     display: flex;
     align-items: center;

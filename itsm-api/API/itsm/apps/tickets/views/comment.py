@@ -23,10 +23,17 @@ class CommentViewSet(viewsets.ModelViewSet):
         if not ticket_id:
             raise serializer.ValidationError({'ticket': 'Ticket ID is required'})
         
+        is_internal = self.request.data.get('is_internal')
+        if self.request.user.role.name == "user":
+            is_internal = False 
+
+        print(self.request.data)
+        
         serializer.save(
             author = self.request.user,
             ticket_id = ticket_id,
-            organization = self.request.user.organization
+            organization = self.request.user.organization,
+            is_internal = is_internal
         )
 
 

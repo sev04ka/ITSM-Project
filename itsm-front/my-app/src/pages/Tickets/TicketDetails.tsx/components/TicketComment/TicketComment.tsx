@@ -13,7 +13,7 @@ export const TicketComment: FC<TicketCommentProps> = ({
 }) => {
     const { currentUser } = useUserAuthStore();
     const isOwn = currentUser?.id === comment.author.id;
-    const isAction = comment.comment_type === 'action';
+    const isAction = comment.comment_type != 'comment';
     const isInternal = comment.is_internal === true;
 
     if (isAction) {
@@ -35,13 +35,17 @@ export const TicketComment: FC<TicketCommentProps> = ({
     ].filter(Boolean).join(' ');
 
     return (
-        <div className={`${styles.comment} ${isOwn ? styles["comment-own"] : ''}`}>
+        <div className={`${styles.comment} ${isOwn ? styles["comment-own"] : styles["comment-other"]}`}>
             <div className={bubbleClass}>
                 <div className={`${styles.header} ${isOwn ? styles["header-right"] : styles["header-left"]}`}>
-                    <span className={styles.author}>
-                        {comment.author.first_name} {comment.author.last_name}
-                    </span>
-                    <span className={styles["role-badge"]}>{comment.author.role.name}</span>
+                    {!isOwn &&
+                        <>
+                            <span className={styles.author}>
+                                {comment.author.first_name} {comment.author.last_name}
+                            </span>
+                            <span className={styles["role-badge"]}>{comment.author.role.name}</span>
+                        </>
+                    }
                     {isInternal && <span className={styles["internal-badge"]}>Только персонал</span>}
                 </div>
                 <div className={styles.text}>{comment.text}</div>
