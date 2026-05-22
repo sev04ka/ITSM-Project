@@ -4,13 +4,15 @@ import { useRole } from '../../hooks/useRole';
 interface RoleGuardProps {
     children: ReactNode;
     roles: string[];
+    hideMode?: boolean;
 }
 
 
 
 const RoleGuard: FC<RoleGuardProps> = ({
     children,
-    roles
+    roles,
+    hideMode = false
 }) => {
     const { hasAccess } = useRole();
 
@@ -18,9 +20,9 @@ const RoleGuard: FC<RoleGuardProps> = ({
         return children;
     }
 
-    return (
-        <div>Нет доступа</div>
-    )
+    if (hideMode) return <></>
+
+    if (!hideMode) return <div>Нет доступа</div>
 };
 
 export default RoleGuard

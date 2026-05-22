@@ -24,12 +24,19 @@
     overflow: hidden;
 }
 
+.ticket-card>div {
+    padding: 1.25rem 1.25rem;
+}
+
+.ticket-card>div:not(:nth-child(1)):not(:nth-last-child(1)) {
+    border-bottom: 1px solid var(--border-color);
+}
+
 .ticket-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 1rem;
-    padding: 1.5rem 1.5rem 0;
 }
 
 .ticket-title {
@@ -55,8 +62,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1rem;
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
 }
 
 .meta-item {
@@ -89,7 +94,12 @@
     width: fit-content;
 }
 
-.badge-open {
+.badge-new {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.badge-waiting {
     background: #dbeafe;
     color: #1d4ed8;
 }
@@ -107,6 +117,11 @@
 .badge-closed {
     background: #e2e8f0;
     color: #475569;
+}
+
+.badge-cancelled {
+    background: #f1f5f9;
+    color: #64748b;
 }
 
 .badge-critical {
@@ -144,12 +159,32 @@
     color: #7c3aed;
 }
 
-.requester-section {
+.people-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.people-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.people-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.people-content {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 1.5rem 1.25rem;
-    border-bottom: 1px solid var(--border-color);
 }
 
 .avatar {
@@ -166,27 +201,33 @@
     flex-shrink: 0;
 }
 
-.requester-info {
+.avatar-assignee {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.people-info {
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
 }
 
-.requester-name {
+.people-name {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--text-color);
 }
 
-.requester-email {
+.people-email {
     font-size: 0.75rem;
     color: var(--text-muted);
 }
 
-.description-section {
+.actions-section {
     padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
 }
+
+.description-section {}
 
 .description-label {
     font-size: 0.6875rem;
@@ -208,7 +249,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 0.75rem;
-    padding: 1rem 1.5rem;
 }
 
 .timestamp-item {

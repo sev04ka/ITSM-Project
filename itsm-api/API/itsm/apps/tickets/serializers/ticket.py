@@ -6,6 +6,7 @@ from django.utils.formats import date_format
 
 class TicketSerializer(serializers.ModelSerializer):
     requester = UserSerializer(read_only = True)
+    assignee = UserSerializer(read_only = True)
 
     class Meta:
         model = Ticket
@@ -18,6 +19,8 @@ class TicketSerializer(serializers.ModelSerializer):
             'priority',
             'status',
             'requester',
+            'assignee',
+            'assignee_id',
             'created_at', 
             'updated_at',
             'resolved_at',
@@ -34,4 +37,8 @@ class TicketSerializer(serializers.ModelSerializer):
             'resolved_at',
             'closed_at',
         ]
+
+        extra_kwargs = {
+        'assignee_id': {'source': 'assignee', 'write_only': True},
+        }
 

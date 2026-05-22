@@ -29,7 +29,9 @@ export const TextArea = <T extends FieldValues>({
     });
     return (
         <div className={styles["textarea-wrapper"]}>
-            <FieldLabel htmlFor={name}>{label}</FieldLabel>
+            {label &&
+                <FieldLabel htmlFor={name}>{label}</FieldLabel>
+            }
             <textarea className={styles.textarea}
                 {...field}
                 id={name}

@@ -28,11 +28,11 @@ class OrganizationViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            permission_classes = [permissions.IsAuthenticated, IsSuperUser]
+            permission_classes = [permissions.IsAuthenticated, IsSuperAdmin]
         elif self.action in ['update', 'partial_update']:
-            permission_classes = [permissions.IsAuthenticated, IsSuperUser]
+            permission_classes = [permissions.IsAuthenticated, IsSuperAdmin]
         elif self.action == 'destroy':
-            permission_classes = [permissions.IsAuthenticated, IsSuperUser]
+            permission_classes = [permissions.IsAuthenticated, IsSuperAdmin]
         else:
             permission_classes = [permissions.IsAuthenticated, IsMemberOfOrganization]
         

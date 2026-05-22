@@ -30,7 +30,8 @@ export const CreateComment: FC<CreateCommentProps> = ({
             text: '',
             is_internal: false,
         },
-        mode: 'onBlur'
+        mode: 'onTouched',
+        reValidateMode: 'onChange'
     })
 
     const onSubmit = async (data: z.infer<typeof CommentCreateSchema>) => {
@@ -55,27 +56,25 @@ export const CreateComment: FC<CreateCommentProps> = ({
 
     return (
         <div className={styles["create-comment-section"]}>
-            <h3>Написать комментарий</h3>
             <form id="comment-form" onSubmit={form.handleSubmit(onSubmit)}>
-                <div className={styles["form-body"]}>
-
-                    <CheckBox
-                        name="is_internal"
-                        control={form.control}
-                        label="Только для персонала"
-                    />
+                <FieldGroup>
                     <TextArea
                         name="text"
                         control={form.control}
                         placeholder="Введите текст комментария..."
                     />
-                </div>
-                <div className={styles["form-footer"]}>
+                </FieldGroup>
+                <FieldGroup orientation="horizontal">
+                    <CheckBox
+                        name="is_internal"
+                        control={form.control}
+                        label="Только для персонала"
+                    />
                     <Button type="submit" disabled={!form.formState.isValid}>
                         Отправить
                     </Button>
-                </div>
+                </FieldGroup>
             </form>
-        </div>
+        </div >
     )
 }

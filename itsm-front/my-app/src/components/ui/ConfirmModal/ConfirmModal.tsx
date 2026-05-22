@@ -38,7 +38,7 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
                         onClick={onConfirm}
                         disabled={isLoading}
                     >
-                        {isLoading ? 'Удаление...' : 'Удалить'}
+                        {isLoading ? 'Выолняется...' : 'Подтвердить'}
                     </Button>
                 </div>
             </div>

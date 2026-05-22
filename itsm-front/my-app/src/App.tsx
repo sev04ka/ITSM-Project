@@ -50,67 +50,67 @@ const App: FC = () => {
 					</ProtectedRoute>
 				}>
 					<Route path='conf-items-management' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['admin', 'support']}>
 							<CIList />
 						</ProtectedRoute>
 					} />
 					<Route path='conf-items-management/add' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['admin', 'support']}>
 							<AddCI />
 						</ProtectedRoute>
 					} />
 					<Route path='conf-items-management/edit/:id' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['admin', 'support']}>
 							<EditCI />
 						</ProtectedRoute>
 					} />
 					<Route path='users' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['super-admin', 'admin']}>
 							<UserList />
 						</ProtectedRoute>
 					} />
 					<Route path='users/add' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['super-admin', 'admin']}>
 							<AddUser />
 						</ProtectedRoute>
 					} />
 					<Route path='users/edit/:id' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['super-admin', 'admin']}>
 							<EditUser />
 						</ProtectedRoute>
 					} />
 					<Route path='organizations' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['super-admin']}>
 							<OrganizationList />
 						</ProtectedRoute>
 					} />
 					<Route path='organizations/add' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['super-admin']}>
 							<AddOrganization />
 						</ProtectedRoute>
 					} />
 					<Route path='organizations/edit/:id' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['super-admin']}>
 							<EditOrganization />
 						</ProtectedRoute>
 					} />
 					<Route path='tickets' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['admin', 'support']}>
 							<TicketList />
 						</ProtectedRoute>
 					} />
 					<Route path='tickets/:id' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['admin', 'support', 'user']}>
 							<TicketDetails />
 						</ProtectedRoute>
 					} />
 					<Route path='my-tickets' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['admin', 'support', 'user']}>
 							<UserTicketList />
 						</ProtectedRoute>
 					} />
 					<Route path='my-tickets/add' element={
-						<ProtectedRoute roles={['admin']}>
+						<ProtectedRoute roles={['admin', 'support', 'user']}>
 							<AddTicket />
 						</ProtectedRoute>
 					} />

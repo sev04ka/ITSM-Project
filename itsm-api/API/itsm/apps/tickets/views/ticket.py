@@ -1,6 +1,8 @@
 from rest_framework import permissions, viewsets, status
+from rest_framework.exceptions import PermissionDenied, MethodNotAllowed, ValidationError
 from ..models.ticket import Ticket
 from ..models.comment import Comment
+from itsm.apps.users.models import User
 from ..serializers.ticket import TicketSerializer
 from ..serializers.comment import CommentSerializer
 from django_filters.rest_framework import DjangoFilterBackend
@@ -9,13 +11,36 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db import transaction
 from django.utils import timezone
-
+from itsm.apps.core.permissions import *
 
 
 class TicketViewSet(viewsets.ModelViewSet):
+    http_method_names = ['get', 'post', 'patch', 'head', 'options']
+
+    def get_permissions(self):
+        if self.action == 'create':
+            permission_classes = [permissions.IsAuthenticated]
+        elif self.action == 'partial_update':
+            permission_classes = [permissions.IsAuthenticated, IsSuperAdmin, IsMemberOfOrganization]
+        elif self.action in ['close_ticket', 'cancel_ticket', 'resolve_ticket', 'reopen_ticket']:
+            permission_classes = [permissions.IsAuthenticated, IsMemberOfOrganization]
+        elif self.action in ['assign', 'remove_assignee']:
+            permission_classes = [permissions.IsAuthenticated, IsMemberOfOrganization, IsAdminOrSupport]
+        else:
+            permission_classes = [permissions.IsAuthenticated, IsMemberOfOrganization]
+        
+        return [permission() for permission in permission_classes]
+
+    def partial_update(self, request, *args, **kwargs):
+
+        raise MethodNotAllowed(
+            method='PATCH',
+            detail='Прямое обновление тикета запрещено.'
+        )
+
     queryset = Ticket.objects.all().select_related('requester')
     serializer_class = TicketSerializer
-    #permission_classes = [permissions.IsAuthenticated]
+    
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
 
@@ -24,7 +49,6 @@ class TicketViewSet(viewsets.ModelViewSet):
         'priority': ['exact'],
         # 'requester': ['exact'],
         # 'assignee': ['exact'],
-        # 'ci_type': ['exact'],
         'created_at': ['gte', 'lte'],
     }
 
@@ -46,9 +70,102 @@ class TicketViewSet(viewsets.ModelViewSet):
         url_name='user-tickets'
     )
     def get_user_tickets(self, request):
-        queryset = Ticket.objects.filter(owner = request.user)
-        serializer = TicketSerializer(queryset, many=True)
-        return Response(serializer.data)
+        queryset = Ticket.objects.filter(
+            requester = request.user, 
+            organization=request.user.organization
+        ).select_related('requester', 'organization')
+
+        page = self.paginate_queryset(queryset)
+
+        serializer = self.get_serializer(page, many=True)
+
+        return self.get_paginated_response(serializer.data)
+    
+    @action(
+        methods=['patch'], 
+        detail=True, 
+        url_path='assign', 
+        url_name='assign'
+    )
+    def assign(self, request, pk=None):
+        ticket = self.get_object()
+
+        assignee_id = request.data.get('assignee_id')
+        if not assignee_id:
+            raise ValidationError({"assignee_id": "ID required"})
+        
+        try:
+            assignee_id = int(assignee_id)
+        except (ValueError, TypeError):
+            raise ValidationError({"assignee_id": "Incorrect ID"})
+        
+        try:
+            assignee = User.objects.select_related('organization', 'role').get(
+                id=assignee_id
+            )
+        except User.DoesNotExist:
+            raise ValidationError({"assignee_id": "No user with this id"})
+        
+        if ticket.status in ['closed', 'cancelled', 'resolved']:
+            raise ValidationError({
+                "detail": f"Cannot assign to ticket with status: '{ticket.status}'"
+            })
+        
+        with transaction.atomic():
+            ticket.status = 'in_progress'
+            ticket.updated_at = timezone.now()
+            ticket.assignee = assignee
+            ticket.save(update_fields=['status', 'updated_at', 'assignee'])
+
+            comment = Comment.objects.create(
+                ticket = ticket,
+                author = request.user,
+                comment_type = 'assign_comment',
+                text = f"Оператор {assignee.first_name} {assignee.last_name} назначен исполнителем",
+                is_internal = False,
+                organization = ticket.organization
+            )
+        
+        return Response(status=status.HTTP_200_OK)
+    
+    @action(
+        methods=['patch'], 
+        detail=True, 
+        url_path='remove-assignee', 
+        url_name='remove-assignee'
+    )
+    def remove_assignee(self, request, pk=None):
+        ticket = self.get_object()
+
+        if not ticket.assignee:
+            return Response(
+                {'detail': 'This ticket does not have assignee'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if ticket.status in ['closed', 'cancelled', 'resolved', 'new', 'waiting']:
+            raise ValidationError({
+                "detail": f"Cannot remove assignee from ticket with status: '{ticket.status}'"
+            })
+        
+        with transaction.atomic():
+            prev_assignee = ticket.assignee
+
+            ticket.status = 'waiting'
+            ticket.updated_at = timezone.now()
+            ticket.assignee = None
+            ticket.save(update_fields=['status', 'updated_at', 'assignee'])
+
+            comment = Comment.objects.create(
+                ticket = ticket,
+                author = request.user,
+                comment_type = 'unassign_comment',
+                text = f"Оператор {prev_assignee.first_name} {prev_assignee.last_name} снят с исполнения заявки",
+                is_internal = False,
+                organization = ticket.organization
+            )
+        
+        return Response(status=status.HTTP_200_OK)
     
 
     
@@ -61,15 +178,15 @@ class TicketViewSet(viewsets.ModelViewSet):
     def close_ticket(self, request, pk=None):
         ticket = self.get_object()
 
-        if ticket.requester != request.user and not request.user.is_staff:
+        if ticket.requester != request.user:
             raise PermissionDenied()
         
-        if ticket.status == 'closed':
+        if ticket.status != 'resolved':
             return Response(
-                {'detail': 'Ticket is already closed.'},
+                {'detail': 'Cannot close unresolved ticket'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
+        
         close_comment_text = request.data.get('comment', 'Тикет закрыт')
 
         with transaction.atomic():
@@ -106,21 +223,33 @@ class TicketViewSet(viewsets.ModelViewSet):
     def cancel_ticket(self, request, pk=None):
         ticket = self.get_object()
 
-        if ticket.requester != request.user and not request.user.is_staff:
+        if ticket.requester != request.user:
             raise PermissionDenied()
         
-        if ticket.status == 'cancelld':
+        if ticket.status == 'cancelled':
             return Response(
                 {'detail': 'Ticket is already cancelled.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if ticket.status == 'resolved':
+            return Response(
+                {'detail': 'Cannot cancel resolved ticket.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if ticket.status == 'closed':
+            return Response(
+                {'detail': 'Cannot cancel closed ticket.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         cancel_comment_text = request.data.get('comment', 'Тикет отменён')
 
         with transaction.atomic():
-            ticket.status = 'cancel'
-            ticket.closed_at = timezone.now()
-            ticket.save(update_fields=['status', 'closed_at'])
+            ticket.status = 'cancelled'
+            ticket.updated_at = timezone.now()
+            ticket.save(update_fields=['status', 'updated_at'])
 
             comment = Comment.objects.create(
                 ticket = ticket,
@@ -130,7 +259,6 @@ class TicketViewSet(viewsets.ModelViewSet):
                 is_internal = False,
                 organization = ticket.organization
             )
-
 
         ticket_serializer = self.get_serializer(ticket)
         comment_serializer = CommentSerializer(comment)
@@ -151,12 +279,24 @@ class TicketViewSet(viewsets.ModelViewSet):
     def resolve_ticket(self, request, pk=None):
         ticket = self.get_object()
 
-        if ticket.requester != request.user and not request.user.is_staff:
-            raise PermissionDenied()
+        if not ticket.assignee or ticket.assignee != request.user:
+            raise PermissionDenied("Чтобы решить заявку, нужно быть назначенным как её исполнитель")
         
         if ticket.status == 'resolved':
             return Response(
                 {'detail': 'Ticket is already resolved.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if ticket.status == 'cancelled':
+            return Response(
+                {'detail': 'Cancelled ticket cannot be resolved.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if ticket.status == 'closed':
+            return Response(
+                {'detail': 'Closed ticket cannot be resolved.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -196,7 +336,7 @@ class TicketViewSet(viewsets.ModelViewSet):
     def reopen_ticket(self, request, pk=None):
         ticket = self.get_object()
 
-        if ticket.requester != request.user and not request.user.is_staff:
+        if ticket.requester != request.user:
             raise PermissionDenied()
         
         if not ticket.status in ['resolved', 'closed', 'cancelled']:
@@ -209,14 +349,15 @@ class TicketViewSet(viewsets.ModelViewSet):
 
         with transaction.atomic():
             ticket.status = 'waiting'
+            ticket.assignee = None
             ticket.closed_at = None
-            ticket.save(update_fields=['status', 'closed_at'])
+            ticket.save(update_fields=['status', 'closed_at', 'assignee'])
 
             comment = Comment.objects.create(
                 ticket = ticket,
                 author = request.user,
                 comment_type = 'reopen_comment',
-                text = reopen_comment_text_comment_text,
+                text = reopen_comment_text,
                 is_internal = False,
                 organization = ticket.organization
             )

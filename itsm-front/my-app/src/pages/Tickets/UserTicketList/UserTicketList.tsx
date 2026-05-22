@@ -10,12 +10,12 @@ import { ErrorState } from "../../../components/ui/ErrorState/ErrorState";
 import { LoadingState } from "../../../components/ui/LoadingState/LoadingState";
 
 export const UserTicketList: FC = () => {
-    const { data, loading, error } = useEntityList<ITicket>('/tickets')
+    const { data, loading, error } = useEntityList<ITicket>('/tickets/my')
     // const { data } = useEntityList<ITicket>('/tickets/my')
     const navigate = useNavigate();
 
     return (
-        <div className={styles["page"]}>
+        <>
             <div className={styles["header"]}>
                 <h1>Текущие заявки</h1>
                 <Button
@@ -40,7 +40,7 @@ export const UserTicketList: FC = () => {
                     {data.map((item) => <TicketCard key={item.id} {...item} />)}
                 </div>
             }
-        </div>
+        </>
     )
 }
 

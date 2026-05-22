@@ -10,6 +10,7 @@ class Command(BaseCommand):
             return
         
         Role.objects.bulk_create([
+            Role(name = 'super-admin'),
             Role(name = 'admin'),
             Role(name = 'support'),
             Role(name = 'user')

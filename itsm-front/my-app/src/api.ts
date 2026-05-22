@@ -172,7 +172,7 @@ export const api = {
 
     patch: async <T>(
         url: string,
-        body: Record<string, unknown>,
+        body?: Record<string, unknown>,
         signal?: AbortSignal,
         config?: { headers?: HeadersInit }
     ): Promise<ApiResponse<T>> => {

@@ -1,17 +1,10 @@
 .create-comment-section {
     background-color: var(--default-bg);
-    border: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
     border-radius: var(--radius-xl);
-    padding: 1.5rem;
-    box-shadow: var(--card-shadow);
-    margin-top: 1.5rem;
-}
-
-.create-comment-section h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--text-color);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 1rem 1.25rem;
 }
 
 .form-body {

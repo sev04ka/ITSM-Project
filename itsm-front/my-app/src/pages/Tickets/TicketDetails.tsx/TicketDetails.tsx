@@ -1,4 +1,4 @@
-import { type FC, useState, useEffect } from "react";
+import { type FC, useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import type ITicket from "../../../interfaces/entities/Ticket";
 import { api } from "../../../api";
@@ -6,12 +6,21 @@ import { TicketCommentList } from "./components/TicketCommentList/TicketCommentL
 import { CreateComment } from "./components/CreateComment/CreateComment";
 import styles from './ticketdetails.module.css'
 import { formatDateTime } from "../../../utils/dateFormatter";
+import { EmptyState } from "../../../components/ui/EmptyState/EmptyState";
+import { ErrorState } from "../../../components/ui/ErrorState/ErrorState";
+import { LoadingState } from "../../../components/ui/LoadingState/LoadingState";
+import { TicketControlPanel } from "./components/TicketControlPanel/TicketControlPanel";
+import { AssigneeControls } from "./components/AssigneeControls/AssigneeControls";
+import RoleGuard from "../../../components/security/RoleGuard";
+import { CommentSection } from "./components/CommentSection/CommentSection";
 
 const statusBadge: Record<string, string> = {
-    'open': styles['badge-open'],
+    'new': styles['badge-new'],
+    'waiting': styles['badge-waiting'],
     'in_progress': styles['badge-in_progress'],
     'resolved': styles['badge-resolved'],
     'closed': styles['badge-closed'],
+    'cancelled': styles['badge-cancelled'],
 }
 
 const priorityBadge: Record<string, string> = {
@@ -28,10 +37,12 @@ const typeBadge: Record<string, string> = {
 }
 
 const statusLabels: Record<string, string> = {
-    'open': 'Открыт',
+    'new': 'Новый',
+    'waiting': 'В ожидании',
     'in_progress': 'В работе',
     'resolved': 'Решён',
     'closed': 'Закрыт',
+    'cancelled': 'Отменён',
 }
 
 const priorityLabels: Record<string, string> = {
@@ -55,38 +66,39 @@ export const TicketDetails: FC = () => {
 
     if (!id) return <div className={styles.error}>Ошибка: ID тикета не указан</div>
 
-    useEffect(() => {
-        const fetchTicket = async () => {
-            try {
-                setLoading(true);
-                const response = await api.getDetail<ITicket>(`/tickets/${id}/`);
-                if (response.success) {
-                    const data = response.data
-                    setTicket(data);
-                    setError(null);
-                }
-            } catch (err) {
-                setTicket(null);
-                setError(err instanceof Error ? err.message : 'Ошибка загрузки');
-            } finally {
-                setLoading(false);
+    const fetchTicket = useCallback(async () => {
+        try {
+            setLoading(true);
+            const response = await api.getDetail<ITicket>(`/tickets/${id}/`);
+            if (response.success) {
+                const data = response.data
+                setTicket(data);
+                setError(null);
             }
-        };
+        } catch (err) {
+            setTicket(null);
+            setError(err instanceof Error ? err.message : 'Ошибка загрузки');
+        } finally {
+            setLoading(false);
+        }
+    }, [id]);
+
+    useEffect(() => {
         fetchTicket();
     }, [id]);
 
-    if (loading) return (<div>loading....</div>)
+    if (loading) return (<LoadingState />)
 
-    if (!ticket) return (
-        <div className={styles.error}>Тикет не найден</div>
-    )
+    if (error) return (<ErrorState message={error} />)
+
+    if (!ticket) return (<EmptyState message="Тикет не найден" />)
 
     const initials = `
     ${ticket.requester.first_name[0] ? ticket.requester.first_name[0].toUpperCase() : ''}
     ${ticket.requester.last_name[0] ? ticket.requester.last_name[0].toUpperCase() : ''}` || '?'
 
     return (
-        <div className={styles.page}>
+        <>
             <div className={styles["ticket-card"]}>
                 <div className={styles["ticket-header"]}>
                     <h1 className={styles["ticket-title"]}>{ticket.title}</h1>
@@ -114,15 +126,46 @@ export const TicketDetails: FC = () => {
                     </div>
                 </div>
 
-                <div className={styles["requester-section"]}>
-                    <div className={styles.avatar}>{initials}</div>
-                    <div className={styles["requester-info"]}>
-                        <span className={styles["requester-name"]}>
-                            {ticket.requester.first_name} {ticket.requester.last_name}
-                        </span>
-                        <span className={styles["requester-email"]}>{ticket.requester.email}</span>
+                <div className={styles["people-section"]}>
+                    <div className={styles["people-item"]}>
+                        <div className={styles["people-label"]}>Заявитель</div>
+                        <div className={styles["people-content"]}>
+                            <div className={styles.avatar}>{initials}</div>
+                            <div className={styles["people-info"]}>
+                                <span className={styles["people-name"]}>
+                                    {ticket.requester.first_name} {ticket.requester.last_name}
+                                </span>
+                                <span className={styles["people-email"]}>{ticket.requester.email}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <div className={styles["people-section"]}>
+                    <div className={styles["people-item"]}>
+                        <div className={styles["people-label"]}>Исполнитель</div>
+                        {ticket.assignee && (
+                            <div className={styles["people-content"]}>
+                                <div className={`${styles.avatar} ${styles["avatar-assignee"]}`}>
+                                    {ticket.assignee.first_name[0]?.toUpperCase() ?? ''}{ticket.assignee.last_name[0]?.toUpperCase() ?? ''}
+                                </div>
+                                <div className={styles["people-info"]}>
+                                    <span className={styles["people-name"]}>
+                                        {ticket.assignee.first_name} {ticket.assignee.last_name}
+                                    </span>
+                                    <span className={styles["people-email"]}>{ticket.assignee.email}</span>
+                                </div>
+                            </div>
+                        ) || "Исолнитель не назначен"}
+                    </div>
+                    <RoleGuard roles={["support", "admin"]} hideMode={true}>
+                        <AssigneeControls
+                            ticket={ticket}
+                            onTicketUpdated={fetchTicket}
+                        />
+                    </RoleGuard>
+                </div>
+
 
                 <div className={styles["description-section"]}>
                     <div className={styles["description-label"]}>Описание</div>
@@ -134,10 +177,10 @@ export const TicketDetails: FC = () => {
                         <span className={styles["timestamp-label"]}>Создан</span>
                         <span className={styles["timestamp-value"]}>{formatDateTime(ticket.created_at)}</span>
                     </div>
-                    <div className={styles["timestamp-item"]}>
+                    {/* <div className={styles["timestamp-item"]}>
                         <span className={styles["timestamp-label"]}>Обновлён</span>
                         <span className={styles["timestamp-value"]}>{formatDateTime(ticket.updated_at)}</span>
-                    </div>
+                        </div> */}
                     {ticket.resolved_at && (
                         <div className={styles["timestamp-item"]}>
                             <span className={styles["timestamp-label"]}>Решён</span>
@@ -151,11 +194,13 @@ export const TicketDetails: FC = () => {
                         </div>
                     )}
                 </div>
+                <TicketControlPanel
+                    ticket={ticket}
+                    onTicketUpdated={fetchTicket}
+                />
             </div>
 
-            <TicketCommentList ticketId={id} />
-            <CreateComment ticketId={id} />
-        </div>
+            <CommentSection ticketId={id} />
+        </>
     )
-
 }

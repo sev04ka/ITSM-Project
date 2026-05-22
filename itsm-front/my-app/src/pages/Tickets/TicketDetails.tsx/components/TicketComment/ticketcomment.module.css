@@ -1,65 +1,112 @@
 .comment {
-    background-color: var(--default-bg);
-    border-radius: var(--radius-lg);
-    padding: 1rem;
-    border: 1px solid var(--border-color);
-    transition: box-shadow var(--transition);
+  display: flex;
+  flex-direction: column;
 }
 
-.comment-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.5rem;
+.comment-own {
+  align-items: flex-end;
 }
 
-.avatar {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    background: var(--accent-light);
-    color: var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    flex-shrink: 0;
+.comment-system {
+  align-items: center;
 }
 
-.comment-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.0625rem;
-    flex: 1;
+.bubble {
+  background-color: var(--default-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+  max-width: 85%;
+  position: relative;
 }
 
-.comment-author {
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: var(--text-color);
+.bubble-own {
+  background-color: #eef2ff;
+  border-color: #c7d2fe;
 }
 
-.comment-date-role {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
+.bubble-internal {
+  background-color: #fffbeb;
+  border-color: #fde68a;
+  border-style: dashed;
 }
 
-.comment-role {
-    font-size: 0.6875rem;
-    color: var(--text-muted);
+.system-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  max-width: 90%;
 }
 
-.comment-date {
-    font-size: 0.6875rem;
-    color: var(--detail-grey);
+.system-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--detail-grey);
+  flex-shrink: 0;
 }
 
-.comment-text {
-    font-size: 0.8125rem;
-    line-height: 1.6;
-    color: var(--text-color);
-    white-space: pre-wrap;
-    margin-left: 2.75rem;
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.header-left {
+  flex-direction: row;
+}
+
+.header-right {
+  flex-direction: row-reverse;
+}
+
+.author {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.role-badge {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--dark-bg);
+  padding: 0.0625rem 0.375rem;
+  border-radius: 9999px;
+}
+
+.internal-badge {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: #b45309;
+  background: #fef3c7;
+  padding: 0.0625rem 0.375rem;
+  border-radius: 9999px;
+}
+
+.date {
+  font-size: 0.625rem;
+  color: var(--detail-grey);
+  margin-top: 0.25rem;
+}
+
+.date-left {
+  text-align: left;
+}
+
+.date-right {
+  text-align: right;
+}
+
+.text {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--text-color);
+  white-space: pre-wrap;
+  word-break: break-word;
 }

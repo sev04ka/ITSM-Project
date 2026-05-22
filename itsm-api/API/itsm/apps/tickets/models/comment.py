@@ -10,6 +10,8 @@ class CommentType(models.TextChoices):
     CANCEL_COMMENT = 'cancel_comment', 'Комментарий при отмене'
     RESOLVE_COMMENT = 'resolve_comment', 'Комментарий при решении'
     REOPEN_COMMENT = 'reopen_comment', 'Комментарий при возобновлении'
+    ASSIGN_COMMENT = 'assign_comment', 'Комментриай при назначении'
+    UNASSIGN_COMMENT = 'unassign_comment', 'Комментарий при снятии с назначения'
 
 """
 Комментарии к заявкам
@@ -17,7 +19,7 @@ class CommentType(models.TextChoices):
 class Comment(TenantModel):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    comment_type = models.CharField(max_length=15, choices=CommentType.choices, default=CommentType.BASE_COMMENT)
+    comment_type = models.CharField(max_length=25, choices=CommentType.choices, default=CommentType.BASE_COMMENT)
     text = models.TextField()
     is_internal = models.BooleanField(default=False) 
     created_at = models.DateTimeField(auto_now_add=True)

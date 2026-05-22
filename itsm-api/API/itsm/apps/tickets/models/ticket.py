@@ -42,7 +42,7 @@ class Ticket(TenantModel):
     parent_problem = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'ticket_type': 'problem'}, related_name='related_incidents')
     
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
     resolved_at = models.DateTimeField(null=True, blank=True)
     closed_at = models.DateTimeField(null=True, blank=True)
     

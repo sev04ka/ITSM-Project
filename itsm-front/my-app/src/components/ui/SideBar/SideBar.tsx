@@ -12,31 +12,31 @@ const SideBar: FC = () => {
         {
             path: '/conf-items-management',
             title: 'Конфигурации',
-            roles: ['admin'],
+            roles: ['admin', 'support'],
             icon: '\u2699'
         },
         {
             path: '/users',
             title: 'Пользователи',
-            roles: ['admin'],
+            roles: ['super-admin', 'admin'],
             icon: '\u2731'
         },
         {
             path: '/organizations',
             title: 'Организации',
-            roles: ['admin'],
+            roles: ['super-admin'],
             icon: '\u2302'
         },
         {
             path: '/tickets',
             title: 'Заявки',
-            roles: ['admin'],
+            roles: ['admin', 'support'],
             icon: '\u2302'
         },
         {
             path: '/my-tickets',
             title: 'Мои заявки',
-            roles: ['admin'],
+            roles: ['admin', 'support', 'user'],
             icon: '\u2302'
         },
     ]

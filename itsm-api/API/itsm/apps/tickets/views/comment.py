@@ -8,14 +8,13 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 
 class CustomPageNumberPagination(PageNumberPagination):
-    page_size = 15  
+    page_size = 150  
     # page_size_query_param = 'page_size'  
     # max_page_size = 10000 
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    #permission_classes = [permissions.IsAuthenticated]
 
     pagination_class = CustomPageNumberPagination
 

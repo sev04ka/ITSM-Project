@@ -10,8 +10,9 @@ export default interface ITicket {
     priority: string,
     status: string,
     requester: IUser,
+    assignee?: IUser,
     created_at: string,
-    updated_at: string,
-    resolved_at: string,
-    closed_at: string,
+    updated_at?: string,
+    resolved_at?: string,
+    closed_at?: string,
 }

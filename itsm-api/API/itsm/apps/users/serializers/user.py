@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .role import RoleSerializer
-from ...core.serializers.organization import OrganizationSerializer
+from itsm.apps.core.serializers.organization import OrganizationSerializer
 from dj_rest_auth.serializers import UserDetailsSerializer
 
 User = get_user_model()

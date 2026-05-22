@@ -8,9 +8,8 @@ class CustomPageNumberPagination(PageNumberPagination):
     # page_size_query_param = 'page_size'  
     # max_page_size = 10000 
 
-class CITypeViewSet(viewsets.ModelViewSet):
+class CITypeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CIType.objects.all()
     serializer_class = CITypeSerializer
-    #permission_classes = [permissions.IsAuthenticated]
 
     pagination_class = CustomPageNumberPagination

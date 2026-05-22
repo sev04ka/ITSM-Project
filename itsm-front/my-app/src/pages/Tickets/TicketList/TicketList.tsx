@@ -5,12 +5,6 @@ import type ITicket from '../../../interfaces/entities/Ticket';
 import { formatDateTime } from '../../../utils/dateFormatter';
 import { Link } from 'react-router-dom';
 
-// const STATUS_OPTIONS = [
-//     { value: "active", label: "Активен" },
-//     { value: "inactive", label: "Неактивен" },
-//     { value: "maintenance", label: "Обслуживание" },
-//     { value: "retired", label: "Выведен" },
-// ] as const
 
 const columns: Column<ITicket>[] = [
     {
