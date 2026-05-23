@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import SideBar from '../../components/ui/SideBar/SideBar'
+import { SideBar } from '../../components/ui/SideBar/SideBar'
 import { Header } from '../../components/ui/Header/Header';
 import styles from './mainlayout.module.css'
 import { Outlet } from 'react-router-dom';

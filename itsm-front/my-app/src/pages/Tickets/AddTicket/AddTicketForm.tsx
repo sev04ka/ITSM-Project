@@ -12,9 +12,11 @@ import { useToast } from "../../../context/ToastContext"
 import { TextArea } from "../../../components/ui/FormElements/TextArea/TextArea"
 
 const TicketCreateSchema = z.object({
-    title: z.string().min(1, "Название обязательно"),
+    title: z.string().min(1, "Заголовок обязателен"),
     description: z.string().min(1, "Описание обязательно"),
-    ticket_type: z.enum(["incident", "service_request", "problem"]),
+    ticket_type: z.enum(["incident", "service_request", "problem"], "Тип заявки обязателен"),
+    impact: z.enum(["1", "2", "3", "4", "5"], "Укажите степень влияния"),
+    urgency: z.enum(["1", "2", "3", "4", "5"], "Укажите срочность")
 })
 
 const TICKET_TYPES = [
@@ -23,6 +25,21 @@ const TICKET_TYPES = [
     { value: "problem", label: "Проблема" }
 ] as const
 
+const TICKET_IMPACT = [
+    { value: "1", label: "Минимальное" },
+    { value: "2", label: "Низкое" },
+    { value: "3", label: "Среднее" },
+    { value: "4", label: "Высокое" },
+    { value: "5", label: "Критическое" }
+] as const
+
+const TICKET_URGENCY = [
+    { value: "1", label: "Низкая" },
+    { value: "2", label: "Ниже среднего" },
+    { value: "3", label: "Средняя" },
+    { value: "4", label: "Высокая" },
+    { value: "5", label: "Экстренная" }
+] as const
 
 export const AddForm: FC = () => {
     const navigate = useNavigate();
@@ -33,7 +50,6 @@ export const AddForm: FC = () => {
         defaultValues: {
             title: '',
             description: '',
-            ticket_type: 'service_request',
         },
         mode: 'onTouched',
         reValidateMode: 'onChange'
@@ -68,20 +84,34 @@ export const AddForm: FC = () => {
                 <InputField
                     name="title"
                     control={form.control}
-                    label="title"
+                    label="Заголовок"
                 />
                 <SelectField
                     name="ticket_type"
                     control={form.control}
-                    label="ticket_type"
+                    label="Тип заявки"
                     options={TICKET_TYPES}
+                />
+            </FieldGroup>
+            <FieldGroup orientation="horizontal">
+                <SelectField
+                    name="impact"
+                    control={form.control}
+                    label="Влияние на работу"
+                    options={TICKET_IMPACT}
+                />
+                <SelectField
+                    name="urgency"
+                    control={form.control}
+                    label="Срочность исполнения"
+                    options={TICKET_URGENCY}
                 />
             </FieldGroup>
             <FieldGroup>
                 <TextArea
                     name="description"
                     control={form.control}
-                    label="description"
+                    label="Описание"
                 />
             </FieldGroup>
             <FieldGroup button="button-right">

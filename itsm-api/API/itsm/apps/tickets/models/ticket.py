@@ -10,10 +10,11 @@ class TicketType(models.TextChoices):
     PROBLEM = 'problem', 'Проблема'
 
 class TicketPriority(models.TextChoices):
-    LOW = 'low', 'Низкий'
-    MEDIUM = 'medium', 'Средний'
-    HIGH = 'high', 'Высокий'
-    CRITICAL = 'critical', 'Критический'
+    LOW = '1', 'Низкий'
+    NORMAL = '2', 'Обычный'
+    MEDIUM = '3', 'Средний'
+    HIGH = '4', 'Высокий'
+    CRITICAL = '5', 'Критический'
 
 class TicketStatus(models.TextChoices):
     NEW = 'new', 'Новый'
@@ -32,7 +33,7 @@ class Ticket(TenantModel):
     description = models.TextField()
     
     ticket_type = models.CharField(max_length=20, choices=TicketType.choices, default=TicketType.INCIDENT)
-    priority = models.CharField(max_length=10, choices=TicketPriority.choices, default=TicketPriority.MEDIUM)
+    priority = models.CharField(max_length=10, choices=TicketPriority.choices, default=TicketPriority.NORMAL)
     status = models.CharField(max_length=15, choices=TicketStatus.choices, default=TicketStatus.NEW)
 
     requester = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='requested_tickets')

@@ -1,18 +1,13 @@
 import type { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './sidebar.module.css'
-
-interface IMenuItem {
-    title: string,
-    path: string,
-    roles?: string[],
-    icon?: string
-}
-
-interface IProps extends IMenuItem { }
+import { type IMenuLink } from '../../../consts/MenuLinks'
 
 
-const SideBarNavItem: FC<IProps> = ({
+interface IProps extends IMenuLink { }
+
+
+export const SideBarNavItem: FC<IProps> = ({
     title,
     path,
     icon
@@ -30,4 +25,3 @@ const SideBarNavItem: FC<IProps> = ({
     )
 }
 
-export { type IMenuItem, SideBarNavItem }

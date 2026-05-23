@@ -47,6 +47,7 @@ class TicketViewSet(viewsets.ModelViewSet):
     filterset_fields = {
         'status': ['exact'],
         'priority': ['exact'],
+        'ticket_type': ['exact'],
         # 'requester': ['exact'],
         # 'assignee': ['exact'],
         'created_at': ['gte', 'lte'],
@@ -54,7 +55,10 @@ class TicketViewSet(viewsets.ModelViewSet):
 
     search_fields = ['title', 'description', 'ticket_number']
 
-    #ordering_fields = ['created_at', 'priority', 'status', 'title']
+    ordering_fields = [
+        'created_at', 
+        'priority',
+    ]
     ordering = ['-created_at']  
 
     def perform_create(self, serializer):
@@ -62,6 +66,9 @@ class TicketViewSet(viewsets.ModelViewSet):
             requester = self.request.user,
             organization = self.request.user.organization
         )
+
+    
+
 
     @action(
         methods=['get'], 

@@ -13,7 +13,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
     return (
         <div className={styles.section}>
             <div className={styles["section-header"]}>
-                <h2>Комментарии</h2>
+                <h2>История и комментарии</h2>
             </div>
             <TicketCommentList ticketId={ticketId} />
             <CreateComment ticketId={ticketId} />

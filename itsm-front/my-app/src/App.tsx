@@ -1,4 +1,5 @@
-import './App.css'
+import '../src/assets/css/Badges.css'
+import '../src/assets/css/App.css'
 import { useEffect, type FC } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Login } from './pages/Login/Login.tsx'
@@ -20,7 +21,7 @@ import { TicketList } from './pages/Tickets/TicketList/TicketList.tsx';
 import { TicketDetails } from './pages/Tickets/TicketDetails.tsx/TicketDetails.tsx';
 import { UserTicketList } from './pages/Tickets/UserTicketList/UserTicketList.tsx';
 import { AddTicket } from './pages/Tickets/AddTicket/AddTicket.tsx';
-
+import { Home } from './pages/Home/Home.tsx';
 
 
 const App: FC = () => {
@@ -49,6 +50,7 @@ const App: FC = () => {
 						<MainLayout />
 					</ProtectedRoute>
 				}>
+					<Route index element={<Home />} />
 					<Route path='conf-items-management' element={
 						<ProtectedRoute roles={['admin', 'support']}>
 							<CIList />

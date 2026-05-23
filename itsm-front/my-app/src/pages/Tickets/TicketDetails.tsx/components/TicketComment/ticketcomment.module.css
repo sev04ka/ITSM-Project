@@ -3,17 +3,12 @@
   flex-direction: column;
 }
 
-
 .comment-own {
   align-items: flex-end;
 }
 
 .comment-other {
   align-items: flex-start;
-}
-
-.comment-system {
-  align-items: center;
 }
 
 .bubble {
@@ -30,29 +25,16 @@
   border-color: #c7d2fe;
 }
 
-.bubble-internal {
-  background-color: #fffbeb;
-  border-color: #fde68a;
-  border-style: dashed;
-}
-
-.system-msg {
+.system-bubble {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  max-width: 90%;
+  justify-content: center;
+  background-color: var(--default-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+  position: relative;
 }
 
-.system-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--detail-grey);
-  flex-shrink: 0;
-}
 
 .header {
   display: flex;

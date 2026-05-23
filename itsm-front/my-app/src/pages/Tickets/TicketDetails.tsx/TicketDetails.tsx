@@ -2,8 +2,6 @@ import { type FC, useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import type ITicket from "../../../interfaces/entities/Ticket";
 import { api } from "../../../api";
-import { TicketCommentList } from "./components/TicketCommentList/TicketCommentList";
-import { CreateComment } from "./components/CreateComment/CreateComment";
 import styles from './ticketdetails.module.css'
 import { formatDateTime } from "../../../utils/dateFormatter";
 import { EmptyState } from "../../../components/ui/EmptyState/EmptyState";
@@ -13,50 +11,12 @@ import { TicketControlPanel } from "./components/TicketControlPanel/TicketContro
 import { AssigneeControls } from "./components/AssigneeControls/AssigneeControls";
 import RoleGuard from "../../../components/security/RoleGuard";
 import { CommentSection } from "./components/CommentSection/CommentSection";
-
-const statusBadge: Record<string, string> = {
-    'new': styles['badge-new'],
-    'waiting': styles['badge-waiting'],
-    'in_progress': styles['badge-in_progress'],
-    'resolved': styles['badge-resolved'],
-    'closed': styles['badge-closed'],
-    'cancelled': styles['badge-cancelled'],
-}
-
-const priorityBadge: Record<string, string> = {
-    'critical': styles['badge-critical'],
-    'high': styles['badge-high'],
-    'medium': styles['badge-medium'],
-    'low': styles['badge-low'],
-}
-
-const typeBadge: Record<string, string> = {
-    'incident': styles['badge-incident'],
-    'service_request': styles['badge-service_request'],
-    'change_request': styles['badge-change_request'],
-}
-
-const statusLabels: Record<string, string> = {
-    'new': 'Новый',
-    'waiting': 'В ожидании',
-    'in_progress': 'В работе',
-    'resolved': 'Решён',
-    'closed': 'Закрыт',
-    'cancelled': 'Отменён',
-}
-
-const priorityLabels: Record<string, string> = {
-    'critical': 'Критичный',
-    'high': 'Высокий',
-    'medium': 'Средний',
-    'low': 'Низкий',
-}
-
-const typeLabels: Record<string, string> = {
-    'incident': 'Инцидент',
-    'service_request': 'Запрос',
-    'change_request': 'Изменение',
-}
+import { statusLabels } from "../../../consts/statusLabels";
+import { priorityLabels } from "../../../consts/priorityLables";
+import { typeLabels } from "../../../consts/ticketTypeLabels";
+import { statusBadge } from "../../../consts/Badges/statusBadges";
+import { typeBadge } from "../../../consts/Badges/ticketTypeBadges";
+import { priorityBadge } from "../../../consts/Badges/priorityBadges";
 
 export const TicketDetails: FC = () => {
     const [ticket, setTicket] = useState<ITicket | null>(null);
@@ -108,19 +68,19 @@ export const TicketDetails: FC = () => {
                 <div className={styles["meta-grid"]}>
                     <div className={styles["meta-item"]}>
                         <span className={styles["meta-label"]}>Тип</span>
-                        <span className={`${styles.badge} ${typeBadge[ticket.ticket_type] || ''}`}>
+                        <span className={`badge ${typeBadge[ticket.ticket_type] || ''}`}>
                             {typeLabels[ticket.ticket_type] || ticket.ticket_type}
                         </span>
                     </div>
                     <div className={styles["meta-item"]}>
                         <span className={styles["meta-label"]}>Приоритет</span>
-                        <span className={`${styles.badge} ${priorityBadge[ticket.priority] || ''}`}>
+                        <span className={`badge ${priorityBadge[ticket.priority] || ''}`}>
                             {priorityLabels[ticket.priority] || ticket.priority}
                         </span>
                     </div>
                     <div className={styles["meta-item"]}>
                         <span className={styles["meta-label"]}>Статус</span>
-                        <span className={`${styles.badge} ${statusBadge[ticket.status] || ''}`}>
+                        <span className={`badge ${statusBadge[ticket.status] || ''}`}>
                             {statusLabels[ticket.status] || ticket.status}
                         </span>
                     </div>
@@ -156,7 +116,7 @@ export const TicketDetails: FC = () => {
                                     <span className={styles["people-email"]}>{ticket.assignee.email}</span>
                                 </div>
                             </div>
-                        ) || "Исолнитель не назначен"}
+                        ) || "Исполнитель не назначен"}
                     </div>
                     <RoleGuard roles={["support", "admin"]} hideMode={true}>
                         <AssigneeControls
@@ -165,7 +125,6 @@ export const TicketDetails: FC = () => {
                         />
                     </RoleGuard>
                 </div>
-
 
                 <div className={styles["description-section"]}>
                     <div className={styles["description-label"]}>Описание</div>

@@ -11,7 +11,6 @@ import { LoadingState } from "../../../components/ui/LoadingState/LoadingState";
 
 export const UserTicketList: FC = () => {
     const { data, loading, error } = useEntityList<ITicket>('/tickets/my')
-    // const { data } = useEntityList<ITicket>('/tickets/my')
     const navigate = useNavigate();
 
     return (

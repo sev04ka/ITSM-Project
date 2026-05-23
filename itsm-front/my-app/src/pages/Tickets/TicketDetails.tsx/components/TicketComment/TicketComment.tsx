@@ -19,24 +19,23 @@ export const TicketComment: FC<TicketCommentProps> = ({
     if (isAction) {
         return (
             <div className={`${styles.comment} ${styles["comment-system"]}`}>
-                <div className={styles["system-msg"]}>
-                    <span className={styles["system-dot"]} />
+                <div className={styles["system-bubble"]}>
                     <span>{comment.text}</span>
-                    <span className={styles["system-dot"]} />
+                </div>
+                <div className={`${styles.date} ${styles["date-right"]} `}>
+                    {formatDateTime(comment.created_at)}
                 </div>
             </div>
         )
     }
 
-    const bubbleClass = [
-        styles.bubble,
-        isOwn ? styles["bubble-own"] : '',
-        isInternal ? styles["bubble-internal"] : '',
-    ].filter(Boolean).join(' ');
+    if (isInternal) {
+
+    }
 
     return (
         <div className={`${styles.comment} ${isOwn ? styles["comment-own"] : styles["comment-other"]}`}>
-            <div className={bubbleClass}>
+            <div className={`${styles.bubble} ${isOwn && styles["bubble-own"]}`}>
                 <div className={`${styles.header} ${isOwn ? styles["header-right"] : styles["header-left"]}`}>
                     {!isOwn &&
                         <>

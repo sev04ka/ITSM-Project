@@ -1,0 +1,100 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.welcome-card {
+    background: linear-gradient(135deg, var(--accent) 0%, #4338ca 100%);
+    border-radius: var(--radius-xl);
+    padding: 1rem;
+    color: white;
+}
+
+.welcome-greeting {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.welcome-sub {
+    font-size: 0.875rem;
+    opacity: 0.85;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: var(--default-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 1.25rem;
+    box-shadow: var(--card-shadow);
+    transition: box-shadow var(--transition), transform var(--transition);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
+}
+
+.card-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.card-icon-blue {
+    background: #eef2ff;
+    color: var(--accent);
+}
+
+.card-icon-yellow {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.card-icon-green {
+    background: #d1fae5;
+    color: #047857;
+}
+
+.card-icon-red {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.card-icon-purple {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.card-icon-gray {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.card-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.card-desc {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+}

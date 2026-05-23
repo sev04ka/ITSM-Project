@@ -113,7 +113,7 @@ export const AssigneeControls: FC<AssigneeControlsProps> = ({
                         </Button>
                     </>
                 }
-                {ticket.assignee && !["resolved", "closed", "mew", "waiting", "cancelled"].includes(ticket.status) &&
+                {ticket.assignee && !["resolved", "closed", "new", "waiting", "cancelled"].includes(ticket.status) &&
                     <Button
                         disabled={actionLoading !== null || !ticket.assignee}
                         onClick={() => setIsConfirming(true)}
