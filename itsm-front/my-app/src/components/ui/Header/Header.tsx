@@ -2,10 +2,13 @@ import type { FC } from "react"
 import { useUserAuthStore } from "../../../store/useUserAuthStore"
 import styles from './header.module.css'
 import { Button } from "../Button/Button"
+import { roleLabels } from "../../../consts/Labels/roleLabels"
 
 
 export const Header: FC = () => {
     const { currentUser, logout } = useUserAuthStore()
+
+    if (!currentUser) return null;
 
     return (
         <div className={styles.header}>
@@ -18,7 +21,7 @@ export const Header: FC = () => {
                         {currentUser?.first_name} {currentUser?.last_name}
                     </span>
                     <span className={styles["user-role"]}>
-                        {currentUser?.role?.name}
+                        {roleLabels[currentUser.role.name]}
                     </span>
                 </div>
                 <Button

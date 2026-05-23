@@ -4,6 +4,7 @@ import { useUserAuthStore } from "../../store/useUserAuthStore";
 import { useRole } from "../../hooks/useRole";
 import styles from './home.module.css'
 import { links } from "../../consts/MenuLinks";
+import { roleLabels } from "../../consts/Labels/roleLabels";
 
 
 const iconClassMap: Record<string, string> = {
@@ -21,13 +22,6 @@ export const Home: FC = () => {
 
     if (!currentUser) return null;
 
-    const roleLabel = currentUser.role.name === "admin"
-        ? "Администратор"
-        : currentUser.role.name === "support"
-            ? "Сотрудник поддержки"
-            : currentUser.role.name === "user"
-                ? "Пользователь"
-                : currentUser.role.name;
 
     const visibleLinks = links.filter((l) => hasAccess(l.roles));
 
@@ -38,7 +32,7 @@ export const Home: FC = () => {
                     {currentUser.first_name} {currentUser.last_name}
                 </div>
                 <div className={styles["welcome-sub"]}>
-                    {roleLabel} &middot; {currentUser.organization.name}
+                    {roleLabels[currentUser.role.name]} &middot; {currentUser.organization.name}
                 </div>
             </div>
 
