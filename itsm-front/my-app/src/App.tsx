@@ -1,5 +1,6 @@
-import '../src/assets/css/Badges.css'
 import '../src/assets/css/App.css'
+import '../src/assets/css/Badges.css'
+import '../src/assets/css/Icons.css'
 import { useEffect, type FC } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Login } from './pages/Login/Login.tsx'
@@ -22,6 +23,8 @@ import { TicketDetails } from './pages/Tickets/TicketDetails.tsx/TicketDetails.t
 import { UserTicketList } from './pages/Tickets/UserTicketList/UserTicketList.tsx';
 import { AddTicket } from './pages/Tickets/AddTicket/AddTicket.tsx';
 import { Home } from './pages/Home/Home.tsx';
+import { CIDetails } from './pages/CMDB/CIDetails/CIDetails.tsx';
+import { UserCI } from './pages/CMDB/UserCI/UserCI.tsx';
 
 
 const App: FC = () => {
@@ -51,19 +54,29 @@ const App: FC = () => {
 					</ProtectedRoute>
 				}>
 					<Route index element={<Home />} />
-					<Route path='conf-items-management' element={
+					<Route path='conf-items' element={
 						<ProtectedRoute roles={['admin', 'support']}>
 							<CIList />
 						</ProtectedRoute>
 					} />
-					<Route path='conf-items-management/add' element={
+					<Route path='conf-items/:id' element={
+						<ProtectedRoute roles={['admin', 'support']}>
+							<CIDetails />
+						</ProtectedRoute>
+					} />
+					<Route path='conf-items/add' element={
 						<ProtectedRoute roles={['admin', 'support']}>
 							<AddCI />
 						</ProtectedRoute>
 					} />
-					<Route path='conf-items-management/edit/:id' element={
+					<Route path='conf-items/edit/:id' element={
 						<ProtectedRoute roles={['admin', 'support']}>
 							<EditCI />
+						</ProtectedRoute>
+					} />
+					<Route path='my-conf-items' element={
+						<ProtectedRoute roles={['admin', 'support', 'user']}>
+							<UserCI />
 						</ProtectedRoute>
 					} />
 					<Route path='users' element={

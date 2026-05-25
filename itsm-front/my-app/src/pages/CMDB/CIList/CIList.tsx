@@ -3,6 +3,7 @@ import { DataManagementPanel } from "../../../components/ui/DataManagementPanel/
 import type IConfigurationItem from '../../../interfaces/entities/ConfigurationItem';
 import type { Column } from '../../../components/ui/DataManagementPanel/DataTable/types';
 import { type FilterParams } from '../../../components/ui/DataManagementPanel/Filter/Filter';
+import { Link } from 'react-router-dom';
 
 const STATUS_OPTIONS = [
     { value: "active", label: "Активен" },
@@ -16,6 +17,7 @@ const columns: Column<IConfigurationItem>[] = [
         key: 'name',
         title: 'Название',
         sortable: true,
+        template: (item: IConfigurationItem) => <Link to={`/conf-items/${item.id}`}>{item.name}</Link>
     },
     {
         key: 'serial_number',

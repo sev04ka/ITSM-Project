@@ -1,5 +1,5 @@
-import { type FC, useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { type FC, useState, useEffect, useCallback, useRef } from "react";
+import { Link, useParams } from "react-router-dom";
 import type ITicket from "../../../interfaces/entities/Ticket";
 import { api } from "../../../api";
 import styles from './ticketdetails.module.css'
@@ -10,19 +10,24 @@ import { LoadingState } from "../../../components/ui/LoadingState/LoadingState";
 import { TicketControlPanel } from "./components/TicketControlPanel/TicketControlPanel";
 import { AssigneeControls } from "./components/AssigneeControls/AssigneeControls";
 import RoleGuard from "../../../components/security/RoleGuard";
-import { CommentSection } from "./components/CommentSection/CommentSection";
 import { statusLabels } from "../../../consts/statusLabels";
 import { priorityLabels } from "../../../consts/priorityLables";
 import { typeLabels } from "../../../consts/ticketTypeLabels";
 import { statusBadge } from "../../../consts/Badges/statusBadges";
 import { typeBadge } from "../../../consts/Badges/ticketTypeBadges";
 import { priorityBadge } from "../../../consts/Badges/priorityBadges";
+import { ciStatusLabels } from "../../../consts/Labels/ciStatusLabels";
+import { TicketCommentList } from "./components/TicketCommentList/TicketCommentList";
+import { CreateComment } from "./components/CreateComment/CreateComment";
 
 export const TicketDetails: FC = () => {
     const [ticket, setTicket] = useState<ITicket | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { id } = useParams();
+    const [ticketRefreshKey, setTicketRefreshKey] = useState(0);
+    const commentListRef = useRef<{ refresh: () => void }>(null);
+    const scrollPositionRef = useRef(0);
 
     if (!id) return <div className={styles.error}>Ошибка: ID тикета не указан</div>
 
@@ -45,7 +50,24 @@ export const TicketDetails: FC = () => {
 
     useEffect(() => {
         fetchTicket();
-    }, [id]);
+    }, [id, ticketRefreshKey]);
+
+    const handleTicketUpdated = useCallback(() => {
+        scrollPositionRef.current = window.scrollY;
+        fetchTicket();
+        commentListRef.current?.refresh();
+    }, [fetchTicket]);
+
+    const handleCommentCreate = useCallback(() => {
+        commentListRef.current?.refresh();
+    }, []);
+
+    useEffect(() => {
+        if (scrollPositionRef.current > 0) {
+            window.scrollTo(0, scrollPositionRef.current);
+            scrollPositionRef.current = 0;
+        }
+    }, [ticket]);
 
     if (loading) return (<LoadingState />)
 
@@ -121,7 +143,7 @@ export const TicketDetails: FC = () => {
                     <RoleGuard roles={["support", "admin"]} hideMode={true}>
                         <AssigneeControls
                             ticket={ticket}
-                            onTicketUpdated={fetchTicket}
+                            onTicketUpdated={() => setTicketRefreshKey(k => k + 1)}
                         />
                     </RoleGuard>
                 </div>
@@ -131,6 +153,33 @@ export const TicketDetails: FC = () => {
                     <div className={styles["description-text"]}>{ticket.description}</div>
                 </div>
 
+                <div className={styles["ci-section"]}>
+                    <div className={styles["ci-item"]}>
+                        <div className={styles["ci-label"]}>Конфигурационная единица</div>
+                        <div className={styles["ci-content"]}>
+                            <div className={styles["ci-info"]}>
+                                <Link to={`/conf-items/${ticket.configuration_item.id}`} className={styles["ci-link"]}>
+                                    {ticket.configuration_item.name}
+                                </Link>
+                                <span className={`badge badge-${ticket.configuration_item.status}`}>
+                                    {ciStatusLabels[ticket.configuration_item.status] || ticket.configuration_item.status}
+                                </span>
+                            </div>
+                            <div className={styles["ci-details"]}>
+                                {ticket.configuration_item.serial_number && (
+                                    <div className={styles["ci-detail-item"]}>
+                                        <span className={styles["ci-detail-label"]}>Серийный номер</span>
+                                        <span className={styles["ci-detail-value"]}>{ticket.configuration_item.serial_number}</span>
+                                    </div>
+                                )}
+                                <div className={styles["ci-detail-item"]}>
+                                    <span className={styles["ci-detail-label"]}>Тип</span>
+                                    <span className={styles["ci-detail-value"]}>{ticket.configuration_item.ci_type.name}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className={styles.timestamps}>
                     <div className={styles["timestamp-item"]}>
                         <span className={styles["timestamp-label"]}>Создан</span>
@@ -155,11 +204,17 @@ export const TicketDetails: FC = () => {
                 </div>
                 <TicketControlPanel
                     ticket={ticket}
-                    onTicketUpdated={fetchTicket}
+                    onTicketUpdated={handleTicketUpdated}
                 />
-            </div>
 
-            <CommentSection ticketId={id} />
+            </div>
+            <div className={styles.section}>
+                <div className={styles["section-header"]}>
+                    <h2>История и комментарии</h2>
+                </div>
+                <TicketCommentList ref={commentListRef} ticketId={id} />
+                <CreateComment ticketId={id} onCommentCreate={handleCommentCreate} />
+            </div>
         </>
     )
 }

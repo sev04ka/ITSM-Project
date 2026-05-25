@@ -54,9 +54,17 @@ export const links: IMenuLink[] = [
     {
         title: "Конфигурации",
         desc: "Управление конфигурационными единицами",
-        path: "/conf-items-management",
+        path: "/conf-items",
         icon: "\u2699",
         iconColor: "red",
         roles: ["admin", "support"],
+    },
+    {
+        title: "Мои конфигурации",
+        desc: "Просмотр конфигурационных единиц",
+        path: "/my-conf-items",
+        icon: "\u2699",
+        iconColor: "red",
+        roles: ["admin", "support", "user"],
     },
 ];

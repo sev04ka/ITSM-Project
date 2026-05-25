@@ -2,7 +2,7 @@ import { type FC } from "react";
 import { useParams } from "react-router-dom";
 import { useEntityDetails } from "../../../hooks/useEntityDetails";
 import NotFound from "../../NotFound";
-import { AddEditForm } from "./AddEditForm";
+import { EditForm } from "./EditForm";
 import type IUser from "../../../interfaces/entities/User";
 import { FormCard } from "../../../components/ui/FormElements/FormCard/FormCard";
 
@@ -31,7 +31,7 @@ export const EditUser: FC<EditUserProps> = ({
         <FormCard
             title="Изменение пользователя"
         >
-            <AddEditForm entity={entity} />
+            <EditForm entity={entity} />
         </FormCard>
     )
 }

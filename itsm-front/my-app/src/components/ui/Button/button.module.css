@@ -80,6 +80,6 @@
 }
 
 .svg-button:hover {
-    background-color: var(--hover-color);
+    background-color: var(--default-bg) !important;
     border-color: var(--detail-grey);
 }

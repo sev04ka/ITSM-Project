@@ -83,7 +83,7 @@ export const AssigneeControls: FC<AssigneeControlsProps> = ({
         await handleAction(
             'remove',
             `/tickets/${ticket.id}/remove-assignee/`,
-            { assignee_id: assigneeId }
+            { assignee_id: String(ticket.assignee.id) }
         );
         setAssigneeId(null);
     }

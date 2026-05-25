@@ -40,7 +40,6 @@
 }
 
 .ticket-title {
-    font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.4;
     flex: 1;
@@ -193,4 +192,96 @@
 .timestamp-value {
     font-size: 0.75rem;
     color: var(--text-color);
+}
+
+.ci-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.ci-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.ci-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.ci-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.ci-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.ci-link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.ci-link:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.ci-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.ci-detail-item {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+}
+
+.ci-detail-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.ci-detail-value {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--card-shadow);
+    background-color: var(--default-bg);
+    max-height: 95vh;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.25rem;
 }

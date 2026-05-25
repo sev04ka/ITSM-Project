@@ -1,5 +1,6 @@
 from django.db import models
 from .citype import CIType 
+from django.conf import settings
 from ...core.models.organization import TenantModel
 
 """
@@ -19,12 +20,8 @@ class ConfigurationItem(TenantModel):
     serial_number = models.CharField(max_length=100, blank=True)
     asset_tag = models.CharField(max_length=100, blank=True, unique=True, null=True)
     
-    owner = models.CharField(max_length=200, blank=True)  
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='ci_owner')
     
-    # attributes = models.JSONField(default=dict, blank=True)
-    
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    dependencies = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='dependents')
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

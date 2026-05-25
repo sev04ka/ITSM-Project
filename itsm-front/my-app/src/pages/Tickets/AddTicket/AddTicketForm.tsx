@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { type FC } from "react"
+import { useCallback, useEffect, useMemo, useState, type FC } from "react"
 import { api } from "../../../api"
 import { SelectField } from "../../../components/ui/FormElements/SelectField/SelectField"
 import { FieldGroup } from "../../../components/ui/FormElements/FieldGroup/FieldGroup"
@@ -10,11 +10,13 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "../../../components/ui/Button/Button"
 import { useToast } from "../../../context/ToastContext"
 import { TextArea } from "../../../components/ui/FormElements/TextArea/TextArea"
+import type IConfigurationItem from "../../../interfaces/entities/ConfigurationItem";
 
 const TicketCreateSchema = z.object({
     title: z.string().min(1, "Заголовок обязателен"),
     description: z.string().min(1, "Описание обязательно"),
     ticket_type: z.enum(["incident", "service_request", "problem"], "Тип заявки обязателен"),
+    configuration_item_id: z.string(),
     impact: z.enum(["1", "2", "3", "4", "5"], "Укажите степень влияния"),
     urgency: z.enum(["1", "2", "3", "4", "5"], "Укажите срочность")
 })
@@ -22,7 +24,7 @@ const TicketCreateSchema = z.object({
 const TICKET_TYPES = [
     { value: "incident", label: "Инцидент" },
     { value: "service_request", label: "Запрос на обслуживание" },
-    { value: "problem", label: "Проблема" }
+    // { value: "problem", label: "Проблема" }
 ] as const
 
 const TICKET_IMPACT = [
@@ -42,14 +44,28 @@ const TICKET_URGENCY = [
 ] as const
 
 export const AddForm: FC = () => {
+    const [confItems, setConfItems] = useState<IConfigurationItem[]>([]);
     const navigate = useNavigate();
     const toast = useToast();
+
+    const fetchCI = useCallback(async () => {
+        const response = await api.getList<IConfigurationItem>("/conf-items/my")
+        if (response.success) {
+            const items = Array.isArray(response.data.results) ? response.data.results : []
+            setConfItems(items)
+        }
+    }, [])
+
+    useEffect(() => {
+        fetchCI();
+    }, [])
 
     const form = useForm<z.infer<typeof TicketCreateSchema>>({
         resolver: zodResolver(TicketCreateSchema),
         defaultValues: {
             title: '',
             description: '',
+            configuration_item_id: '',
         },
         mode: 'onTouched',
         reValidateMode: 'onChange'
@@ -77,6 +93,14 @@ export const AddForm: FC = () => {
             toast.error(response.error.message);
         }
     }
+
+    const ciOptions = useMemo(() => {
+        return confItems.map((item) => ({
+            value: String(item.id),
+            label: item.name
+        }))
+    }, [confItems])
+
 
     return (
         <form onSubmit={form.handleSubmit(onSubmitAdd)}>
@@ -107,6 +131,16 @@ export const AddForm: FC = () => {
                     options={TICKET_URGENCY}
                 />
             </FieldGroup>
+            {ciOptions.length != 0 &&
+                <FieldGroup orientation="horizontal">
+                    <SelectField
+                        name="configuration_item_id"
+                        control={form.control}
+                        label="Конфигурационная единица"
+                        options={ciOptions}
+                    />
+                </FieldGroup>
+            }
             <FieldGroup>
                 <TextArea
                     name="description"

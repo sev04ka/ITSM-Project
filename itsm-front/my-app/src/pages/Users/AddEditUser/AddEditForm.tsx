@@ -136,13 +136,13 @@ export const AddEditForm: FC<AddEditFormProps> = ({
                     name="email"
                     control={form.control}
                     type="email"
-                    label="email"
+                    label="Электронная почта"
                 />
                 <InputField
                     name="password"
                     control={form.control}
                     type="password"
-                    label="password"
+                    label="Пароль"
                 />
             </FieldGroup>
             <FieldGroup orientation="horizontal">
@@ -150,27 +150,27 @@ export const AddEditForm: FC<AddEditFormProps> = ({
                     name="first_name"
                     control={form.control}
                     type="text"
-                    label="first_name"
+                    label="Имя"
                 />
                 <InputField
                     name="last_name"
                     control={form.control}
                     type="text"
-                    label="last_name"
+                    label="Фамилия"
                 />
             </FieldGroup>
             <FieldGroup orientation="horizontal">
                 <SelectField
                     name="role_id"
                     control={form.control}
-                    label="role"
+                    label="Роль"
                     options={roleOptions}
                     placeholder="Выберите роль"
                 />
                 <SelectField
                     name="organization_id"
                     control={form.control}
-                    label="organization"
+                    label="Организация"
                     options={organizationOptions}
                     placeholder="Выберите организацию"
                 />

@@ -5,6 +5,7 @@ from django.contrib import admin
 
 from .apps.cmdb.views import ConfigurationItemViewSet
 from .apps.cmdb.views import CITypeViewSet
+from .apps.cmdb.views import CIdependencyViewSet
 from .apps.tickets.views import TicketViewSet, CommentViewSet
 from .apps.users.views.user import UserViewSet
 from .apps.users.views.role import RoleViewSet
@@ -19,6 +20,7 @@ router.register(r"comments", CommentViewSet)
 router.register(r"users", UserViewSet)
 router.register(r"roles", RoleViewSet)
 router.register(r"organizations", OrganizationViewSet)
+router.register(r"ci-dependencies", CIdependencyViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

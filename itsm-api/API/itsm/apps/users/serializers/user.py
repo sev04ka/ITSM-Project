@@ -87,6 +87,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
+        validated_data.pop('organization_id', None)
         
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -96,5 +97,6 @@ class UserSerializer(serializers.ModelSerializer):
         
         instance.save()
         return instance
+
 
 

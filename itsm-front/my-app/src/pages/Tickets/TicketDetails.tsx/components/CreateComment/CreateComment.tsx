@@ -18,10 +18,12 @@ const CommentCreateSchema = z.object({
 
 interface CreateCommentProps {
     ticketId: string;
+    onCommentCreate: () => void;
 }
 
 export const CreateComment: FC<CreateCommentProps> = ({
     ticketId,
+    onCommentCreate
 }) => {
     const { currentUser } = useUserAuthStore();
     const toast = useToast()
@@ -49,6 +51,7 @@ export const CreateComment: FC<CreateCommentProps> = ({
 
         if (response.success) {
             form.reset();
+            onCommentCreate();
             toast.success("Комментарий отправлен");
         } else {
             toast.error(response.error.message);

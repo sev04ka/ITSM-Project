@@ -1,0 +1,12 @@
+.arrow-right {}
+
+.arrow-right::after {
+    content: '';
+    display: block;
+    background-image: url('../svg/arrow-right.svg');
+    background-size: 1.6rem 1.6rem;
+    width: 2rem;
+    height: 2rem;
+    background-repeat: no-repeat;
+    background-position: center;
+}

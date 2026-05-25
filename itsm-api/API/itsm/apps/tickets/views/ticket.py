@@ -128,7 +128,7 @@ class TicketViewSet(viewsets.ModelViewSet):
                 ticket = ticket,
                 author = request.user,
                 comment_type = 'assign_comment',
-                text = f"Оператор {assignee.first_name} {assignee.last_name} назначен исполнителем",
+                text = f"{request.user.first_name} {request.user.last_name} назначает исполнителем оператора {assignee.first_name} {assignee.last_name}.",
                 is_internal = False,
                 organization = ticket.organization
             )

@@ -5,7 +5,13 @@ from ..serializers.organization import OrganizationSerializer
 from ..models.organization import Organization
 from ..permissions import *
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 
+class LargeResultsPagination(PageNumberPagination):
+    page_size = 1000 
+    # page_size_query_param = 'page_size'
+    max_page_size = 1000
     
 class OrganizationViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.all()
@@ -37,3 +43,20 @@ class OrganizationViewSet(viewsets.ModelViewSet):
             permission_classes = [permissions.IsAuthenticated, IsMemberOfOrganization]
         
         return [permission() for permission in permission_classes]
+
+    def list(self, request, *args, **kwargs):
+        get_all = request.query_params.get('all', False)
+        
+        if request.user.role.name == "super-admin":
+            queryset = Organization.objects.all()
+        else:
+            queryset = Organization.objects.filter(id = request.user.organization.id)
+        
+        if get_all and str(get_all).lower() == 'true':
+            self.pagination_class = LargeResultsPagination
+
+
+        paginated_queryset = self.paginate_queryset(queryset)
+        serializer = OrganizationSerializer(paginated_queryset, many=True)
+            
+        return self.get_paginated_response(serializer.data)

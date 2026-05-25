@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from ..models.ticket import Ticket
 from ...users.serializers.user import UserSerializer
+from itsm.apps.cmdb.serializers import ConfigurationItemSerializer
 from django.utils.formats import date_format
 
 
 class TicketSerializer(serializers.ModelSerializer):
     requester = UserSerializer(read_only = True)
     assignee = UserSerializer(read_only = True)
+    configuration_item = ConfigurationItemSerializer(read_only = True)
 
     impact = serializers.ChoiceField(
         choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
@@ -33,6 +35,8 @@ class TicketSerializer(serializers.ModelSerializer):
             'requester',
             'assignee',
             'assignee_id',
+            'configuration_item',
+            'configuration_item_id',
             'created_at', 
             'updated_at',
             'resolved_at',
@@ -57,6 +61,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {
         'assignee_id': {'source': 'assignee', 'write_only': True},
+        'configuration_item_id': {'source': 'configuration_item', 'write_only': True},
         }
 
     def create(self, validated_data):

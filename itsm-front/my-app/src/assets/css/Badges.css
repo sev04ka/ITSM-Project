@@ -72,3 +72,23 @@
     background: #dbeafe;
     color: #1d4ed8;
 }
+
+.badge-active {
+    background: #d1fae5;
+    color: #047857;
+}
+
+.badge-inactive {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.badge-maintenance {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.badge-retired {
+    background: #f1f5f9;
+    color: #64748b;
+}

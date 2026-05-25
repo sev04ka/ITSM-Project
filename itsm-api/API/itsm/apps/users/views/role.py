@@ -9,4 +9,12 @@ class RoleViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
 
+    def get_queryset(self):
+        all_users = self.queryset
+
+        if self.request.user.role.name == "super-admin":
+            return all_users
+        else:
+            return all_users.exclude(name = "super-admin")
+
 

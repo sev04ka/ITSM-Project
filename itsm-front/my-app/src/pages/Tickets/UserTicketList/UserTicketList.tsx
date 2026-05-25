@@ -10,7 +10,7 @@ import { ErrorState } from "../../../components/ui/ErrorState/ErrorState";
 import { LoadingState } from "../../../components/ui/LoadingState/LoadingState";
 
 export const UserTicketList: FC = () => {
-    const { data, loading, error } = useEntityList<ITicket>('/tickets/my')
+    const { data, loading, error } = useEntityList<ITicket>('/tickets/my', false)
     const navigate = useNavigate();
 
     return (

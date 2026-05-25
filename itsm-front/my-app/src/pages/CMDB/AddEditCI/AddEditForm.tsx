@@ -123,27 +123,27 @@ export const AddEditForm: FC<AddEditFormProps> = ({
                     name="name"
                     control={form.control}
                     type="text"
-                    label="name"
+                    label="Наименование"
                 />
                 <InputField
                     name="serial_number"
                     control={form.control}
                     type="text"
-                    label="serial number"
+                    label="Серийный номер"
                 />
             </FieldGroup>
             <FieldGroup orientation="horizontal">
                 <SelectField
                     name="ci_type_id"
                     control={form.control}
-                    label="ci type"
+                    label="Тип конфигурации"
                     options={ciTypeOptions}
                     placeholder="Выберите тип"
                 />
                 <SelectField
                     name="status"
                     control={form.control}
-                    label="status"
+                    label="Статус"
                     options={STATUS_OPTIONS}
                     placeholder="Выберите статус"
                 />

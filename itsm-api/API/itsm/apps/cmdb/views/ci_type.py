@@ -3,13 +3,13 @@ from ..models.citype import CIType
 from ..serializers.ci_type import CITypeSerializer
 from rest_framework.pagination import PageNumberPagination
 
-class CustomPageNumberPagination(PageNumberPagination):
-    page_size = 100  
-    # page_size_query_param = 'page_size'  
-    # max_page_size = 10000 
+class LargeResultsPagination(PageNumberPagination):
+    page_size = 1000  
+    # page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 class CITypeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CIType.objects.all()
     serializer_class = CITypeSerializer
 
-    pagination_class = CustomPageNumberPagination
+    pagination_class = LargeResultsPagination

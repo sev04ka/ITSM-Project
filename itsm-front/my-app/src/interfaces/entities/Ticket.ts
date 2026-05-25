@@ -1,3 +1,4 @@
+import type IConfigurationItem from './ConfigurationItem'
 import type IUser from './User'
 
 
@@ -9,6 +10,7 @@ export default interface ITicket {
     ticket_type: string,
     priority: string,
     status: string,
+    configuration_item: IConfigurationItem;
     requester: IUser,
     assignee?: IUser,
     created_at: string,

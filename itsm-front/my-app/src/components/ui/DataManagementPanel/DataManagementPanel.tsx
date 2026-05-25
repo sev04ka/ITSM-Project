@@ -43,6 +43,7 @@ export const DataManagementPanel = <T extends { id: number }>({
     const handleDeleteClick = async (id: number) => {
         setDeleteConfirm({ isOpen: true, id });
     };
+
     const handleConfirmDelete = async () => {
         if (deleteConfirm.id) {
             const response = await api.delete(`${endpoint}/${deleteConfirm.id}/`);
@@ -73,7 +74,7 @@ export const DataManagementPanel = <T extends { id: number }>({
                 <div className={styles["data-panel"]}>
                     <div className={styles["data-panel-header"]}>
                         <div>
-                            <h2>{header}</h2>
+                            <h1>{header}</h1>
                         </div>
                         {allowControls &&
                             <Button onClick={() => navigate("add")}>Создать</Button>
