@@ -87,3 +87,13 @@
     background: var(--border-color);
     color: var(--text-color);
 }
+
+.selected {
+    background: var(--accent);
+    color: white;
+}
+
+.selected:hover {
+    background: var(--accent);
+    color: white;
+}

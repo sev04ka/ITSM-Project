@@ -32,7 +32,6 @@ export const Select: FC<SelectProps> = ({
     name
 }) => {
     const [isOpen, setIsOpen] = useState(false);
-    // const [value, setValue] = useState(initialValue);
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -102,7 +101,7 @@ export const Select: FC<SelectProps> = ({
                     {options.map((option) => (
                         <span
                             key={option.value}
-                            className={styles.option}
+                            className={`${styles.option} ${selectedOption?.value == option.value && styles.selected}`}
                             onClick={(e) => handleSelect(e, option.value)}
                         >
                             {option.label}
