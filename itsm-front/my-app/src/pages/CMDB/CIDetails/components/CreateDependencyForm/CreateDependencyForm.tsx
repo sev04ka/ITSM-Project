@@ -94,7 +94,7 @@ export const CreateDependencyForm: FC<CreateDependencyFormProps> = ({
     }, [id, form]);
 
     const ciOptions = useMemo(() => {
-        return confItems.map((item) => ({
+        return confItems.filter((item) => String(item.id) != id).map((item) => ({
             value: String(item.id),
             label: item.name
         }))
