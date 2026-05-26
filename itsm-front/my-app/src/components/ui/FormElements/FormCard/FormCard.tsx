@@ -11,11 +11,9 @@ export const FormCard: FC<FormCardProps> = ({
     children
 }) => {
     return (
-        <div className={styles.page}>
-            <div className={styles["form-card"]}>
-                <h1>{title}</h1>
-                {children}
-            </div>
+        <div className={styles["form-card"]}>
+            <h1>{title}</h1>
+            {children}
         </div>
     )
 }

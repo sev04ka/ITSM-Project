@@ -11,7 +11,13 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db import transaction
 from django.utils import timezone
+from rest_framework.pagination import PageNumberPagination
 from itsm.apps.core.permissions import *
+
+class LargeResultsPagination(PageNumberPagination):
+    page_size = 1000  
+    # page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 
 class TicketViewSet(viewsets.ModelViewSet):
@@ -60,6 +66,22 @@ class TicketViewSet(viewsets.ModelViewSet):
         'priority',
     ]
     ordering = ['-created_at']  
+
+    def list(self, request, *args, **kwargs):
+        get_all = request.query_params.get('all', False)
+        
+        if get_all and str(get_all).lower() == 'true':
+            self.pagination_class = LargeResultsPagination
+
+        if request.user.role.name == "super-admin":
+            queryset = Ticket.objects.all()
+        else:
+            queryset = Ticket.objects.filter(organization__id = request.user.organization.id)
+            
+        paginated_queryset = self.paginate_queryset(queryset)
+        serializer = TicketSerializer(paginated_queryset, many=True)
+            
+        return self.get_paginated_response(serializer.data)
 
     def perform_create(self, serializer):
         serializer.save(

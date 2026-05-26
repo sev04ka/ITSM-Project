@@ -3,6 +3,7 @@ import type IComment from "../../../../../interfaces/entities/Comment";
 import styles from './ticketcomment.module.css'
 import { formatDateTime } from "../../../../../utils/dateFormatter";
 import { useUserAuthStore } from "../../../../../store/useUserAuthStore";
+import { roleLabels } from "../../../../../consts/Labels/roleLabels";
 
 interface TicketCommentProps {
     comment: IComment
@@ -29,10 +30,6 @@ export const TicketComment: FC<TicketCommentProps> = ({
         )
     }
 
-    if (isInternal) {
-
-    }
-
     return (
         <div className={`${styles.comment} ${isOwn ? styles["comment-own"] : styles["comment-other"]}`}>
             <div className={`${styles.bubble} ${isOwn && styles["bubble-own"]}`}>
@@ -42,7 +39,7 @@ export const TicketComment: FC<TicketCommentProps> = ({
                             <span className={styles.author}>
                                 {comment.author.first_name} {comment.author.last_name}
                             </span>
-                            <span className={styles["role-badge"]}>{comment.author.role.name}</span>
+                            <span className={styles["role-badge"]}>{roleLabels[comment.author.role.name]}</span>
                         </>
                     }
                     {isInternal && <span className={styles["internal-badge"]}>Только персонал</span>}

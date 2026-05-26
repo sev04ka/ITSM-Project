@@ -56,8 +56,16 @@ class ConfigurationItemViewSet(viewsets.ModelViewSet):
         
         if get_all and str(get_all).lower() == 'true':
             self.pagination_class = LargeResultsPagination
+
+        if request.user.role.name == "super-admin":
+            queryset = ConfigurationItem.objects.all()
+        else:
+            queryset = ConfigurationItem.objects.filter(organization__id = request.user.organization.id)
             
-        return super().list(request, *args, **kwargs)
+        paginated_queryset = self.paginate_queryset(queryset)
+        serializer = ConfigurationItemSerializer(paginated_queryset, many=True)
+            
+        return self.get_paginated_response(serializer.data)
     
     def perform_create(self, serializer):
         serializer.save(

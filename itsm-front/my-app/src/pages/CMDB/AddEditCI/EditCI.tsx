@@ -5,6 +5,8 @@ import { useEntityDetails } from "../../../hooks/useEntityDetails";
 import NotFound from "../../NotFound";
 import { AddEditForm } from "./AddEditForm";
 import { FormCard } from "../../../components/ui/FormElements/FormCard/FormCard";
+import { ErrorState } from "../../../components/ui/ErrorState/ErrorState";
+import { LoadingState } from "../../../components/ui/LoadingState/LoadingState";
 
 interface EditCIProps {
 }
@@ -22,15 +24,18 @@ export const EditCI: FC<EditCIProps> = ({
 
     const { entity, isLoading, error } = useEntityDetails<IConfigurationItem>('/conf-items', id)
 
-    if (error) return <div>{error}</div>
-
-    if (isLoading) return <div>Loading...</div>
-
     return (
-        <FormCard
-            title="Редактирование конфигурационной единицы"
-        >
-            <AddEditForm entity={entity} />
-        </FormCard>
+        <>
+            {isLoading && <LoadingState />}
+            {error && !isLoading && <ErrorState message={error} />}
+
+            {!isLoading && !error &&
+                <FormCard
+                    title="Редактирование конфигурационной единицы"
+                >
+                    <AddEditForm entity={entity} />
+                </FormCard>
+            }
+        </>
     )
 }

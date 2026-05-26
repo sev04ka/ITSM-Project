@@ -24,7 +24,7 @@ const TicketCreateSchema = z.object({
 const TICKET_TYPES = [
     { value: "incident", label: "Инцидент" },
     { value: "service_request", label: "Запрос на обслуживание" },
-    // { value: "problem", label: "Проблема" }
+    { value: "problem", label: "Проблема" }
 ] as const
 
 const TICKET_IMPACT = [

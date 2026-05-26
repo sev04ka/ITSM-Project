@@ -153,33 +153,35 @@ export const TicketDetails: FC = () => {
                     <div className={styles["description-text"]}>{ticket.description}</div>
                 </div>
 
-                <div className={styles["ci-section"]}>
-                    <div className={styles["ci-item"]}>
-                        <div className={styles["ci-label"]}>Конфигурационная единица</div>
-                        <div className={styles["ci-content"]}>
-                            <div className={styles["ci-info"]}>
-                                <Link to={`/conf-items/${ticket.configuration_item.id}`} className={styles["ci-link"]}>
-                                    {ticket.configuration_item.name}
-                                </Link>
-                                <span className={`badge badge-${ticket.configuration_item.status}`}>
-                                    {ciStatusLabels[ticket.configuration_item.status] || ticket.configuration_item.status}
-                                </span>
-                            </div>
-                            <div className={styles["ci-details"]}>
-                                {ticket.configuration_item.serial_number && (
+                {ticket.configuration_item &&
+                    <div className={styles["ci-section"]}>
+                        <div className={styles["ci-item"]}>
+                            <div className={styles["ci-label"]}>Конфигурационная единица</div>
+                            <div className={styles["ci-content"]}>
+                                <div className={styles["ci-info"]}>
+                                    <Link to={`/conf-items/${ticket.configuration_item.id}`} className={styles["ci-link"]}>
+                                        {ticket.configuration_item.name}
+                                    </Link>
+                                    <span className={`badge badge-${ticket.configuration_item.status}`}>
+                                        {ciStatusLabels[ticket.configuration_item.status] || ticket.configuration_item.status}
+                                    </span>
+                                </div>
+                                <div className={styles["ci-details"]}>
+                                    {ticket.configuration_item.serial_number && (
+                                        <div className={styles["ci-detail-item"]}>
+                                            <span className={styles["ci-detail-label"]}>Серийный номер</span>
+                                            <span className={styles["ci-detail-value"]}>{ticket.configuration_item.serial_number}</span>
+                                        </div>
+                                    )}
                                     <div className={styles["ci-detail-item"]}>
-                                        <span className={styles["ci-detail-label"]}>Серийный номер</span>
-                                        <span className={styles["ci-detail-value"]}>{ticket.configuration_item.serial_number}</span>
+                                        <span className={styles["ci-detail-label"]}>Тип</span>
+                                        <span className={styles["ci-detail-value"]}>{ticket.configuration_item.ci_type.name}</span>
                                     </div>
-                                )}
-                                <div className={styles["ci-detail-item"]}>
-                                    <span className={styles["ci-detail-label"]}>Тип</span>
-                                    <span className={styles["ci-detail-value"]}>{ticket.configuration_item.ci_type.name}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
                 <div className={styles.timestamps}>
                     <div className={styles["timestamp-item"]}>
                         <span className={styles["timestamp-label"]}>Создан</span>
