@@ -1,8 +1,6 @@
-import { useEffect, useState, useRef, type FC } from 'react'
+import { useEffect, useState, useRef, useCallback, type FC } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './select.module.css'
-
-
-
 
 interface SelectProps {
     value: string;
@@ -32,44 +30,82 @@ export const Select: FC<SelectProps> = ({
     name
 }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [dropdownStyle, setDropdownStyle] = useState<{
+        top: number;
+        left: number;
+        width: number;
+        openUp: boolean;
+    } | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
+    const optionsRef = useRef<HTMLDivElement>(null);
 
     const selectedOption = options.find(option => option.value === value);
     const displayedValue = selectedOption?.label || ''
 
+    const updatePosition = useCallback(() => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const spaceAbove = rect.top;
+        const estimatedHeight = Math.min(options.length * 36 + 16, 320);
+        const openUp = spaceBelow < estimatedHeight && spaceAbove > spaceBelow;
+
+        setDropdownStyle({
+            top: openUp ? rect.top - estimatedHeight : rect.bottom,
+            left: rect.left,
+            width: rect.width,
+            openUp,
+        });
+    }, [options.length]);
+
+    const open = useCallback(() => {
+        updatePosition();
+        setIsOpen(true);
+    }, [updatePosition]);
+
+    const close = useCallback(() => {
+        setIsOpen(false);
+        setDropdownStyle(null);
+        onBlur?.();
+    }, [onBlur]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-                onBlur?.();
+                if (optionsRef.current && !optionsRef.current.contains(event.target as Node)) {
+                    close();
+                }
             }
         };
 
         if (isOpen) {
+            updatePosition();
             document.addEventListener('mousedown', handleClickOutside);
         }
 
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [isOpen]);
+    }, [isOpen, close, updatePosition]);
 
     const handleSelect = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>, optionValue: string) => {
         e.stopPropagation();
-        // setValue(optionValue);
         onChange(optionValue);
-        setIsOpen(false);
-        onBlur?.();
+        close();
     }
 
     const handleClear = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
         e.stopPropagation();
-        // setValue('');
         onChange('');
-        onBlur?.();
+        close();
     }
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Escape') {
+            close();
+        }
+    };
 
     return (
         <div
@@ -78,11 +114,15 @@ export const Select: FC<SelectProps> = ({
         >
             <button
                 type='button'
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => isOpen ? close() : open()}
                 className={styles['select-button']}
                 name={name}
             >
                 <span className={styles['select-value']}>{displayedValue ? displayedValue : placeHolder}</span>
+
+                <span className={`${styles.arrow} ${isOpen ? styles['arrow-up'] : ''}`}>
+                    ▼
+                </span>
 
                 {value && (
                     <span
@@ -94,20 +134,32 @@ export const Select: FC<SelectProps> = ({
                 )}
             </button>
 
-
-
-            {isOpen && (
-                <div className={styles['options-container']}>
+            {isOpen && dropdownStyle && createPortal(
+                <div
+                    ref={optionsRef}
+                    className={`${styles['options-container']} ${dropdownStyle.openUp ? styles['options-up'] : ''}`}
+                    style={{
+                        position: 'fixed',
+                        top: dropdownStyle.top,
+                        left: dropdownStyle.left,
+                        width: dropdownStyle.width,
+                    }}
+                    onKeyDown={handleKeyDown}
+                >
+                    {options.length === 0 && (
+                        <span className={styles['no-options']}>Нет вариантов</span>
+                    )}
                     {options.map((option) => (
                         <span
                             key={option.value}
-                            className={`${styles.option} ${selectedOption?.value == option.value && styles.selected}`}
+                            className={`${styles.option} ${option.value === value ? styles['option-selected'] : ''}`}
                             onClick={(e) => handleSelect(e, option.value)}
                         >
                             {option.label}
                         </span>
                     ))}
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     )

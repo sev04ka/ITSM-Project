@@ -87,7 +87,7 @@ export const AddEditForm: FC<AddEditFormProps> = ({
     }
 
     const onSubmitEdit = async (data: z.infer<typeof CISchema>) => {
-        const response = await api.put(
+        const response = await api.patch(
             `/conf-items/${entity?.id}/`,
             data,
             undefined,

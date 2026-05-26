@@ -45,12 +45,14 @@ class OrganizationViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def list(self, request, *args, **kwargs):
-        get_all = request.query_params.get('all', False)
-        
         if request.user.role.name == "super-admin":
             queryset = Organization.objects.all()
         else:
             queryset = Organization.objects.filter(id = request.user.organization.id)
+
+        queryset = self.filter_queryset(queryset)
+
+        get_all = request.query_params.get('all', False)
         
         if get_all and str(get_all).lower() == 'true':
             self.pagination_class = LargeResultsPagination

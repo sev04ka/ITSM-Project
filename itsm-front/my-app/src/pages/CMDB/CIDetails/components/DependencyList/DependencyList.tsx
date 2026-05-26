@@ -77,6 +77,38 @@ export const DependencyList: FC<DependencyListProps> = ({
                         <div key={dependency.id} className={styles.card}>
                             <div className={styles["card-body"]}>
                                 <div className={styles["card-content"]}>
+                                    {String(dependency.child.id) != ciId &&
+                                        <Link to={`/conf-items/${dependency.child.id}`}>
+                                            <div className={styles["ci-block"]}>
+                                                <span className={`${styles["ci-name"]}`}>
+                                                    {dependency.child.name}
+                                                </span>
+                                                <span className={styles["ci-role"]}>потомок</span>
+                                            </div>
+                                        </Link>
+                                    }
+
+                                    {String(dependency.child.id) == ciId &&
+                                        <div className={styles["ci-block"]}>
+                                            <span className={`${styles["ci-name"]}`}>
+                                                {dependency.child.name}
+                                            </span>
+                                            <span className={styles["ci-role"]}>потомок</span>
+                                        </div>
+                                    }
+
+
+                                    <div className={styles.arrow}>
+                                        <span className="arrow-right"></span>
+                                    </div>
+
+                                    <div className={styles["label-block"]}>
+                                        <span className={styles["label-text"]}>{dependency.label}</span>
+                                    </div>
+
+                                    <div className={styles.arrow}>
+                                        <span className="arrow-right"></span>
+                                    </div>
 
                                     {String(dependency.parent.id) != ciId &&
                                         <Link to={`/conf-items/${dependency.parent.id}`}>
@@ -95,38 +127,6 @@ export const DependencyList: FC<DependencyListProps> = ({
                                                 {dependency.parent.name}
                                             </span>
                                             <span className={styles["ci-role"]}>Родитель</span>
-                                        </div>
-                                    }
-
-                                    <div className={styles.arrow}>
-                                        <span className="arrow-right"></span>
-                                    </div>
-
-                                    <div className={styles["label-block"]}>
-                                        <span className={styles["label-text"]}>{dependency.label}</span>
-                                    </div>
-
-                                    <div className={styles.arrow}>
-                                        <span className="arrow-right"></span>
-                                    </div>
-
-                                    {String(dependency.child.id) != ciId &&
-                                        <Link to={`/conf-items/${dependency.child.id}`}>
-                                            <div className={styles["ci-block"]}>
-                                                <span className={`${styles["ci-name"]}`}>
-                                                    {dependency.child.name}
-                                                </span>
-                                                <span className={styles["ci-role"]}>потомок</span>
-                                            </div>
-                                        </Link>
-                                    }
-
-                                    {String(dependency.child.id) == ciId &&
-                                        <div className={styles["ci-block"]}>
-                                            <span className={`${styles["ci-name"]}`}>
-                                                {dependency.child.name}
-                                            </span>
-                                            <span className={styles["ci-role"]}>потомок</span>
                                         </div>
                                     }
                                 </div>

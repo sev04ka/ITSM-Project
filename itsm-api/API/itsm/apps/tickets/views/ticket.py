@@ -68,15 +68,18 @@ class TicketViewSet(viewsets.ModelViewSet):
     ordering = ['-created_at']  
 
     def list(self, request, *args, **kwargs):
+        if request.user.role.name == "super-admin":
+            queryset = Ticket.objects.all()
+        else:
+            queryset = Ticket.objects.filter(organization__id = request.user.organization.id)
+
+        queryset = self.filter_queryset(queryset)
+        
         get_all = request.query_params.get('all', False)
         
         if get_all and str(get_all).lower() == 'true':
             self.pagination_class = LargeResultsPagination
 
-        if request.user.role.name == "super-admin":
-            queryset = Ticket.objects.all()
-        else:
-            queryset = Ticket.objects.filter(organization__id = request.user.organization.id)
             
         paginated_queryset = self.paginate_queryset(queryset)
         serializer = TicketSerializer(paginated_queryset, many=True)

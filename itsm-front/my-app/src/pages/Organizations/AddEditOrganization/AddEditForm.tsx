@@ -57,7 +57,7 @@ export const AddEditForm: FC<AddEditFormProps> = ({
     }
 
     const onSubmitEdit = async (data: z.infer<typeof OrganizationsSchema>) => {
-        const response = await api.put(
+        const response = await api.patch(
             `/organizations/${entity?.id}/`,
             data,
             undefined,
