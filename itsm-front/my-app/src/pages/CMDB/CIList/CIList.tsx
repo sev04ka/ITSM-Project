@@ -4,6 +4,7 @@ import type IConfigurationItem from '../../../interfaces/entities/ConfigurationI
 import type { Column } from '../../../components/ui/DataManagementPanel/DataTable/types';
 import { type FilterParams } from '../../../components/ui/DataManagementPanel/Filter/Filter';
 import { Link } from 'react-router-dom';
+import { ciStatusLabels } from '../../../consts/Labels/ciStatusLabels';
 
 const STATUS_OPTIONS = [
     { value: "active", label: "Активен" },
@@ -32,6 +33,7 @@ const columns: Column<IConfigurationItem>[] = [
     {
         key: 'status',
         title: 'Статус',
+        template: (item: IConfigurationItem) => ciStatusLabels[item.status]
     },
 ];
 
