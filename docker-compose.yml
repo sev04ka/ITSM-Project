@@ -24,6 +24,7 @@ services:
         condition: service_healthy
     networks:
       - itsm-network
+      - default
 
   # ============================================
   # FRONTEND (React + Vite)
