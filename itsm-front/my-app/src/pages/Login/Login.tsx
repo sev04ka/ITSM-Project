@@ -58,14 +58,14 @@ export const Login: FC = ({
 						control={form.control}
 						type="email"
 						autoComplete="off"
-						label="email"
+						label="Электронная почта"
 					/>
 					<InputField
 						name="password"
 						control={form.control}
 						type="password"
 						autoComplete="off"
-						label="password"
+						label="Пароль"
 					/>
 				</FieldGroup>
 				<FieldGroup button="button-center">

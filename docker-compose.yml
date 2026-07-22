@@ -3,7 +3,7 @@ services:
   # BACKEND (Django)
   # ============================================
   backend:
-    image: ${DOCKERHUB_USERNAME}/itsm-api:dev
+    image: bzt70/itsm-api:dev
     # build:
     #   context: ./itsm-api/API
     #   dockerfile: Dockerfile
@@ -17,8 +17,8 @@ services:
     command: >
       sh -c "python manage.py migrate && python manage.py create_roles && python manage.py create_admin_org && python manage.py create_admin && python manage.py create_ci_types &&
              python manage.py runserver 0.0.0.0:8000"
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       db:
         condition: service_healthy
@@ -29,7 +29,7 @@ services:
   # FRONTEND (React + Vite)
   # ============================================
   frontend:
-    image: ${DOCKERHUB_USERNAME}/itsm-front:dev
+    image: bzt70/itsm-front:dev
     # build:
     #   context: ./itsm-front/my-app
     #   dockerfile: Dockerfile
@@ -37,16 +37,17 @@ services:
     container_name: itsm-frontend
     restart: unless-stopped
     command: npm run dev -- --host 0.0.0.0
-    ports:
-      - "5173:5173"
+    expose:
+      - "5173"
     # env_file:
     #   - ./itsm-front/my-app/.env
-    environment:
-      - VITE_API_URL=http://176.109.108.10:8000/api
+    # environment:
+    #   - VITE_API_URL=http://176.109.108.10:8000/api
     depends_on:
       - backend
     networks:
       - itsm-network
+      - default
 
   # ============================================
   # DATABASE (MySQL 8)
@@ -82,5 +83,8 @@ volumes:
     driver: local
 
 networks:
+  default:
+    name: survey_network
+    external: true
   itsm-network:
     driver: bridge

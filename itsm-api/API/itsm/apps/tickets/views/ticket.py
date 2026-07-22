@@ -16,7 +16,6 @@ from itsm.apps.core.permissions import *
 
 class LargeResultsPagination(PageNumberPagination):
     page_size = 1000  
-    # page_size_query_param = 'page_size'
     max_page_size = 1000
 
 
@@ -54,8 +53,6 @@ class TicketViewSet(viewsets.ModelViewSet):
         'status': ['exact'],
         'priority': ['exact'],
         'ticket_type': ['exact'],
-        # 'requester': ['exact'],
-        # 'assignee': ['exact'],
         'created_at': ['gte', 'lte'],
     }
 
@@ -74,7 +71,7 @@ class TicketViewSet(viewsets.ModelViewSet):
             queryset = Ticket.objects.filter(organization__id = request.user.organization.id)
 
         queryset = self.filter_queryset(queryset)
-        
+
         get_all = request.query_params.get('all', False)
         
         if get_all and str(get_all).lower() == 'true':
@@ -91,9 +88,6 @@ class TicketViewSet(viewsets.ModelViewSet):
             requester = self.request.user,
             organization = self.request.user.organization
         )
-
-    
-
 
     @action(
         methods=['get'], 
