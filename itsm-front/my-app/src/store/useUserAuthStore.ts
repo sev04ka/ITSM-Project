@@ -5,7 +5,7 @@ import { api } from '../api';
 
 const ENV_API_URL = import.meta.env.VITE_API_URL;
 
-const API_URL = ENV_API_URL ? ENV_API_URL : 'http://localhost:8000/api';
+const API_URL = '/api';
 
 interface IAuthState {
     currentUser: IUser | null;
